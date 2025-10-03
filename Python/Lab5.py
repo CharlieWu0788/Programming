@@ -7,7 +7,7 @@ def print_board(ttt_board):
             row_text += value + ' '
         print(row_text)
 
-def check_winner(ttt_board):
+def check_rows(ttt_board):
     for row in ttt_board:
         if row.count('X') == 3:
             print('####   Player 1 Wins  ####')
@@ -37,6 +37,11 @@ def check_diagonals(ttt_board):
         return 'O'
     return None
 
+def check_winner(ttt_board):
+    check_rows(ttt_board)
+    check_columns(ttt_board)
+    check_diagonals(ttt_board)
+      
 def main():
     ttt_board = [['-' for _ in range(3)] for _ in range(3)]
     print_board(ttt_board)
