@@ -16,6 +16,7 @@ def check_winner(ttt_board):
             print('####   Player 2 Wins  ####')
             return 'O'
         
+def check_columns(ttt_board):
     for col in range(3):
         column = [ttt_board[0][col], ttt_board[1][col], ttt_board[2][col]]
         if column.count('X') == 3:
@@ -24,7 +25,8 @@ def check_winner(ttt_board):
         elif column.count('O') == 3:
             print('####   Player 2 Wins  ####')
             return 'O'
-        
+
+def check_diagonals(ttt_board):
     diagnal_1 = [ttt_board[0][0], ttt_board[1][1], ttt_board[2][2]]
     diagnal_2 = [ttt_board[0][2], ttt_board[1][1], ttt_board[2][0]]
     if diagnal_1.count('X') == 3 or diagnal_2.count('X') == 3:
