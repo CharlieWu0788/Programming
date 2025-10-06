@@ -2,7 +2,7 @@ import json
 import string
 
 # --- Configuration ---
-filename = 'D:\Wu_sh\Documents\Programming\Python\aita\aita.json'
+filename = r'D:\Wu_sh\Documents\Programming\Python\aita\aita.json'
 
 with open(filename, 'r', encoding='utf-8') as file:
     # json.load() deserializes the JSON file content into a Python dictionary
