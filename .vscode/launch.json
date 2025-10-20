@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Oct20",
+            "request": "launch",
+            "mainClass": "Oct20",
+            "projectName": "Programming_cdb95f90"
+        },
+        {
+            "type": "java",
             "name": "Oct17",
             "request": "launch",
             "mainClass": "Oct17",
