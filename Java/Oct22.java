@@ -1,4 +1,5 @@
-public class Oct20
+import java.util.*;
+public class Oct22
 {
     public static class Person
     {
@@ -43,9 +44,9 @@ public class Oct20
         @Override
         public String toString()
         {
-            return "Name: " + this.getName() + "\n" + 
-                   "Gender: " + this.getGender() + "\n" +
-                   "Age: " + this.getAge() + "\n";
+            return "Name: " + this.getName() + //"\n" + 
+                   " Gender: " + this.getGender() + //"\n" +
+                   " Age: " + this.getAge(); //+ "\n";
         }
 
         public static class Student extends Person
@@ -80,8 +81,8 @@ public class Oct20
             public String toString()
             {
                 return super.toString() +
-                       "Full Time Status: " + this.full_status + "\n" +
-                       "Resident Hall: " + this.resident_hall + "\n";
+                       " Full Time Status: " + this.full_status + //"\n" +
+                       " Resident Hall: " + this.resident_hall; //+ "\n";
             }
         }
         
@@ -119,8 +120,8 @@ public class Oct20
             public String toString()
             {
                 return super.toString() +
-                       "Department: " + this.department + "\n" +
-                       "Position: " + this.position + "\n";
+                       " Department: " + this.department + //"\n" +
+                       " Position: " + this.position; //+ "\n";
             }
         
             public static class Professor extends Staff
@@ -168,9 +169,9 @@ public class Oct20
                 public String toString()
                 {
                     return super.toString() +
-                           "Expertise: " + this.expertise + "\n" +
-                           "Education Experience: " + this.education_experience + " years\n" +
-                           "Office: " + this.office + "\n";
+                           " Expertise: " + this.expertise + //"\n" +
+                           " Education Experience: " + this.education_experience + " years" + //"\n" +
+                           " Office: " + this.office; //"\n";
                 }
             }
         }
@@ -186,7 +187,14 @@ public class Oct20
         Person.Staff Tom = new Person.Staff("Tom", "Male", 60, "Principlal Office", "Principal");
         System.out.println(Tom);
 
-        Person.Staff.Professor hector = new Person.Staff.Professor("Hector", "Male", 30, "Computer Science", "Professor", "Artificial Intelligence", 5, "Room 101");
+        Person.Staff.Professor hector = new Person.Staff.Professor("Hector", "Male", 35, "Computer Science", "Professor", "Artificial Intelligence", 5, "Swan 213");
         System.out.println(hector);
+
+        List<Person> people = new ArrayList<>();
+        people.add(me);
+        people.add(now_me);
+        people.add(Tom);
+        people.add(hector);
+        System.out.println(people);
     }
 }

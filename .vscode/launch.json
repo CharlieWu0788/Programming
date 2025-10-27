@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Oct17",
+            "request": "launch",
+            "mainClass": "Oct17",
+            "projectName": "Programming_611ab678"
+        },
+        {
+            "type": "java",
+            "name": "Lab8",
+            "request": "launch",
+            "mainClass": "Lab8",
+            "projectName": "Programming_611ab678"
+        },
+        {
+            "type": "java",
+            "name": "Oct22",
+            "request": "launch",
+            "mainClass": "Oct22",
+            "projectName": "Programming_611ab678"
+        },
+        {
+            "type": "java",
             "name": "Oct20",
             "request": "launch",
             "mainClass": "Oct20",
