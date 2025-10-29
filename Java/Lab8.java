@@ -265,29 +265,27 @@ public class Lab8
                 System.out.print("Choose an option (1-4): ");
                 String choice = input.nextLine().trim();
 
-                switch (choice)
-                {
-                    case "1":
+                switch (choice) {
+                    case "1" -> {
                         Movie[] movies = createMovies();
                         setMovies(movies);
                         getMovies(movies);
-                        break;
-                    case "2":
+                    }
+                    case "2" -> {
                         Student s = createStudent();
                         setStudent(s, input);
                         getStudent(s);
-                        break;
-                    case "3":
+                    }
+                    case "3" -> {
                         Product[] products = createProducts();
                         setProducts(products);
                         getProducts(products);
-                        break;
-                    case "4":
+                    }
+                    case "4" -> {
                         running = false;
                         System.out.println("Exiting.");
-                        break;
-                    default:
-                        System.out.println("Invalid choice, please enter 1-4.");
+                    }
+                    default -> System.out.println("Invalid choice, please enter 1-4.");
                 }
             }
         }

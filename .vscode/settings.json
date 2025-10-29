@@ -2,7 +2,7 @@
     "java.configuration.runtimes": [
     {
       "name": "JavaSE-21",
-      "path": "C:\\Program Files\\Common Files\\Oracle\\Java\\javapath\\java.exe",
+      "path": "C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.8.9-hotspot\\bin\\java.exe",
       "default": true
     }
   ],
