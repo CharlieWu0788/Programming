@@ -9,10 +9,10 @@ public class Lab7
         int result = getFibonacci(index);
         printFibonacciResult(index, result);
     
-        //Remove Gray
-        int[] rgb = getRGBValue();
-        int[] rgbNoGray = removeGray(rgb);
-        printRGBwithoutGray(rgbNoGray);
+        //Remove Gray (now using RGBA with floats 0.0-1.0)
+        float[] rgba = getRGBAValue();
+        float[] rgbaNoGray = removeGray(rgba);
+        printRGBAwithoutGray(rgbaNoGray);
     }
 
     public static int getFibonacciIndex()
@@ -51,29 +51,32 @@ public class Lab7
         System.out.println("fibonacci(" + index + ") is " + result);
     }
 
-    public static int[] getRGBValue()
+    public static float[] getRGBAValue()
     {
     int R, G, B;
+    float A;
     try (Scanner scnr = new Scanner(System.in)) {
-        System.out.println("Please enter the amount of red:");
+        System.out.println("Please enter the amount of red (0-255):");
         R = scnr.nextInt();
-        System.out.println("Please enter the amount of green:");
+        System.out.println("Please enter the amount of green (0-255):");
         G = scnr.nextInt();
-        System.out.println("Please enter the amount of blue:");
+        System.out.println("Please enter the amount of blue (0-255):");
         B = scnr.nextInt();
+        System.out.println("Please enter the amount of alpha (0.0-1.0), use 1.0 for opaque:");
+        A = scnr.nextFloat();
     }
-    return new int[]{R, G, B};
-    }
-
-    public static int[] removeGray(int[] rgb)
-    {
-        int g = Math.min(rgb[0], Math.min(rgb[1], rgb[2]));
-        return new int[]{rgb[0] - g, rgb[1] - g, rgb[2] - g};
+    return new float[]{R/255f, G/255f, B/255f, A};
     }
 
-    public static void printRGBwithoutGray(int[] rgbNoGray)
+    public static float[] removeGray(float[] rgba)
     {
-        System.out.println("The color without gray is " + rgbNoGray[0] + " " + rgbNoGray[1] + " " + rgbNoGray[2]);
+        float g = Math.min(rgba[0], Math.min(rgba[1], rgba[2]));
+        return new float[]{rgba[0] - g, rgba[1] - g, rgba[2] - g, rgba[3]};
+    }
+
+    public static void printRGBAwithoutGray(float[] rgbaNoGray)
+    {
+        System.out.printf("The color without gray is %.3f %.3f %.3f Alpha: %.3f%n", rgbaNoGray[0], rgbaNoGray[1], rgbaNoGray[2], rgbaNoGray[3]);
     }
 
 }

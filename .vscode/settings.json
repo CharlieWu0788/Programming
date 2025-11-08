@@ -1,10 +1,29 @@
 {
-    "java.configuration.runtimes": [
+  "java.configuration.runtimes": [
     {
       "name": "JavaSE-21",
-      "path": "C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.8.9-hotspot\\bin\\java.exe",
+      "path": "C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.8.9-hotspot",
       "default": true
     }
   ],
-  "java.format.settings.url": "eclipse-formatter.xml"
+  "java.format.settings.url": "eclipse-formatter.xml",
+
+  // Prevent the Java extension from importing/indexing folders you don't want
+  // the language server to analyze. Adjust these globs to match your layout.
+  "java.import.exclusions": [
+    "Python/**",
+    "**/aita/**",
+    "**/node_modules/**",
+    "**/.git/**"
+  ],
+
+  // Optional: hide those folders from Explorer to reduce noise
+  "files.exclude": {
+    "Python/": true,
+    "aita/": true
+  },
+
+  // Prevent continuous autobuild (reduce noisy cross-project errors). If you
+  // prefer live build/diagnostics, set this to true.
+  "java.autobuild.enabled": false
 }

@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Library",
+            "request": "launch",
+            "mainClass": "Library",
+            "projectName": "Programming_611ab678"
+        },
+        {
+            "type": "java",
+            "name": "Lab10",
+            "request": "launch",
+            "mainClass": "Lab10",
+            "projectName": "Programming_611ab678"
+        },
+        {
+            "type": "java",
             "name": "Main",
             "request": "launch",
             "mainClass": "Main",

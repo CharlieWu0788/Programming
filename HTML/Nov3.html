@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Basic Web Page</title>
+    </head>
+    <body style="background-color: #999999"> <!-- We can change the color of the whole background of the body -->
+
+        <!-- Multiple levels of headers -->
+        <h1 style="color: rgb(255,0,0)">A 1st level heading</h1> <!-- We can specify a color using rgb values -->
+        <h2 style="color: blue">A 2nd level heading</h2> <!-- We can specify a color using a color name -->
+        <h3 style="color: #00FF00">A 3rd level heading</h3> <!-- We can specify a color using hexadecimal values -->
+        <h4 style="background-color: #FFFFFF; color:red">A 4th level heading</h4> <!-- we can also have a specific background -->
+        <h5 style="font-family: Arial; color:cyan">A 5th level heading</h5>
+        <h6>A 6th level heading</h6>
+
+        <!-- just a text with no particular tag -->
+        Hello World!
+
+        <!-- p stands for paragraph -->
+        <p style="font-size: 30px">This is a paragraph</p> <!-- We can set the size in pixels-->
+        <p style="font-size: 2.0em">This is another paragraph</p> <!-- We can set the size as how many times the default size-->
+
+        <!-- div stands for division and allows us to group stuff together-->
+        <!-- usualy we do this to apply the same format to everithing grouped -->
+        <div style="font-size: 3.5em; color: magenta"> <!-- We can use div to set the format for everything in it-->
+            <p> This is part of a group </p>
+            <p> This is also part of a group </p>
+        </div>
+
+        <p style="font-weight: normal"> This is a normal weight text </p>
+        <p style="font-weight: bold"> This is a bold weight text </p>
+        <p style="font-weight: bolder"> This is a bolder weight text </p>
+        <p style="font-weight: lighter"> This is a lighter weight text </p>
+        <p style="font-weight: number"> This is a number weight text </p>
+
+        <p style="text-decoration-line:underline; text-decoration-color:cyan;text-decoration-style:solid;text-decoration-thickness:5px"> This is an example of text decorations </p>
+        <p style="text-decoration-line:overline; text-decoration-color:yellow;text-decoration-style:wavy;text-decoration-thickness:2px"> This is an example of text decorations </p>
+        <p style="text-decoration-line:line-through; text-decoration-color:red;text-decoration-style:dotted;text-decoration-thickness:2px"> This is an example of text decorations </p>
+        <p style="text-decoration-line:underline; text-decoration-color:blue;text-decoration-style:dashed;text-decoration-thickness:1px"> This is an example of text decorations </p>
+        <p style="text-decoration-line:underline; text-decoration-color:green;text-decoration-style:double;text-decoration-thickness:30%"> This is an example of text decorations </p>
+        
+
+
+
+        <!-- This is a hyperlink -->
+        <a href="http://google.com/">Google</a>
+
+        <!--style allows us to change format with CSS-->
+        <style> 
+            img {
+                display: block;
+                margin: auto;
+                max-height: 3in;
+            }
+        </style>
+
+        <!-- This is an image within a paragraph -->
+        <p><img src="image_1.jpg" alt="Oxy" /></p>
+
+        <table> <!-- table starts a table -->
+            <tr> <!-- tr stands for table row -->
+                <th>Student</th> <!-- th stands for table header -->
+                <th>Major</th>
+                <th>Minor</th>
+            </tr>
+            <tr>
+                <td>Alice</td> <!-- td stands for table -->
+                <td>Computer Science</td>
+                <td>Dance</td>
+            </tr>
+            <tr>
+                <td>Bob</td>
+                <td>Cognitive Science</td>
+                <td>None</td>
+            </tr>
+        </table>
+
+        <!-- ul stands for unordered list -->
+        <ul>
+            <li> First unordered element </li> <!-- li represent an item in the list -->
+            <li> Second unordered element </li>
+        </ul>
+
+        <!-- ul stands for unordered list -->
+        <ol>
+            <li> First ordered element </li> <!-- li represent an item in the list -->
+            <li> Second ordered element </li>
+        </ol>
+
+        <!-- this is how we provide emphasis (italics) within a paragraph text -->
+        <p><em>Cats</em> are cute animals.</p>
+
+        <!-- this is how we provide strongness (bold) within a paragraph text -->
+        <p><strong>Cats</strong> are cute animals.</p>
+
+        <!-- this is how we provide superscript within a paragraph text -->
+        <p><sup>Cats</sup> are cute animals.</p>
+
+        <!-- this is how we provide subscript within a paragraph text -->
+        <p><sub>Cats</sub> are cute animals.</p>
+
+        <!-- this is how we provide code within a paragraph text -->
+        <p>How to declare a public class in Java: <code> public class class_name{} </code></p>
+
+        <!-- this is how we use a block quote -->
+        <blockquote>
+            "Oxy's remarkable faculty of scholars, teachers and mentors are at the heart of the intellectual experience. An Oxy
+            liberal arts education transcends boundaries, and with more than 40 majors and programs, academic rigor comes in many
+            forms."
+        </blockquote>
+
+        <!-- This is how we add a button (that does nothing) -->
+        <button>Click Me!</button>
+
+        <!-- This is how we add a button (that takes you to Oxy's webpage) -->
+        <a href="https://www.oxy.edu">
+            <button>Go to Oxy's Webpage</button>
+        </a>
+
+        <!-- Just adding empty paragraphs for format-->
+        <p></p>
+
+        <!-- This is how we add an input -->
+        <input> Please input your name </input>
+
+    </body>
+</html>
