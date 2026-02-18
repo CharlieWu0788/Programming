@@ -25,5 +25,6 @@
 
   // Prevent continuous autobuild (reduce noisy cross-project errors). If you
   // prefer live build/diagnostics, set this to true.
-  "java.autobuild.enabled": false
+  "java.autobuild.enabled": false,
+  "C_Cpp.default.compilerPath": "cl.exe"
 }

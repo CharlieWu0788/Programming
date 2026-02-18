@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Lab7",
+            "request": "launch",
+            "mainClass": "Lab7",
+            "projectName": "Programming_611ab678"
+        },
+        {
+            "type": "java",
             "name": "Library",
             "request": "launch",
             "mainClass": "Library",

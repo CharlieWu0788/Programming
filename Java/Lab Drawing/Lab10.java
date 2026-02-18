@@ -1,4 +1,4 @@
-/*// Importing utility stuff
+// Importing utility stuff
 import java.util.ArrayList;
 
 // Importing graphics stuff
@@ -21,7 +21,7 @@ class Picture extends JPanel
      *
      * @param width  The width of the canvas.
      * @param height The height of the canvas.
-     *
+     */
     public Picture(int width, int height)
     {
     this.canvasWidth = width;
@@ -53,7 +53,7 @@ class Picture extends JPanel
      * automatically called when the panel is made visible.
      *
      * @param g The Graphics for the JPanel
-     *
+     */
     @Override
     public void paint(Graphics g)
     {
@@ -67,7 +67,7 @@ class Picture extends JPanel
     /* Add an object to be draw.
      *
      * @param obj The object to draw.
-     *
+     */
     public void addObject(GraphicsObject obj)
     {
         this.objects.add(obj);
@@ -93,7 +93,7 @@ class GraphicsObject
      * by subclasses.
      *
      * @param g The Graphics for the JPanel
-     *
+     */
     public void draw(Graphics g)
     {
 
@@ -113,7 +113,7 @@ class All_shapes extends GraphicsObject
     /* Draw all the shapes
      *
      * @param g The Graphics for the JPanel
-     *
+     */
     @Override
     public void draw(Graphics g)
     {
@@ -189,4 +189,3 @@ public class Lab10
         pic.paint();
     }
 }
- */
