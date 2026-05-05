@@ -1,0 +1,404 @@
+class Game {
+    //Game instance object. Recieves keyboard inputs, loads player, room, npc, and gift objects.
+    
+    field Player player;   //player object     
+        
+        //the player's current direction: 
+        //0=none, 1=up, 2=down, 3=left, 4=right
+    field Player player; 
+    field int direction; 
+
+        //values return after player movement
+        //0=moved, -1=teleported, 1=collided with npc, gift, or wall/prop
+    field int moved, teleported, collided;
+
+        //room layouts, indicates where the doors are located
+        //0=start_right (starting room), 1=left_right, 2=left_up, 3=left_down, 4=end_right, 5=wLeft_right, 6=end
+        //7=bStart_left (start of black room), 8=bLeft_right, 9=bEnd_right (end of black rooms)
+    field int start_right, left_right, left_up, left_down, end_right, wLeft_right, end, sLeft_right;
+    field int bStart_left, bLeft_right, bEnd_right;         
+
+    field int gifts_delivered;
+    field Room root, currRoom, bedroom;
+    
+
+    constructor Game new() {
+        let moved = 0;
+        let teleported = -1;
+        let collided = 1;
+        let gifts_delivered = 0;
+
+        let start_right = 0;
+        let left_right = 1;
+        let left_up = 2;
+        let left_down = 3;
+        let end_right = 4;
+        let end = 5;
+        let bStart_left = 6;
+        let bLeft_right = 7;
+        let bEnd_right = 8;
+
+        let wLeft_right = 9; //even though layouts are identical to left_right, game needs to distinguish
+        let sLeft_right = 10; //between these 2 special rooms and left_right for next/prev room loading.
+        
+        let direction = 0;
+        let player = Player.new();
+        do createRooms();
+        do loadRoot();
+        return this;
+    }
+
+    //doesn't actually properly dispose of everything yet, only the player and itself.
+    method void dispose() {
+        do player.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+    //--------------------------------------------------------------------------------Methods for loading Rooms
+
+    method void loadRoot() {
+        do currRoom.drawRoom();
+        return;
+    }
+
+    method void loadNextRoom() {
+        do Screen.clearScreen();
+        let currRoom = currRoom.getNextRoom();
+        do currRoom.drawRoom();
+        return;
+    }
+
+    method void loadPrevRoom() {
+        //check if the room is the secret root layout,
+        //and if the player should be drawn in inverted colors in the spook rooms
+        if (currRoom.getLayoutType() = sLeft_right) {
+            do player.updateDrawBlack();
+        }
+
+        //else, load room normally
+        do Screen.clearScreen();
+        let currRoom = currRoom.getPrevRoom();
+        do currRoom.drawRoom();
+        return;
+    }
+
+    //change layout of root and bedroom into sleft_right and wleft_right rooms 
+    //respectively if all gifts have been delivered
+    method void attemptUpdateRootAndBedroom() {
+        if (gifts_delivered = 3) {
+            do root.setLayoutType(sLeft_right);
+            do bedroom.setLayoutType(wLeft_right);
+            do reloadRoom();
+        }
+        return;
+    }
+
+    method void reloadRoom() {
+        do Screen.clearScreen();
+        do currRoom.drawRoom();
+        do player.draw();
+        return;
+    }
+    //--------------------------------------------------------------------------------
+
+
+    //--------------------------------------------------------------------------------Player Movement
+    //Attempts to move the player in the current direction.
+    //Check for room loading, interactions, or regular collisions first.
+    //tried to attempt movement first, but it broke the game :/
+
+    method void runInput() {
+        var int move_code;
+
+        if (direction = 1) {
+            let move_code = player.moveUp();
+            if (move_code = teleported) {
+                do loadNextRoom();
+                do player.teleportLowerDoor();
+            } 
+            else {
+                if (move_code = collided) {
+                    do attemptInteractUpDown();
+                }//else, dont move
+            }
+        }
+        if (direction = 2) { 
+            let move_code = player.moveDown();
+            if (move_code = teleported) {
+                do loadPrevRoom();
+                do player.teleportUpperDoor();
+            }
+            else {
+                if (move_code = collided) {
+                    do attemptInteractUpDown();
+                }//else, dont move
+            }
+        }
+        if (direction = 3) {
+            let move_code = player.moveLeft();
+            if (move_code = teleported) {
+                if ((currRoom.getLayoutType() = left_right) |(currRoom.getLayoutType() = left_up) | (currRoom.getLayoutType() = sLeft_right)) {
+                    do loadPrevRoom();
+                }
+                else { //left_down, bStart_left, bLeft_right
+                    do loadNextRoom();
+                }
+                do player.teleportRightDoor();
+            }
+            else {
+                if (move_code = collided) {
+                    do attemptInteractLeftRight();
+                }//else, dont move
+            }
+        }
+        if (direction = 4) {
+            let move_code = player.moveRight();
+            if (move_code = teleported) {
+                if ((currRoom.getLayoutType()=start_right) | (currRoom.getLayoutType()=left_right) | (currRoom.getLayoutType()=left_up)) {
+                    do loadNextRoom();
+                }
+                else { //end_right, win_right, bStart_left, bLeft_right, bEnd_right
+                    do loadPrevRoom();
+                }
+                do player.teleportLeftDoor();
+            }
+            else {
+                if (move_code = collided) {
+                    do attemptInteractLeftRight();
+                }//else, dont move
+            }
+        }
+        do Sys.wait(5);  //delays the next movement
+        return;
+    }
+
+    //-------------------------------------------------------------------------------------------------------Attempt interactions
+    
+    method void attemptInteractUpDown() {
+        var int inc_direction;
+        var boolean gift_interact, npc_interact, within_range_x, update_success;
+        let inc_direction = 3;
+
+        //prep boolean and increment value
+        if (direction = 1) {
+            //going up
+
+            let gift_interact = (player.getTopY() - inc_direction) < currRoom.getBottomOfGift();
+            let gift_interact = gift_interact & ((player.getTopY() - inc_direction) > currRoom.getTopOfGift());
+            let npc_interact = (player.getTopY() - inc_direction) < currRoom.getBottomOfNPC();
+            let npc_interact = npc_interact & ((player.getTopY() - inc_direction) > currRoom.getTopOfNPC());
+        }
+        else {
+            //going down
+
+            let gift_interact = (player.getBottomY() + inc_direction) < currRoom.getBottomOfGift();
+            let gift_interact = gift_interact & ((player.getBottomY() + inc_direction) > currRoom.getTopOfGift());
+            let npc_interact = (player.getBottomY() + inc_direction) < currRoom.getBottomOfNPC();
+            let npc_interact = npc_interact & ((player.getBottomY() + inc_direction) > currRoom.getTopOfNPC());
+        }
+
+        //check x axis range to make sure we are walking into these entities instead of a prop or wall with the same y borders.
+        let within_range_x = Math.abs(player.getLeftX() - currRoom.getLeftOfGift()) < player.getWidth();
+        let gift_interact = gift_interact & within_range_x;
+
+        let within_range_x = Math.abs(player.getLeftX() - currRoom.getLeftOfNPC()) < player.getWidth();
+        let npc_interact = npc_interact & within_range_x;
+
+        //attempt interaction with gift
+        if (currRoom.getHasGift() & gift_interact) {
+            let update_success = currRoom.attemptPickUpGift(player.getHasGift());
+            if (update_success) {
+                do player.updateHasGift();
+            }
+        }
+
+        //attempt interaction with NPC 
+        if (currRoom.getHasNPC() & npc_interact) {
+            let update_success = currRoom.attemptUpdateNPC(player.getHasGift());
+            if (update_success) {
+                let gifts_delivered = gifts_delivered + 1;
+                do player.updateHasGift();
+                do attemptUpdateRootAndBedroom();
+            }
+        }
+        return;
+    }
+
+
+    method void attemptInteractLeftRight() {
+        var int inc_direction;
+        var boolean gift_interact, npc_interact, within_range_y, update_success;
+        let inc_direction = 3;
+
+        //prep boolean and increment value
+        if (direction = 3) {
+            //going left
+
+            let gift_interact = (player.getLeftX() - inc_direction) < currRoom.getRightOfGift();
+            let gift_interact = gift_interact & ((player.getLeftX() - inc_direction) > currRoom.getLeftOfGift());
+            let npc_interact = (player.getLeftX() - inc_direction) < currRoom.getRightOfNPC();
+            let npc_interact = npc_interact & ((player.getLeftX() - inc_direction) > currRoom.getLeftOfNPC());
+        }
+        else {
+            //going right
+
+            let gift_interact = (player.getRightX() + inc_direction) < currRoom.getRightOfGift();
+            let gift_interact = gift_interact & ((player.getRightX() + inc_direction) > currRoom.getLeftOfGift());
+            let npc_interact = (player.getRightX() + inc_direction) < currRoom.getRightOfGift();
+            let npc_interact = npc_interact & ((player.getRightX() + inc_direction) > currRoom.getLeftOfGift());
+        }
+
+        //check y axis range to make sure we are walking into these entities instead of a prop or wall with the same x borders.
+        let within_range_y = Math.abs(player.getTopY() - currRoom.getTopOfGift()) < player.getHeight();
+        let gift_interact = gift_interact & within_range_y;
+
+        let within_range_y = Math.abs(player.getTopY() - currRoom.getTopOfNPC()) < player.getHeight();
+        let npc_interact = npc_interact & within_range_y;
+
+        //attempt interaction with gift
+        if (currRoom.getHasGift() & gift_interact) {
+            let update_success = currRoom.attemptPickUpGift(player.getHasGift());
+            if (update_success) {
+                do player.updateHasGift();
+            }
+        }
+
+        //attempt interaction with NPC 
+        if (currRoom.getHasNPC() & npc_interact) {
+            let update_success = currRoom.attemptUpdateNPC(player.getHasGift());
+            if (update_success) {
+                let gifts_delivered = gifts_delivered + 1;
+                do player.updateHasGift();
+                do attemptUpdateRootAndBedroom();
+            }
+        }
+        return;
+    }
+
+    //---------------------------------------------------------------------------------------------
+
+
+    //----------------------------------------------------------------------------------------------Run the game
+    //Wait for user inputs and update game accordingly
+    method void recieveInput() {
+        var char key;  // the key currently pressed by the user
+        var boolean exit;
+        let exit = false;
+
+        while (~exit) {
+            // waits for a key to be pressed
+            while (key = 0) {
+                let key = Keyboard.keyPressed();
+                do runInput();
+            }
+
+            if (key = 140)  { let exit = true; }     // esc key
+            if (key = 131) { let direction = 1; }   // up arrow
+            if (key = 133) { let direction = 2; }   // down arrow
+            if (key = 130) { let direction = 3; }   // left arrow
+            if (key = 132) { let direction = 4; }   // right arrow
+
+            // waits for the key to be released
+            while (~(key = 0)) {
+                do runInput();
+                let key = Keyboard.keyPressed();
+            }
+            let direction = 0;
+        }
+    return;
+    }
+    //----------------------------------------------------------------------------------
+
+
+    //-----------------------------------------------------------------------------------initialize Game Assets 
+
+    //creates all of the Room objects, including their order, layout type, NPC objects, gift objects, and props.
+    method void createRooms() {
+        var Room living, kitchen, dining, good_end, spook_start, spook_empty, spook_monster, spook_end;
+        var int chair_left, couch, table, dinner_table, tv, christmas_tree, bed, monster, glitched_npc, chair_right;
+
+        let chair_left = 0;
+        let couch = 1;
+        let table = 2;
+        let dinner_table = 3;
+        let tv = 4;
+        let christmas_tree = 5;
+        let bed = 6;
+        let monster = 7;
+        let glitched_npc = 8;
+        let chair_right = 9;
+
+        let root = Room.new(start_right);
+
+        let living = Room.new(left_right);
+        do living.addProp(couch, 175, 200);
+        do living.addProp(tv, 190, 20);
+        do living.addProp(table, 70, 200);
+        do living.setGift(100, 180);
+        do root.setNextRoom(living);
+        do living.setPrevRoom(root);
+
+        let kitchen = Room.new(left_up);
+        do kitchen.addProp(christmas_tree, 375, 30);
+        do kitchen.addProp(couch, 20, 30);
+        do kitchen.addProp(table, 65, 155);
+        do kitchen.setNPC(450, 50);
+        do kitchen.setGift(400, 175);
+        do living.setNextRoom(kitchen);
+        do kitchen.setPrevRoom(living);
+
+        let dining = Room.new(left_down);
+        do dining.addProp(dinner_table, 340, 30);
+        do dining.addProp(chair_right, 310, 30);
+        do dining.addProp(chair_right, 310, 90);
+        do dining.addProp(chair_right, 310, 150);
+        do dining.addProp(chair_left, 450, 30);
+        do dining.addProp(chair_left, 450, 90);
+        do dining.addProp(chair_left, 450, 150);
+        do dining.addProp(table, 20, 60);
+        do dining.setGift(50, 40);
+        do dining.setNPC(40, 170);
+        do kitchen.setNextRoom(dining);
+        do dining.setPrevRoom(kitchen);
+
+        let bedroom = Room.new(end_right);
+        do bedroom.addProp(table, 400, 190);
+        do bedroom.addProp(chair_right, 380, 190);
+        do bedroom.addProp(bed, 180, 90);
+
+        do bedroom.setNPC(60, 45);
+        do dining.setNextRoom(bedroom);
+        do bedroom.setPrevRoom(dining);
+
+        let good_end = Room.new(end);
+        do bedroom.setNextRoom(good_end);
+        do good_end.setPrevRoom(bedroom);
+
+        let spook_start = Room.new(bStart_left);
+        do root.setPrevRoom(spook_start);
+        do spook_start.setPrevRoom(spook_start);
+        //room loops to itself if player tries to return to the root room.
+
+        let spook_empty = Room.new(bLeft_right);
+        do spook_empty.addProp(glitched_npc, 40, 20);
+        do spook_empty.addProp(glitched_npc, 360, 57);
+        do spook_empty.addProp(glitched_npc, 400, 176);
+        do spook_empty.addProp(glitched_npc, 250, 115);
+        do spook_start.setNextRoom(spook_empty);
+
+        let spook_monster = Room.new(bLeft_right);
+        do spook_monster.addProp(monster, 150, 20);
+        do spook_monster.addProp(glitched_npc, 150, 135);
+        do spook_empty.setNextRoom(spook_monster);
+        do spook_monster.setPrevRoom(spook_empty);
+
+        let spook_end = Room.new(bEnd_right);
+        do spook_monster.setNextRoom(spook_end);
+        //no next room since spook_end is the end (and also a visual copy of the root)
+        
+        let currRoom = root;
+        return;
+    }
+}

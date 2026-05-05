@@ -1,0 +1,19 @@
+// Project 12
+// Ariel
+// array library for the jack OS
+// just uses Memory.alloc and Memory.deAlloc under the hood
+
+class Array {
+
+    // allocates a new array of the given size on the heap
+    // has to be a function not a constructor because arrays are special
+    function Array new(int size) {
+        return Memory.alloc(size);
+    }
+
+    // frees this array
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

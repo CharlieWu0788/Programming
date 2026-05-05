@@ -1,0 +1,70 @@
+class DrawingGame {
+
+	field Cursor cursor;
+	field int dir;
+	field boolean draw;
+	field int blinkTimer;
+
+	constructor DrawingGame new() {
+
+		let cursor = Cursor.new(12, 12, 12);
+		return this;
+	}
+
+	method void run() {
+
+		var char key;
+		var boolean exit;
+		let exit = false;
+		let blinkTimer = 0;
+
+		// in case an escape key needs to be programed
+		while (~exit) {
+			// handles the blinking of the cursor with a timer that resets
+			let blinkTimer = blinkTimer + 1;
+			if (blinkTimer > 15) {
+				do cursor.blink();
+				let blinkTimer = 0;
+			}
+
+			let key = Keyboard.keyPressed();
+
+			// arrow key movement
+			if ((key = 130) | (key = 131) | (key = 132) | (key = 133)) {
+				let dir = key - 129;
+				do cursor.move(dir);
+			}
+
+			// space bar turns drawing on
+			if (key = 32) {
+				do cursor.setDraw(true);
+			}
+
+			// return/enter stops both drawing and erasing
+			if (key = 128) {
+				do cursor.setDraw(false);
+				do cursor.setErase(false);
+			}
+
+			// delete starts erasing
+			if (key = 129) {
+				do cursor.setErase(true);
+			}
+
+			// (capital) Z increases size
+			if (key = 90) {
+				do cursor.incSize();
+			}
+
+			// (lowercase) z decreases size
+			if (key = 122) {
+				do cursor.decSize();
+			}
+
+			// a little bit of delay to make the game playable
+			do Sys.wait(1);
+		}
+		return;
+	}
+}
+			

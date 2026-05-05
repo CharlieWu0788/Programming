@@ -1,0 +1,308 @@
+class Game
+{
+    field Battery battery;
+    field int currentPower;
+    field int score;
+    field int seed;
+    field boolean playing;
+    field boolean advancedMode;
+
+    constructor Game new()
+    {
+        let battery = Battery.new(100, 40);
+        let score = 0;
+        let seed = 83;
+        let playing = true;
+        let advancedMode = false;
+
+        return this;
+    }
+
+    method void run()
+    {
+        var int demand;
+        var int requiredEnergy;
+        var int supply;
+        var int waste;
+        var int roundScore;
+        var int optimalCode;
+        var int optimalSupply;
+        var int extraBits;
+        var String code;
+
+        do Output.printString("Binary Power Saver");
+        do Output.println();
+
+        while (playing)
+        {
+            do Screen.clearScreen();
+            do Output.moveCursor(0, 0);
+
+            if ((score > 299) & (~advancedMode))
+            {
+                let advancedMode = true;
+                do Output.println();
+                do Output.printString("Advanced Battery Unlocked!");
+                do Output.println();
+            }
+
+            do chooseBatteryForRound();
+
+            let demand = generateDemand();
+            let requiredEnergy = demand * 40;
+
+            do Output.println();
+            do Output.printString("Demand: ");
+            do Output.printInt(demand);
+            do Output.printString(" W");
+            do Output.println();
+            
+            do Output.printString("Battery: ");
+            do Output.printInt(currentPower);
+            do Output.printString(" W");
+            do Output.println();
+
+            do Output.printString("Required Energy: ");
+            do Output.printInt(requiredEnergy);
+            do Output.println();
+
+            do Output.printString("Available Power:");
+            do Output.println();
+            do printAvailablePower();
+
+            let code = Keyboard.readLine("Enter 8-bit code: ");
+
+            while (~(BitCode.isValidCode(code)))
+            {
+                do Output.printString("Invalid code. Use exactly 8 bits.");
+                do Output.println();
+                let code = Keyboard.readLine("Enter 8-bit code: ");
+            }
+
+            let supply = BitCode.calculateSupply(code, battery);
+            let waste = supply - requiredEnergy;
+
+            do Output.printString("Supply: ");
+            do Output.printInt(supply);
+            do Output.println();
+
+            if (supply < requiredEnergy)
+            {
+                do Output.printString("FAIL: Not enough power");
+                do Output.println();
+                let playing = false;
+            }
+            else
+            {
+                let optimalCode = findOptimalCode(requiredEnergy);
+                let optimalSupply = BitCode.calculateSupplyFromInt(optimalCode, battery);
+                let extraBits = countExtraBits(code, optimalCode);
+                let roundScore = 100 - (extraBits * 20);
+
+                if (roundScore < 0)
+                {
+                    let roundScore = 0;
+                }
+
+                if (roundScore < 100)
+                {
+                    do Output.printString("Optimal Code: ");
+                    do printCodeFromInt(optimalCode);
+                    do Output.println();
+
+                    do Output.printString("Most Efficient Output: ");
+                    do Output.printInt(optimalSupply);
+                    do Output.println();
+
+                    do Output.printString("Extra Bits: ");
+                    do Output.printInt(extraBits);
+                    do Output.println();
+                }
+
+                let score = score + roundScore;
+
+                do Output.printString("Waste: ");
+                do Output.printInt(waste);
+                do Output.println();
+
+                do Output.printString("Score gained: ");
+                do Output.printInt(roundScore);
+                do Output.println();
+
+                do Output.printString("Total Score: ");
+                do Output.printInt(score);
+                do Output.println();
+
+                do Output.println();
+                do Keyboard.readLine("Press Enter for next round.");
+            }
+        }
+
+        do Output.printString("Game Over");
+        do Output.println();
+
+        return;
+    }
+
+    method void chooseBatteryForRound()
+    {
+        if (~advancedMode)
+        {
+            let currentPower = 100;
+            let battery = Battery.new(100, 40);
+        }
+        else
+        {
+            let seed = seed + 17;
+
+            while (seed > 2)
+            {
+                let seed = seed - 3;
+            }
+
+            if (seed = 0)
+            {
+                let currentPower = 160;
+                let battery = Battery.new(160, 40);
+            }
+
+            if (seed = 1)
+            {
+                let currentPower = 240;
+                let battery = Battery.new(240, 40);
+            }
+
+            if (seed = 2)
+            {
+                let currentPower = 320;
+                let battery = Battery.new(320, 40);
+            }
+        }
+    
+        return;
+    }
+
+    method int generateDemand()
+    {
+        let seed = seed + 37;
+
+        while (seed > 149)
+        {
+            let seed = seed - 150;
+        }
+
+        return seed + 50;
+    }
+
+    method void printAvailablePower()
+    {
+        var int i;
+
+        let i = 0;
+
+        while (i < 8)
+        {
+            do Output.printInt(battery.getEnergyAtBit(i));
+            do Output.printString(" ");
+            let i = i + 1;
+        }
+
+        do Output.println();
+
+        return;
+    }
+
+    method int findOptimalCode(int requiredEnergy)
+    {
+        var int i;
+        var int bestCode;
+        var int bestWaste;
+        var int supply;
+        var int waste;
+
+        let i = 0;
+        let bestCode = 0;
+        let bestWaste = 32767;
+
+        while (i < 256)
+        {
+            let supply = BitCode.calculateSupplyFromInt(i, battery);
+
+            if (supply > (requiredEnergy - 1))
+            {
+                let waste = supply - requiredEnergy;
+
+                if (waste < bestWaste)
+                {
+                    let bestWaste = waste;
+                    let bestCode = i;
+                }
+            }
+
+            let i = i + 1;
+        }
+
+        return bestCode;
+    }
+
+    method int countExtraBits(String code, int optimalCode)
+    {
+        var int i;
+        var int extra;
+        var int playerBit;
+        var int optimalBit;
+        var int place;
+
+        let i = 0;
+        let extra = 0;
+        let place = 128;
+
+        while (i < 8)
+        {
+            let playerBit = code.charAt(i);
+            let optimalBit = optimalCode / place;
+
+            if ((playerBit = 49) & (optimalBit = 0))
+            {
+                let extra = extra + 1;
+            }
+
+            if (optimalBit = 1)
+            {
+                let optimalCode = optimalCode - place;
+            }
+
+            let place = place / 2;
+            let i = i + 1;
+        }
+
+        return extra;
+    }
+
+    method void printCodeFromInt(int code)
+    {
+        var int place;
+        var int bit;
+
+        let place = 128;
+
+        while (place > 0)
+        {
+            let bit = code / place;
+
+            if (bit = 1)
+            {
+                do Output.printString("1");
+                let code = code - place;
+            }
+            else
+            {
+                do Output.printString("0");
+            }
+
+            let place = place / 2;
+        }
+
+        return;
+    }
+}

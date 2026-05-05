@@ -1,0 +1,313 @@
+/* The TDGame class handles the drawing and movement of sprites. Using methods from other classes,
+ * as well as those classes, this class handles interactions between towers and enemies, and increases
+ * the difficulty as time goes on.
+*/
+
+class TDGame {
+    field Cursor cursor;
+    field PlayerIcons icons;
+    field Array playerGrid; //a grid with all the player objects
+    field Array randInt;    //an array of random integers to determine which row enemies spawn in
+    field int addIndex;     //used to add to the randInt index based on the last key pressed, making it so that enemy placement isn't as consistent
+    field int lastKey;      //the last key the user pressed, used to determine where to place enemies
+    field Array enemyArray; //stores all the enemies
+    field int time;
+    field int currScore;    //keeps track of the current score, increasing the difficulty as it increases
+    field String info;
+    field int maxActive;    //how many enemies can be on screen at once; grows with score
+    field int spawnTimer;   //time since the last enemy was spawned
+    field int randIndex;    //current position in randInt, advances each spawn
+    field String win;
+
+    constructor TDGame new(){
+        var int i;
+        var Enemies enemy;
+        let i = 0;
+        let cursor = Cursor.new();
+        let icons = PlayerIcons.new();
+        let playerGrid = cursor.getObjectInGrid();
+        let enemyArray = Array.new(40);
+        let randInt = Array.new(32);
+        //array of randomly generated numbers 0-3, representing the different rows on the grid
+        let randInt[0] = 0;
+        let randInt[1] = 2;
+        let randInt[2] = 0;
+        let randInt[3] = 0;
+        let randInt[4] = 0;
+        let randInt[5] = 2;
+        let randInt[6] = 1;
+        let randInt[7] = 1;
+        let randInt[8] = 0;
+        let randInt[9] = 1;
+        let randInt[10] = 0;
+        let randInt[11] = 2;
+        let randInt[12] = 0;
+        let randInt[13] = 1;
+        let randInt[14] = 3;
+        let randInt[15] = 2;
+        let randInt[16] = 3;
+        let randInt[17] = 1;
+        let randInt[18] = 1;
+        let randInt[19] = 0;
+        let randInt[20] = 2;
+        let randInt[21] = 2;
+        let randInt[22] = 1;
+        let randInt[23] = 2;
+        let randInt[24] = 3;
+        let randInt[25] = 3;
+        let randInt[26] = 1;
+        let randInt[27] = 3;
+        let randInt[28] = 1;
+        let randInt[29] = 3;
+        let randInt[30] = 3;
+        let randInt[31] = 3;
+        let time = 50;
+        let currScore = 0;
+        let lastKey = 0;
+        let addIndex = 0;
+        let maxActive = 2;
+        let spawnTimer = -750;  //negative start gives players prep time
+        let randIndex = 0;
+        let info = "WASD/arrows to move, E to erase, space to place";
+        let win = "        You got over 31 points! Congrats!       ";
+        //all slots start empty; enemies are spawned dynamically during run()
+        while (i < 40) {
+            let enemyArray[i] = 0;
+            let i = i + 1;
+        }
+        return this;
+    }
+
+    //returns how many enemies should be on screen at once based on current score
+    method int getMaxActive() {
+        var int s;
+        let s = cursor.getScore();
+        if (s < 5) {
+            return 4;
+        }
+        if (s < 10) {
+            return 6;
+        }
+        if (s < 20) {
+            return 10;
+        }
+        return 15;
+    }
+
+    //returns how much time must pass between spawns. Shrinks as score rises
+    method int getSpawnInterval() {
+        var int s;
+        let s = cursor.getScore();
+        if (s < 3) {
+            return 225;
+        }
+        if (s < 8) {
+            return 175;
+        }
+        if (s < 13) {
+            return 75;
+        }
+        return 25;
+    }
+
+    //picks an enemy type based on the current score and places it in the first free slot
+    method void spawnEnemy() {
+        var int i;
+        var int row;
+        var int enemyType;
+        var int health;
+        var int s;
+        var int pick;
+
+        let s = cursor.getScore();
+        //combine randIndex with addIndex, affected by last key pressed, then wrap to 0-31
+        let row = randInt[(randIndex + addIndex) & 31];
+        let randIndex = (randIndex + 1) & 31;
+
+        //default
+        let enemyType = 1;
+        let health = 100;
+
+        if (s < 3) {                              //score 0-2: basic enemies only
+            let enemyType = 1;
+            let health = 100;
+        }
+        if ((s > 2) & (s < 8)) {                 //score 3-7: basic and the wall
+            let pick = randIndex & 1;
+            if (pick = 0) {                       //basic enemy
+                let enemyType = 1;
+                let health = 100;
+            }
+            else {                                //the wall
+                let enemyType = 2;
+                let health = 400;
+            }
+        }
+        if ((s > 7) & (s < 13)) {                //score 8-12: basic and the blob
+            let pick = randIndex & 3;
+            if (pick < 2) {
+                let enemyType = 1;               //basic enemy
+                let health = 100;
+            }
+            else {
+                let enemyType = 3;               //the blob
+                let health = 35;
+            }
+        }
+        if (s > 12) {                            //score 13+: all four types
+            let pick = randIndex & 3;
+            if (pick = 0) {
+                let enemyType = 1;               //basic enemy
+                let health = 100;
+            }
+            if (pick = 1) {
+                let enemyType = 2;               //the wall
+                let health = 400;
+                }
+            if (pick = 2) {
+                let enemyType = 3;               //the blob
+                let health = 35;
+            }
+            if (pick = 3) {
+                let enemyType = 4;               //the thinker
+                let health = 250;
+            }
+        }
+
+        //find the first empty slot and place the enemy there
+        let i = 0;
+        while (i < 40) {
+            if (enemyArray[i] = 0) {
+                let enemyArray[i] = Enemies.new(23, row, health, enemyType);
+                return;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void lastKeyPressed(Cursor c) {
+        let lastKey = c.getLastKey();
+        if (((lastKey = 97) | (lastKey = 130)) | (lastKey = 49)) {        //a, left arrow, or 1
+            let addIndex = 0;
+        }
+        if (((lastKey = 100) | (lastKey = 132)) | (lastKey = 50)) {       //d, right arrow, or 2
+            let addIndex = 1;
+        }
+        if (((lastKey = 119) | (lastKey = 131)) | (lastKey = 51)) {       //w, up arrow, or 3
+            let addIndex = 2;
+        }
+        if (((lastKey = 115) | (lastKey = 133)) | (lastKey = 52)) {       //s, down arrow, or 4
+            let addIndex = 3;
+        }
+        if (lastKey = 101) {                                              //e
+            let addIndex = 4;
+        }
+        return;
+    }
+
+    //creates the board to play on, leaving room at the bottom to display attacks and information
+    method void drawGrid() {
+        //horizontal lines
+        do Screen.drawLine(0, 0, 384, 0);
+        do Screen.drawLine(0, 48, 384, 48);
+        do Screen.drawLine(0, 96, 384, 96);
+        do Screen.drawLine(0, 144, 384, 144);
+        do Screen.drawLine(0, 192, 384, 192);
+        //vertical lines
+        do Screen.drawLine(0, 0, 0, 192);
+        do Screen.drawLine(48, 0, 48, 192);
+        do Screen.drawLine(96, 0, 96, 192);
+        do Screen.drawLine(144, 0, 144, 192);
+        do Screen.drawLine(192, 0, 192, 192);
+        do Screen.drawLine(240, 0, 240, 192);
+        do Screen.drawLine(288, 0, 288, 192);
+        do Screen.drawLine(336, 0, 336, 192);
+        do Screen.drawLine(384, 0, 384, 192);
+        return;
+    }
+
+    method void run() {
+        var boolean bool;
+        var int i;
+        var int activeCount;
+        var Enemies enemy;
+        let bool = true;
+        do Output.moveCursor(22, 0);
+        do Output.printString(info);
+        do icons.drawTowerPanel();
+        while (bool) {
+            //handle input and erase old cursor position
+            do cursor.update();
+            do lastKeyPressed(cursor);
+
+            //handles enemies and increases difficulty based on score. 4 levels of difficulty
+            let maxActive = getMaxActive();
+
+            //move each enemy, let player objects fire at them, check for collisions
+            let i = 0;
+            while (i < 40) {
+                let enemy = enemyArray[i];
+                if (~(enemy = 0)) {
+                    do enemy.move(time);
+                    do cursor.attackEnemy(enemy, time);
+                    do cursor.checkCollisions(enemy);
+                }
+                let i = i + 1;
+            }
+
+            //advance all bullets
+            do cursor.moveBullets();
+
+            //check if bullets hit, dispose dead/escaped enemies
+            let activeCount = 0;
+            let i = 0;
+            while (i < 40) {
+                let enemy = enemyArray[i];
+                if (~(enemy = 0)) {
+                    do cursor.checkBulletsVsEnemy(enemy);
+                    if ((enemy.getHealth() < 1) | (enemy.getGridX() < 0)) {
+                        do enemy.eraseEnemy();
+                        do enemy.dispose();
+                        let enemyArray[i] = 0;
+                    } else {
+                        let activeCount = activeCount + 1;
+                    }
+                }
+                let i = i + 1;
+            }
+
+            //spawn a new enemy when under the cap
+            let spawnTimer = spawnTimer + 1;
+            if ((activeCount < maxActive) & (spawnTimer > getSpawnInterval())) {
+                do spawnEnemy();
+                let spawnTimer = 0;
+            }
+
+            //draws the grid first, then objects, enemies, cursor, and bullets on top
+            do Screen.setColor(true);
+            do drawGrid();
+            do cursor.drawObjects();
+            let i = 0;
+            while (i < 40) {
+                let enemy = enemyArray[i];
+                if (~(enemy = 0)) {
+                    do enemy.draw();
+                }
+                let i = i + 1;
+            }
+            do cursor.draw();
+            do cursor.drawBullets();
+            do drawGrid();
+
+            //if score >= 31, end game
+            if (cursor.getScore() > 30) {
+                do Output.moveCursor(20, 0);
+                do Output.printString(win);
+                do Sys.halt();
+            }
+            do Sys.wait(time);
+        }
+        return;
+    }
+}

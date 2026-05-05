@@ -1,0 +1,86 @@
+// Project 12
+// Ariel
+// memory library for the jack OS
+// read/write any RAM address and manages heap allocation
+
+class Memory {
+    // trick: setting ram to 0 means ram[addr] gives us RAM[addr]
+    // this works because jack is weakly typed
+    static Array ram;
+    // points to the first free segment in the heap
+    static int freeList;
+
+    // sets up the ram trick and makes the whole heap into one big free segment
+    // heap goes from 2048 to 16383
+    // each free segment stores: [next pointer, available size]
+    function void init() {
+        let ram = 0;
+        let freeList = 2048;
+        // no next segment
+        let ram[2048] = 0;
+        // total heap is 14336 words minus 2 for the header
+        let ram[2049] = 14334;
+        return;
+    }
+
+    // returns whatever is at that RAM address
+    function int peek(int address) {
+        return ram[address];
+    }
+
+    // writes a value to that RAM address
+    function void poke(int address, int value) {
+        let ram[address] = value;
+        return;
+    }
+
+    // finds a free block big enough and returns a pointer to it
+    // walks the free list looking for the first segment that fits (first fit from lecture)
+    // my own implement: carves the block from the end of the segment so we dont have to move anything
+    // also my own: each allocated block gets a 2 word header so deAlloc can reuse it as a free segment
+    function int alloc(int size) {
+        var int cur, prev, block;
+        let cur = freeList;
+        let prev = 0;
+        while (~(cur = 0)) {
+            // check if this segment can fit size + 2 words for the block header
+            if (~(ram[cur + 1] < (size + 2))) {
+                // shrink this segment
+                let ram[cur + 1] = ram[cur + 1] - (size + 2);
+                // the new block starts right after the shrunken segment
+                let block = cur + 2 + ram[cur + 1];
+                let ram[block] = 0;
+                let ram[block + 1] = size;
+                // return pointer past the header
+                return block + 2;
+            }
+            // a fallback: if it fits exactly but not enough room to split, give the whole segment
+            if (~(ram[cur + 1] < size)) {
+                // remove this segment from the free list
+                if (prev = 0) {
+                    let freeList = ram[cur];
+                } else {
+                    let ram[prev] = ram[cur];
+                }
+                let ram[cur + 1] = size;
+                return cur + 2;
+            }
+            // try the next segment
+            let prev = cur;
+            let cur = ram[cur];
+        }
+        return -1;
+    }
+
+    // frees the object by sticking it back at the front of the free list
+    // the header at o-2 still has the size from when we allocated it
+    function void deAlloc(Array o) {
+        var int block;
+        let block = o - 2;
+        // point this freed block to the old head of the free list
+        let ram[block] = freeList;
+        // now this block is the new head
+        let freeList = block;
+        return;
+    }
+}

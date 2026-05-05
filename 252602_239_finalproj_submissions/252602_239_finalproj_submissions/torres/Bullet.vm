@@ -1,0 +1,100 @@
+function Bullet.new 0
+    push constant 5
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    push constant 48
+    call Math.multiply 2
+    push constant 46
+    add
+    pop this 0
+    push argument 1
+    push constant 48
+    call Math.multiply 2
+    push constant 24
+    add
+    pop this 1
+    push argument 1
+    pop this 2
+    push argument 2
+    pop this 3
+    push argument 3
+    pop this 4
+    push pointer 0
+    return
+function Bullet.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function Bullet.getX 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Bullet.getRow 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function Bullet.getDamage 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return
+function Bullet.draw 0
+    push argument 0
+    pop pointer 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push this 0
+    push this 1
+    push this 4
+    call Screen.drawCircle 3
+    pop temp 0
+    push constant 0
+    return
+function Bullet.erase 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push this 0
+    push this 1
+    push this 4
+    call Screen.drawCircle 3
+    pop temp 0
+    push constant 0
+    return
+function Bullet.move 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Bullet.erase 1
+    pop temp 0
+    push this 0
+    push constant 10
+    add
+    pop this 0
+    push this 0
+    push constant 390
+    gt
+    not
+    if-goto Bullet_1
+    push constant 0
+    return
+    goto Bullet_0
+label Bullet_1
+label Bullet_0
+    push pointer 0
+    call Bullet.draw 1
+    pop temp 0
+    push constant 1
+    neg
+    return

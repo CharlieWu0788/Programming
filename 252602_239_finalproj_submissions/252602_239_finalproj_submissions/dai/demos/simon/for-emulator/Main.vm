@@ -1,0 +1,357 @@
+function Main.stepAt 0
+push argument 0
+push constant 0
+eq
+not
+if-goto L0
+push constant 1
+return
+label L0
+push argument 0
+push constant 1
+eq
+not
+if-goto L2
+push constant 2
+return
+label L2
+push argument 0
+push constant 2
+eq
+not
+if-goto L4
+push constant 4
+return
+label L4
+push argument 0
+push constant 3
+eq
+not
+if-goto L6
+push constant 3
+return
+label L6
+push argument 0
+push constant 4
+eq
+not
+if-goto L8
+push constant 1
+return
+label L8
+push argument 0
+push constant 5
+eq
+not
+if-goto L10
+push constant 4
+return
+label L10
+push argument 0
+push constant 6
+eq
+not
+if-goto L12
+push constant 2
+return
+label L12
+push argument 0
+push constant 7
+eq
+not
+if-goto L14
+push constant 3
+return
+label L14
+push argument 0
+push constant 8
+eq
+not
+if-goto L16
+push constant 4
+return
+label L16
+push argument 0
+push constant 9
+eq
+not
+if-goto L18
+push constant 1
+return
+label L18
+push argument 0
+push constant 10
+eq
+not
+if-goto L20
+push constant 3
+return
+label L20
+push argument 0
+push constant 11
+eq
+not
+if-goto L22
+push constant 2
+return
+label L22
+push argument 0
+push constant 12
+eq
+not
+if-goto L24
+push constant 4
+return
+label L24
+push argument 0
+push constant 13
+eq
+not
+if-goto L26
+push constant 2
+return
+label L26
+push argument 0
+push constant 14
+eq
+not
+if-goto L28
+push constant 1
+return
+label L28
+push constant 3
+return
+function Main.flash 2
+push constant 0
+pop local 0
+push constant 0
+pop local 1
+push argument 0
+push constant 1
+eq
+not
+if-goto L30
+push constant 1
+pop local 0
+push constant 16512
+pop local 1
+label L30
+push argument 0
+push constant 2
+eq
+not
+if-goto L32
+push constant 2
+pop local 0
+push constant 16640
+pop local 1
+label L32
+push argument 0
+push constant 3
+eq
+not
+if-goto L34
+push constant 4
+pop local 0
+push constant 16768
+pop local 1
+label L34
+push argument 0
+push constant 4
+eq
+not
+if-goto L36
+push constant 8
+pop local 0
+push constant 16896
+pop local 1
+label L36
+push constant 16384
+push local 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push constant 120
+call Sys.wait 1
+pop temp 0
+push constant 16384
+push constant 0
+call Memory.poke 2
+pop temp 0
+push local 1
+push constant 0
+call Memory.poke 2
+pop temp 0
+push constant 40
+call Sys.wait 1
+pop temp 0
+push constant 0
+return
+function Main.readButton 1
+label L38
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+if-goto L39
+goto L38
+label L39
+call Keyboard.keyPressed 0
+pop local 0
+label L40
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+not
+if-goto L41
+goto L40
+label L41
+push local 0
+push constant 47
+gt
+not
+if-goto L42
+push local 0
+push constant 58
+lt
+not
+if-goto L44
+push local 0
+push constant 48
+sub
+return
+label L44
+label L42
+push local 0
+return
+function Main.playRound 3
+push constant 0
+pop local 0
+label L46
+push local 0
+push argument 0
+lt
+not
+if-goto L47
+push local 0
+call Main.stepAt 1
+pop local 1
+push local 1
+call Main.flash 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto L46
+label L47
+push constant 0
+pop local 0
+label L48
+push local 0
+push argument 0
+lt
+not
+if-goto L49
+push local 0
+call Main.stepAt 1
+pop local 1
+call Main.readButton 0
+pop local 2
+push local 2
+call Main.flash 1
+pop temp 0
+push local 2
+push local 1
+eq
+not
+not
+if-goto L50
+push constant 0
+return
+label L50
+push local 0
+push constant 1
+add
+pop local 0
+goto L48
+label L49
+push constant 0
+not
+return
+function Main.gameOver 1
+push constant 0
+pop local 0
+label L52
+push local 0
+push constant 6
+lt
+not
+if-goto L53
+push constant 16384
+push constant 15
+call Memory.poke 2
+pop temp 0
+push constant 60
+call Sys.wait 1
+pop temp 0
+push constant 16384
+push constant 0
+call Memory.poke 2
+pop temp 0
+push constant 60
+call Sys.wait 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto L52
+label L53
+push constant 0
+return
+function Main.main 2
+push constant 1
+pop local 0
+label L54
+push constant 0
+not
+not
+if-goto L55
+push constant 150
+call Sys.wait 1
+pop temp 0
+push local 0
+call Main.playRound 1
+pop local 1
+push local 1
+not
+if-goto L56
+push local 0
+push constant 1
+add
+pop local 0
+push local 0
+push constant 15
+gt
+not
+if-goto L58
+push constant 15
+pop local 0
+label L58
+goto L57
+label L56
+call Main.gameOver 0
+pop temp 0
+push constant 1
+pop local 0
+label L57
+goto L54
+label L55
+push constant 0
+return

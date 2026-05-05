@@ -1,0 +1,58 @@
+// the player-controlled basket at the bottom of the screen
+class Basket {
+    field int x, y; // screen position
+    field int width, height;
+
+    // sets up the basket at the given position, 40px wide and 10px tall
+    constructor Basket new(int Ax, int Ay) {
+        let x = Ax;
+        let y = Ay;
+        let width = 40;
+        let height = 10;
+        do draw();
+        return this;
+    }
+
+    // frees the basket's memory
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // draws the basket as a filled rectangle
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width, y + height);
+        return;
+    }
+
+    // erases the basket (used before moving it)
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + width, y + height);
+        return;
+    }
+
+    // moves basket 8px left, stops at screen edge
+    method void moveLeft() {
+        do erase();
+        let x = x - 8;
+        if (x < 0) { let x = 0; }
+        do draw();
+        return;
+    }
+
+    // moves basket 8px right, stops at screen edge
+    method void moveRight() {
+        do erase();
+        let x = x + 8;
+        if ((x + width) > 511) { let x = 511 - width; }
+        do draw();
+        return;
+    }
+
+    // getters for position and width (used in collision detection)
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method int getWidth() { return width; }
+}

@@ -1,0 +1,83 @@
+class Gift {
+    //Gift object class, contains positional data and a single boolean.
+    field int pos_x, pos_y, width, height;
+    field boolean collected;
+
+    constructor Gift new(int x, int y) {
+        let pos_x = x;
+        let pos_y = y;
+        let width = 15; //total width = 16
+        let height = 15; //total height = 16
+
+        let collected = false;
+        return this;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //----------------------------------------------------------------------------------------------gift logic methods
+    method void updateCollected() {
+        let collected = true;
+        do eraseGift();
+        return;
+    }
+
+
+    method boolean getCollected() {
+        return collected;
+    }
+
+
+    method void eraseGift() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(pos_x, pos_y, pos_x + width, pos_y + width);
+        return;
+    }
+    
+    //----------------------------------------------------------------------------------------------draw Gift
+
+    method void draw() {
+        var int x, y;
+
+        //if already collected, don't draw.
+        if (~collected) {
+            let x = pos_x;
+            let y = pos_y;
+            do Screen.setColor(true);
+
+            //draws main body of gift
+            let y = pos_y + 5;
+            let x = pos_x;
+            do Screen.drawRectangle(x, y, x + 5, y + 3);
+            do Screen.drawRectangle(x + 10, y, x + 15, y + 3);
+            let y = y + 7;
+            do Screen.drawRectangle(x, y, x + 5, y + 3);
+            do Screen.drawRectangle(x + 10, y, x + 15, y + 3);
+
+            //draw ribbon (NOT THE MOST EFFICIENT WAY OF DRAWING THE SPRITE, DRAWN THIS WAY FOR SIMPLER DEV TIME)
+            //also the same reason why there's so many magic numbers now ugh
+            let y = pos_y;
+            do Screen.drawRectangle(x, y, x + width, y + 4);
+            do Screen.setColor(false);
+            do Screen.drawPixel(x,y);
+            do Screen.drawPixel(x, y + 4);
+            do Screen.drawPixel(x + width, y);
+            do Screen.drawPixel(x + width, y + 4);
+            do Screen.drawRectangle(x + 5, y, x + 10, y);
+            do Screen.drawRectangle(x + 6, y + 1, x + 9, y + 1);
+            do Screen.drawRectangle(x + 7, y + 2, x + 8, y + 2);
+
+            do Screen.drawRectangle(x + 2, y + 1, x + 3, y + 1);
+            do Screen.drawRectangle(x + 12, y + 1, x + 13, y + 1);
+            do Screen.drawRectangle(x + 1, y + 2, x + 4, y + 2);
+            do Screen.drawRectangle(x + 11, y + 2, x + 14, y + 2);
+            do Screen.drawRectangle(x + 2, y + 3, x + 5, y + 3);
+            do Screen.drawRectangle(x + 10, y + 3, x + 13, y + 3);
+        }
+        return;
+    }
+}

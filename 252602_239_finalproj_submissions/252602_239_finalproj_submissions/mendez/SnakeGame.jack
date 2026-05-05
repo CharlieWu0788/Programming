@@ -1,0 +1,210 @@
+/*
+ * SnakeGame.jack
+ - Creates the border for where the snake can move
+ - Reads keyboard input
+ - Checks wall collisions and food collection
+ - Tracks and displays score
+ - "Game over" screen with restart
+ */
+class SnakeGame {
+    field Snake snake;
+    field int cellSize;
+    field int gridWidth;
+    field int gridHeight;
+    field boolean gameOver;
+    field Food food;   
+    field int score; 
+    field Obstacles obstacles; 
+
+    // 512x256 for nand2tetris screen
+    constructor SnakeGame new() {
+        let cellSize = 16;
+        let gridWidth = 32;
+        let gridHeight = 16;
+        let gameOver = false;
+        let snake = Snake.new(cellSize);
+        let food = Food.new(cellSize);
+        let obstacles = Obstacles.new(cellSize); //created once, reset between games
+        let score = 0;
+        return this;
+    }
+
+    // draws the border
+    method void drawBorder() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(0, 0, (gridWidth * cellSize) - 1, cellSize - 1); // top
+        do Screen.drawRectangle(0, (gridHeight - 1) * cellSize, (gridWidth * cellSize) - 1, (gridHeight * cellSize) - 1); // bottom
+        do Screen.drawRectangle(0, 0, cellSize - 1, (gridHeight * cellSize) - 1); // left
+        do Screen.drawRectangle((gridWidth - 1) * cellSize, 0, (gridWidth * cellSize) - 1, (gridHeight * cellSize) - 1); // right
+        return;
+    }
+
+    // displays the game over message
+    method void showGameOver() {
+        do Output.moveCursor(11, 27);
+        do Output.printString("GAME OVER");
+        return;
+    }
+
+    // displays the restart prompt below the game over message
+    method void showRestartPrompt() {
+        do Output.moveCursor(13, 23);
+        do Output.printString("Press R to restart");
+        return;
+    }
+
+    // writes the current score to the top-right corner of the border strip
+    // called after drawBorder() so it overlays the border with white-background text
+    method void drawScore() {
+        do Output.moveCursor(0, 53);
+        do Output.printString("Score:");
+        do Output.printInt(score);
+        return;
+    }
+
+    // returns true if the snake hit a wall
+    method boolean hitWall() {
+        var int x, y;
+        let x = snake.getX();
+        let y = snake.getY();
+        if (x < 1) { return true; }
+        if (x > (gridWidth-2)) { return true; }
+        if (y < 1){ return true; }
+        if (y > (gridHeight-2)) { return true; }
+        return false;
+    }
+
+    // reads key input to move the snake +  food collection, scoring, and restart
+    method void run() {
+        var char key;
+        var char lastKey; // remembers the previous key to detect new presses
+        var int delay;
+        var int chunk; // each Sys.wait call; 4 chunks = delay total
+        var int i; // counts chunks (0-3) per move cycle
+        var boolean newKey; // true when a fresh direction key is detected, breaks the wait early
+        var boolean restart;  
+        var Array snakeBodyX; // reference to snake body X array for food placement checks
+        var Array snakeBodyY; //reference to snake body Y array for food placement checks
+        var boolean foodOk; //true when food position is clear of snake and obstacles
+        var int j; // index for body segment checks during food placement
+        let delay = 120;
+        let chunk = 30; // delay/4 — keeps total wait ~120ms with fewer Sys.wait calls
+
+        // outer loop, lets the player restart without reloading the program
+        let restart = true;
+        while (restart) {
+            // reset all state for the new session
+            do snake.reset();
+            do obstacles.reset(); // remove all obstacle cells for the new game
+            let score = 0;
+            let gameOver = false;
+            let lastKey = 0;
+
+            do Screen.clearScreen();
+            do drawBorder();
+            do drawScore(); //"Score:0" at top-right 
+            // place food while avoiding the snake starting cell using the same retry pattern
+            let snakeBodyX = snake.getBodyX();
+            let snakeBodyY = snake.getBodyY();
+            let foodOk = false;
+            while (~foodOk) {
+                do food.place();
+                let foodOk = true;
+                let j = 0;
+                while (j < snake.getLength()) {
+                    if ((food.getX() = snakeBodyX[j]) & (food.getY() = snakeBodyY[j])) {
+                        let foodOk = false;
+                    }
+                    let j = j + 1;
+                }
+            }
+            do food.draw();
+            do snake.draw();
+
+            while (~gameOver) {
+                // move first so snake moves immediately when game starts 
+                do snake.move();
+
+                // collision check first, before grow() is called this frame
+                // grow() duplicates a body entry - checking after causes a false self-collision
+                if (hitWall() | snake.hitsItself() | obstacles.hitsObstacle(snake.getX(), snake.getY())) {
+                    let gameOver = true;
+                }
+
+                // only check food if the snake is still alive this frame
+                if (~gameOver & food.isEaten(snake.getX(), snake.getY())) {
+                    do snake.grow();
+                    let score = score + 1;
+                    do drawScore();
+                    // spawn timing + count managed by Obstacles
+                    do obstacles.addForScore(score, snake.getBodyX(), snake.getBodyY(), snake.getLength(), food.getX(), food.getY());
+                    //retry food placement until obstacles + snake body are avoided 
+                    let snakeBodyX = snake.getBodyX();
+                    let snakeBodyY = snake.getBodyY();
+                    let foodOk = false;
+                    while (~foodOk) {
+                        do food.place();
+                        let foodOk = true;
+                        if (obstacles.hitsObstacle(food.getX(), food.getY())) {
+                            let foodOk = false;
+                        }
+                        let j = 0;
+                        while (j < snake.getLength()) {
+                            if ((food.getX() = snakeBodyX[j]) & (food.getY() = snakeBodyY[j])) {
+                                let foodOk = false;
+                            }
+                            let j = j + 1;
+                        }
+                    }
+                    do food.draw();
+                }
+
+                if (~gameOver) {
+                    let i = 0; // reset chunk counter each move cycle
+                    let newKey = false; 
+
+                    // wait in 4 chunks of 30ms - exit early on a keypress of new direction
+                    while ((i < 4) & (~newKey)) {
+                        do Sys.wait(chunk);
+                        let key = Keyboard.keyPressed();
+
+                        // only act on key transitions!!! (unpressed to pressed), NOT held keys
+                        if (~(key = lastKey)) {
+                            if (key = 131) { do snake.setDirection(0); }
+                            if (key = 132) { do snake.setDirection(1); }
+                            if (key = 133) { do snake.setDirection(2); }
+                            if (key = 130) { do snake.setDirection(3); }
+
+                            // flag breaks the inner loop so snake moves immediately on next cycle
+                            if ((key = 131) | (key = 132) | (key = 133) | (key = 130)) {
+                                let newKey = true;
+                            }
+                        }
+
+                        let lastKey = key;// store key for comparison next poll
+                        let i = i + 1;
+                    }
+                }
+            }
+
+            // display game over + restart prompt, wait for R key
+            do showGameOver();
+            do showRestartPrompt();
+
+            // wait for R/r (82/114) to restart
+            let restart = false;
+            while (~restart) {
+                let key = Keyboard.keyPressed();
+                if ((key = 82) | (key = 114)) { let restart = true; }
+            }
+
+            // wait for R to be released so it isn't picked up as input in the next game
+            while (~(Keyboard.keyPressed() = 0)) {
+                do Sys.wait(10);
+            }
+        }
+
+        return;
+    }
+
+}

@@ -1,0 +1,20 @@
+// proves the LED mirror ISR is running live.
+class Main {
+    function void step(int pattern) {
+        do Memory.poke(16384, pattern);
+        do Sys.wait(200);
+        return;
+    }
+
+    function void main() {
+        while (true) {
+            do Main.step(1);
+            do Main.step(2);
+            do Main.step(4);
+            do Main.step(8);
+            do Main.step(15);
+            do Main.step(0);
+        }
+        return;
+    }
+}

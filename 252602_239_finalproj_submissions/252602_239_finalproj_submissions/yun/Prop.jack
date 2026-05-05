@@ -1,0 +1,317 @@
+class Prop {
+    //Basic object class that holds the drawing methods for each prop.
+    
+    static int chair_left, couch, table, dinner_table, tv, christmas_tree, bed, monster, glitched_npc, chair_right;
+    
+    field int prop_type;
+    field int x, y; //coordinate values of prop. Mostly top left corner, though christmas_tree uses them for the top middle.
+
+
+    //NOT THE MOST EFFICIENT WAY OF DRAWING ANY SPRITES, DRAWN THIS WAY FOR SIMPLER DEV TIME
+    //same reason why there are so many magic numbers now ugh
+
+    constructor Prop new(int type, int pos_x, int pos_y) {
+        let prop_type = type;
+        let x = pos_x;
+        let y = pos_y;
+        
+        let chair_left = 0;
+        let couch = 1;
+        let table = 2;
+        let dinner_table = 3;
+        let tv = 4;
+        let christmas_tree = 5;
+        let bed = 6;
+        let monster = 7;
+        let glitched_npc = 8;
+        let chair_right = 9;
+        return this;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+    method void drawProp() {
+        if (prop_type = chair_left) {
+            do drawChairLeft();
+        }
+        if (prop_type = chair_right) {
+            do drawChairRight();
+        }
+        if (prop_type = couch) {
+            do drawCouch();
+        }
+        if (prop_type = table) {
+            do drawTable();
+        }
+        if (prop_type = dinner_table) {
+            do drawDinnerTable();
+        }
+        if (prop_type = tv) {
+            do drawTV();
+        }
+        if (prop_type = christmas_tree) {
+            do drawTree();
+        }
+        if (prop_type = bed) {
+            do drawBed();
+        }
+        if (prop_type = monster) {
+            do drawMonster();
+        }
+        if (prop_type = glitched_npc) {
+            do drawGlitched();
+        }
+        return;
+    }
+
+
+    method void drawChairRight() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 3, y + 45);
+        do Screen.drawRectangle(x, y + 27, x + 17, y + 30);
+        do Screen.drawRectangle(x + 14, y + 31, x + 17, y + 45);
+        return;
+    }
+
+
+    method void drawChairLeft() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 14, y, x + 17, y + 45);
+        do Screen.drawRectangle(x, y + 27, x + 17, y + 30);
+        do Screen.drawRectangle(x , y + 31, x + 3, y + 45);
+        return;
+    }
+
+
+    method void drawCouch() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 12, y, x + 135, y + 1);
+        do Screen.drawRectangle(x + 10, y + 2, x + 137, y + 8);
+        do Screen.drawRectangle(x + 2, y + 7, x + 8, y + 8);
+        do Screen.drawRectangle(x + 139, y + 7, x + 147, y + 8);
+        do Screen.drawRectangle(x, y + 9, x + 149, y + 49);
+        return;
+    }
+
+
+    method void drawTable() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 70, y + 30);
+        do Screen.drawRectangle(x, y + 31, x + 5, y + 50);
+        do Screen.drawRectangle(x + 65, y + 31, x + 70, y + 50);
+        return;
+    }
+
+
+    method void drawDinnerTable() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 100, y + 160);
+        do Screen.drawRectangle(x, y + 161, x + 6, y + 175);
+        do Screen.drawRectangle(x + 93, y + 161, x + 100, y + 175);
+        return;
+    }
+
+
+    method void drawTV() {
+        var int mid_x;
+        let mid_x = x + 59;
+
+        //draw the tv and cabinet
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 12, y, x + 108, y + 50);
+        do Screen.drawRectangle(mid_x - 6, y + 51, mid_x + 6, y + 53);
+        do Screen.drawRectangle(mid_x - 4, y + 54, mid_x + 4, y + 55);
+        do Screen.drawRectangle(x, y + 56, x + 120, y + 80);
+
+        //draw the screen for the tv
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 15, y + 3, x + 105, y + 47);
+        return;
+    }
+
+    method void drawBed() {
+        //draw the bed
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 108, y + 150);
+
+        //draw the blanket
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 3, y + 5, x + 104, y + 75);
+        do Screen.drawRectangle(x + 3, y + 76, x + 100, y + 84);
+        do Screen.drawRectangle(x + 3, y + 85, x + 95, y + 88);
+        do Screen.drawRectangle(x + 3, y + 89, x + 90, y + 92);
+        do Screen.drawRectangle(x + 3, y + 92, x + 86, y + 96);
+        do Screen.drawRectangle(x + 3, y + 97, x + 83, y + 98);
+        do Screen.drawRectangle(x + 3, y + 99, x + 77, y + 100);
+
+        //draw the pillows
+        do Screen.drawRectangle(x + 5, y + 118, x + 48, y + 119);
+        do Screen.drawRectangle(x + 3, y + 120, x + 50, y + 142);
+        do Screen.drawRectangle(x + 5, y + 143, x + 48, y + 145);
+        do Screen.drawRectangle(x + 60, y + 118, x + 102, y + 119);
+        do Screen.drawRectangle(x + 58, y + 120, x + 104, y + 142);
+        do Screen.drawRectangle(x + 60, y + 143, x + 102, y + 145);
+        return;
+    }
+
+    method void drawTree() {
+        //draw the body of the tree (leaves)
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x - 6, y, x + 6, y + 10);
+        do Screen.drawRectangle(x - 10, y + 11, x + 10, y + 20);
+        do Screen.drawRectangle(x - 15, y + 21, x + 15, y + 30);
+        do Screen.drawRectangle(x - 20, y + 31, x + 20, y + 40);
+        do Screen.drawRectangle(x - 25, y + 41, x + 25, y + 50);
+        do Screen.drawRectangle(x - 30, y + 51, x + 30, y + 60);
+        do Screen.drawRectangle(x - 35, y + 61, x + 35, y + 70);
+        do Screen.drawRectangle(x - 45, y + 71, x + 45, y + 80);
+        do Screen.drawRectangle(x - 50, y + 81, x + 50, y + 90);
+        do Screen.drawRectangle(x - 57, y + 91, x + 57, y + 100);
+        do Screen.drawRectangle(x - 65, y + 101, x + 65, y + 105);
+        do Screen.drawRectangle(x - 70, y + 106, x + 70, y + 115);
+        do Screen.drawRectangle(x - 75, y + 116, x + 75, y + 125);
+
+        //draw the trunk
+        do Screen.drawRectangle(x - 15, y + 125, x + 15, y + 150);
+
+        //draw the ornaments and tree wrap
+        do Screen.setColor(false);
+        do Screen.drawCircle(x - 10, y + 30, 5);
+        do Screen.drawCircle(x + 3, y + 45, 5);
+        do Screen.drawCircle(x + 25, y + 70, 5);
+        do Screen.drawCircle(x - 20, y + 55, 5);
+        do Screen.drawCircle(x + 1, y + 76, 5);
+        do Screen.drawCircle(x + 35, y + 85, 5);
+        do Screen.drawCircle(x - 35, y + 91, 5);
+        do Screen.drawCircle(x - 5, y + 95, 5);
+        do Screen.drawCircle(x + 15, y + 100, 5);
+        do Screen.drawCircle(x + 50, y + 110, 5);
+        do Screen.drawCircle(x - 19, y + 110, 5);
+        do Screen.drawLine(x - 75, y + 125, x + 65, y + 105);
+        do Screen.drawLine(x - 65, y + 101, x + 45, y + 80);
+        do Screen.drawLine(x - 45, y + 71, x + 25, y + 50);
+        do Screen.drawLine(x - 25, y + 41, x + 10, y + 20);
+        return;
+    }
+
+    method void drawMonster() {
+        do Screen.setColor(false);
+        //Draw the head
+        do Screen.drawRectangle(x + 6, y + 71, x + 22, y + 72);
+        do Screen.drawRectangle(x + 4, y + 73, x + 24, y + 74);
+        do Screen.drawRectangle(x + 2, y + 75, x + 26, y + 76);
+        do Screen.drawRectangle(x, y + 77, x + 28, y + 91);
+        do Screen.drawRectangle(x + 2, y + 92, x + 26, y + 93);
+
+        //draw left mandible
+        do Screen.drawRectangle(x + 4, y + 94, x + 11, y + 95);
+        do Screen.drawRectangle(x + 6, y + 96, x + 9, y + 97);
+        do Screen.drawRectangle(x + 6, y + 98, x + 8, y + 99);
+        do Screen.drawRectangle(x + 6, y + 100, x + 9, y + 100);
+        do Screen.drawRectangle(x + 7, y + 101, x + 10, y + 101);
+        do Screen.drawRectangle(x + 8, y + 102, x + 10, y + 102);
+        do Screen.drawRectangle(x + 9, y + 103, x + 10, y + 103);
+        
+        //draw right mandible
+        do Screen.drawRectangle(x + 17, y + 94, x + 24, y + 95);
+        do Screen.drawRectangle(x + 19, y + 96, x + 22, y + 97);
+        do Screen.drawRectangle(x + 20, y + 98, x + 22, y + 99);
+        do Screen.drawRectangle(x + 19, y + 100, x + 22, y + 100);
+        do Screen.drawRectangle(x + 18, y + 101, x + 21, y + 101);
+        do Screen.drawRectangle(x + 18, y + 102, x + 20, y + 102);
+        do Screen.drawRectangle(x + 18, y + 103, x + 19, y + 103);
+
+        //Draw the neck
+        do Screen.drawRectangle(x + 4, y + 15, x + 28, y + 30);
+        do Screen.drawRectangle(x + 7, y + 9, x + 23, y + 40);
+        do Screen.drawRectangle(x + 9, y + 40, x + 19, y + 70);
+
+        //Draw the arch
+        do Screen.drawRectangle(x + 14, y, x + 79, y + 20);
+        do Screen.drawRectangle(x + 80, y + 7, x + 90, y + 20);
+        do Screen.drawRectangle(x + 59, y + 15, x + 99, y + 30);
+
+        //draw the main body
+        do Screen.drawRectangle(x + 81, y + 21, x + 104, y + 40);
+        do Screen.drawRectangle(x + 84, y + 41, x + 114, y + 60);
+        do Screen.drawRectangle(x + 79, y + 61, x + 119, y + 100);
+
+        //draw the box
+        do Screen.drawRectangle(x + 59, y + 101, x + 139, y + 150);
+        do Screen.drawLine(x + 39, y + 80, x + 59, y + 101);
+        do Screen.drawLine(x + 139, y + 101, x + 159, y + 80);
+
+        //draw box details
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + 59, y + 123, x + 139, y + 127);
+        do Screen.drawRectangle(x + 96, y + 101, x + 102, y + 150);
+
+        //draw monster eyes
+        do Screen.drawRectangle(x + 6, y + 77, x + 12, y + 82);
+        do Screen.drawRectangle(x + 8, y + 83, x + 10, y + 93);
+
+        do Screen.drawRectangle(x + 16, y + 77, x + 22, y + 82);
+        do Screen.drawRectangle(x + 18, y + 83, x + 20, y + 93);
+
+        do Output.moveCursor(7, 45);
+        do Output.printString("What Are You");
+        do Output.moveCursor(8, 45);
+        do Output.printString("Waiting For?");
+        return;
+    }
+
+    method void drawGlitched() {
+        //Mostly copied and pasted code from NPC, which is why it looks so weird.
+
+        var int h, indent, leg_height, torso_height, head_height, eye_height, height_y, width_x;
+        let height_y = 37; //38 pixels in practice
+        let width_x = 17; //18 pixels in practice
+        let head_height = 9; //10 pixels
+        let torso_height = 11; //12 pixels
+        let leg_height = 7; //8 pixels
+        let eye_height = 5; //6 pixels
+        let indent = 2;
+        let h = y;
+        do Screen.setColor(false);
+
+        //Draw the top of head
+        do Screen.drawRectangle(x + (indent * 2), h, x + width_x - (indent * 2), h + 1);
+        let h = h + 2;
+
+        //Draw the head
+        do Screen.drawRectangle(x + indent, h, x + width_x - indent, h + head_height);
+        let h = h + head_height + 1;
+
+        //Draw the neck
+        do Screen.drawRectangle(x + indent, h, x + width_x - (indent * 4), h + 1);
+        let h = h + 2;
+
+        //Draw the shoulders
+        do Screen.drawRectangle(x - indent, h, x + width_x - indent, h + 1);
+        let h = h + 2;
+
+        //Draw the torso
+        do Screen.drawRectangle(x - 5, h, x + width_x - 5, h + (torso_height/2));
+        do Screen.drawRectangle(x + 5, h + (torso_height/2) + 1, x + width_x + 5, h + torso_height);
+        let h = h + torso_height + 1;
+
+        //Draw the hip
+        do Screen.drawRectangle(x + indent, h, x + width_x - indent, h + 1);
+        let h = h + 2;
+
+        //Draw the legs
+        do Screen.drawRectangle(x + (indent * 2), h, x + (indent * 3) + 1, h + leg_height);
+        do Screen.drawRectangle(x + (indent * 5), h, x + (indent * 6) + 1, h + (leg_height * 2));
+
+        //Draw the eyes
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x + (indent * 2) + 1, y + (indent * 2), x + (indent * 3), y + (indent * 3) + 1);
+        do Screen.drawRectangle(x + (indent * 4) + 1, y + (indent * 2), x + (indent * 5), y + (indent * 3) + 1);
+        return;
+    }
+}

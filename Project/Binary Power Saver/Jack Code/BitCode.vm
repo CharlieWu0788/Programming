@@ -1,0 +1,139 @@
+function BitCode.calculateSupply 3
+    push constant 0
+    pop local 0
+    push constant 0
+    pop local 1
+    push argument 0
+    call String.length 1
+    pop local 2
+label BitCode_0
+    push local 1
+    push local 2
+    lt
+    push local 1
+    push constant 8
+    lt
+    and
+    not
+    if-goto BitCode_1
+    push argument 0
+    push local 1
+    call String.charAt 2
+    push constant 49
+    eq
+    not
+    if-goto BitCode_3
+    push local 0
+    push argument 1
+    push local 1
+    call Battery.getEnergyAtBit 2
+    add
+    pop local 0
+    goto BitCode_2
+label BitCode_3
+label BitCode_2
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto BitCode_0
+label BitCode_1
+    push local 0
+    return
+function BitCode.calculateSupplyFromInt 4
+    push constant 0
+    pop local 0
+    push constant 0
+    pop local 1
+    push constant 128
+    pop local 2
+label BitCode_4
+    push local 1
+    push constant 8
+    lt
+    not
+    if-goto BitCode_5
+    push argument 0
+    push local 2
+    call Math.divide 2
+    pop local 3
+    push local 3
+    push constant 1
+    eq
+    not
+    if-goto BitCode_7
+    push local 0
+    push argument 1
+    push local 1
+    call Battery.getEnergyAtBit 2
+    add
+    pop local 0
+    push argument 0
+    push local 2
+    sub
+    pop argument 0
+    goto BitCode_6
+label BitCode_7
+label BitCode_6
+    push local 2
+    push constant 2
+    call Math.divide 2
+    pop local 2
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto BitCode_4
+label BitCode_5
+    push local 0
+    return
+function BitCode.isValidCode 2
+    push argument 0
+    call String.length 1
+    push constant 8
+    eq
+    not
+    not
+    if-goto BitCode_9
+    push constant 0
+    return
+    goto BitCode_8
+label BitCode_9
+label BitCode_8
+    push constant 0
+    pop local 0
+label BitCode_10
+    push local 0
+    push constant 8
+    lt
+    not
+    if-goto BitCode_11
+    push argument 0
+    push local 0
+    call String.charAt 2
+    pop local 1
+    push local 1
+    push constant 48
+    eq
+    not
+    push local 1
+    push constant 49
+    eq
+    not
+    and
+    not
+    if-goto BitCode_13
+    push constant 0
+    return
+    goto BitCode_12
+label BitCode_13
+label BitCode_12
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto BitCode_10
+label BitCode_11
+    push constant 1
+    neg
+    return

@@ -1,0 +1,123 @@
+class Player {
+    field int x; // x position
+    field int y; // y position
+    field int hp; // player hp
+    field int width; // hit width
+    field int height; // hit height
+
+    constructor Player new(int startX, int startY) {
+        // create player
+        let x = startX;
+        let y = startY;
+        let hp = 3;
+        let width = 16;
+        let height = 11;
+
+        return this;
+    }
+
+    method void reset(int startX, int startY) {
+        // resets the player for a new game without making a new object.
+        let x = startX;
+        let y = startY;
+        let hp = 3;
+        return;
+    }
+
+    method void moveUp() {
+        // moves the player up in screen range
+        if (y > 8) {
+            let y = y - 8;
+        }
+        return;
+    }
+
+    method void moveDown() {
+        // moves the player down in screen range
+        if ((y + height) < 251) {
+            let y = y + 8;
+        }
+        return;
+    }
+
+    method void moveLeft() {
+        // moves left
+        if (x > 15) {
+            let x = x - 16;
+        }
+        return;
+    }
+
+    method void moveRight() {
+        // moves right 
+        if (x < 496) {
+            let x = x + 16;
+        }
+        return;
+    }
+
+    method void takeDamage() {
+        // decreases HP if the player is still alive.
+        if (hp > 0) {
+            let hp = hp - 1;
+        }
+        return;
+    }
+
+    method void heal() {
+        // hp plus
+        let hp = hp + 1;
+        return;
+    }
+
+    method boolean isDead() {
+        // reports if the player has no HP left.
+        return (hp = 0);
+    }
+
+    method void draw() {
+        // draw player
+        var int location;
+        var int memAddress;
+
+        let location = Math.multiply(y, 32) + Math.divide(x, 16);
+        let memAddress = 16384 + location;
+
+        do Memory.poke(memAddress, 256);
+        do Memory.poke(memAddress + 32, 256);
+        do Memory.poke(memAddress + 64, 256);
+        do Memory.poke(memAddress + 96, 896);
+        do Memory.poke(memAddress + 128, 896);
+        do Memory.poke(memAddress + 160, 896);
+        do Memory.poke(memAddress + 192, 1984);
+        do Memory.poke(memAddress + 224, -1);
+        do Memory.poke(memAddress + 256, 16376);
+        do Memory.poke(memAddress + 288, 4064);
+        do Memory.poke(memAddress + 320, 896);
+
+        do Memory.poke(memAddress + 225, 1);
+        return;
+    }
+
+    method int getX() {
+        // gives the player x position (usful in other classes)
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+
+    method int getWidth() {
+        return width;
+    }
+
+    method int getHeight() {
+        return height;
+    }
+
+    method int getHp() {
+        //  gives the current HP value.
+        return hp;
+    }
+}

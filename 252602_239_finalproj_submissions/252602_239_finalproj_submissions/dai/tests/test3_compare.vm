@@ -1,0 +1,7 @@
+// test 3: greater than comparison
+// 7 > 3 = true
+// true in hack/VM is 0xFFFF = -1, low 4 bits = 1111
+// LED: 1111 (all on = true)
+push constant 7
+push constant 3
+gt

@@ -1,0 +1,75 @@
+// the thing falling from the top - can be safe (filled square) or dangerous (hollow square)
+class FallingObject {
+    field int x, y;
+    field int size;
+    field boolean dangerous;
+
+    // spawns object at given position, starts as safe by default
+    constructor FallingObject new(int Ax, int Ay) {
+        let x = Ax;
+        let y = Ay;
+        let size = 6;
+        let dangerous = false;
+        do draw();
+        return this;
+    }
+
+    // frees memory
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // draws a filled square if safe, hollow outline if dangerous
+    method void draw() {
+        do Screen.setColor(true);
+        if (dangerous) {
+            do Screen.drawLine(x - size, y - size, x + size, y - size);
+            do Screen.drawLine(x + size, y - size, x + size, y + size);
+            do Screen.drawLine(x - size, y + size, x + size, y + size);
+            do Screen.drawLine(x - size, y - size, x - size, y + size);
+        } else {
+            do Screen.drawRectangle(x - size, y - size, x + size, y + size);
+        }
+        return;
+    }
+
+    // erases it (same shape logic as draw, just draws with false/white)
+    method void erase() {
+        do Screen.setColor(false);
+        if (dangerous) {
+            do Screen.drawLine(x - size, y - size, x + size, y - size);
+            do Screen.drawLine(x + size, y - size, x + size, y + size);
+            do Screen.drawLine(x - size, y + size, x + size, y + size);
+            do Screen.drawLine(x - size, y - size, x - size, y + size);
+        } else {
+            do Screen.drawRectangle(x - size, y - size, x + size, y + size);
+        }
+        return;
+    }
+
+    // getters used by collision detection
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method boolean isDangerous() { return dangerous; }
+
+    // resets the object to the top at a new x position, also sets whether it's dangerous this round
+    method void resetPosition(int newX, boolean isDang) {
+        do erase();
+        let x = newX;
+        let y = 20;
+        let dangerous = isDang;
+        do draw();
+        return;
+    }
+
+    // moves the object down by 4px each call, stops near the bottom
+    method void drop() {
+        if (y < 250) {
+            do erase();
+            let y = y + 4;
+            do draw();
+        }
+        return;
+    }
+}

@@ -1,0 +1,319 @@
+class SlopeGame {
+    field Ball ball;
+    field Platform platform;
+    field Array obstacles;
+    field int score;
+    field int highScore;
+    field int gameState;
+    field String strScore;
+    field String strHigh;
+    field String strControls;
+    field int spawnTimer;
+    field int nextObstacle;
+    field int seed;
+    field int scoreTick;
+
+    constructor SlopeGame new() {
+        let ball         = Ball.new();
+        let platform     = Platform.new();
+        let obstacles    = Array.new(5);
+        let highScore    = 0;
+        let strScore     = "Score:";
+        let strHigh      = "Best:";
+        let strControls  = "< LEFT           RIGHT >";
+
+        do initObstacles();
+        do resetGame();
+        return this;
+    }
+
+    // Allocate obstacle objects once; resetGame() reuses them
+    method void initObstacles() {
+        var int i;
+        var Obstacle obs;
+        let i = 0;
+        while (i < 5) {
+            let obs = Obstacle.new(0, 255);
+            do obs.markPassed();
+            let obstacles[i] = obs;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // Reset all mutable game state without reallocating objects
+    method void resetGame() {
+        var int i;
+        var Obstacle obs;
+
+        do ball.resetPosition();   // Ball resets lane/x/y
+
+        let score        = 0;
+        let gameState    = 1;
+        let spawnTimer   = 0;
+        let nextObstacle = 0;
+        let seed         = 1;
+        let scoreTick    = 0;
+
+        // Deactivate all obstacles
+        let i = 0;
+        while (i < 5) {
+            let obs = obstacles[i];
+            do obs.markPassed();
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // -------------------------------------------------------------------------
+    // Cheap lane picker
+    // -------------------------------------------------------------------------
+    method int nextLane() {
+        let seed = seed + 1;
+        if (seed > 2) { let seed = 0; }
+        return (seed + (score / 30)) - (((seed + (score / 30)) / 3) * 3);
+    }
+
+    // -------------------------------------------------------------------------
+    // Spawn interval: 50 frames down to 20 as score climbs
+    // -------------------------------------------------------------------------
+    method int spawnInterval() {
+        var int interval;
+        let interval = 50 - (score / 10);
+        if (interval < 20) { let interval = 20; }
+        return interval;
+    }
+
+    // -------------------------------------------------------------------------
+    // Title screen (shown once on first launch)
+    // -------------------------------------------------------------------------
+    method void showTitleScreen() {
+        var int key;
+
+        do Screen.clearScreen();
+
+        do Output.moveCursor(3, 18);
+        do Output.printString("SLOPE");
+
+        do Output.moveCursor(5, 13);
+        do Output.printString("Roll. Dodge. Survive.");
+
+        do Output.moveCursor(8, 12);
+        do Output.printString("--- CONTROLS ---");
+
+        do Output.moveCursor(10, 10);
+        do Output.printString("LEFT  arrow : move left");
+
+        do Output.moveCursor(11, 10);
+        do Output.printString("RIGHT arrow : move right");
+
+        do Output.moveCursor(18, 14);
+        do Output.printString("Press any key to play");
+
+        let key = Keyboard.keyPressed();
+        while (~(key = 0)) { do Sys.wait(10); let key = Keyboard.keyPressed(); }
+        let key = 0;
+        while (key = 0)    { do Sys.wait(10); let key = Keyboard.keyPressed(); }
+
+        return;
+    }
+
+    // -------------------------------------------------------------------------
+    // Main entry point — loops title -> play -> game-over -> play -> ...
+    // -------------------------------------------------------------------------
+    method void run() {
+        var boolean playAgain;
+        do showTitleScreen();
+
+        let playAgain = true;
+        while (playAgain) {
+            do resetGame();
+            do playLoop();
+
+            if (score > highScore) { let highScore = score; }
+
+            let playAgain = showGameOver();
+        }
+
+        return;
+    }
+
+    // -------------------------------------------------------------------------
+    // One full play session
+    // -------------------------------------------------------------------------
+    method void playLoop() {
+        var int key;
+        var boolean collision;
+
+        while (gameState = 1) {
+            let key = Keyboard.keyPressed();
+            if (key = 130) { do ball.moveLeft();  }
+            if (key = 132) { do ball.moveRight(); }
+
+            do ball.update();
+            do platform.update();
+            do updateObstacles();
+
+            let collision = checkCollisions();
+            if (collision) { let gameState = 2; }
+
+            if (gameState = 1) {
+                let scoreTick = scoreTick + 1;
+                if (scoreTick > 4) {
+                    let score = score + 1;
+                    let scoreTick = 0;
+                }
+            }
+
+            do draw();
+            do Sys.wait(30);
+        }
+        return;
+    }
+
+    // -------------------------------------------------------------------------
+    // Obstacle management
+    // -------------------------------------------------------------------------
+    method void updateObstacles() {
+        var int i;
+        var Obstacle obs;
+
+        let spawnTimer = spawnTimer - 1;
+        if (spawnTimer < 1) {
+            let obs = obstacles[nextObstacle];
+            do obs.reset(nextLane(), 252);
+            let nextObstacle = nextObstacle + 1;
+            if (nextObstacle > 4) { let nextObstacle = 0; }
+            let spawnTimer = spawnInterval();
+        }
+
+        let i = 0;
+        while (i < 5) {
+            let obs = obstacles[i];
+            if (obs.isActive()) { do obs.update(); }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // -------------------------------------------------------------------------
+    // Collision detection
+    // -------------------------------------------------------------------------
+    method boolean checkCollisions() {
+        var int i;
+        var Obstacle obs;
+        var boolean hit;
+
+        let hit = false;
+        let i = 0;
+        while (i < 5) {
+            let obs = obstacles[i];
+            if (obs.isActive()) {
+                if (ball.collidesWith(obs)) { let hit = true; }
+                if (obs.getZ() < 12)        { do obs.markPassed(); }
+            }
+            let i = i + 1;
+        }
+        return hit;
+    }
+
+    // -------------------------------------------------------------------------
+    // Rendering
+    // -------------------------------------------------------------------------
+    method void draw() {
+        var int i;
+        var Obstacle obs;
+
+        do Screen.clearScreen();
+        do platform.draw();
+        do ball.draw();
+
+        let i = 0;
+        while (i < 5) {
+            let obs = obstacles[i];
+            do obs.draw();
+            let i = i + 1;
+        }
+
+        do drawHUD();
+        return;
+    }
+
+    method void drawHUD() {
+        do Output.moveCursor(0, 0);
+        do Output.printString(strScore);
+        do Output.printInt(score);
+        do Output.moveCursor(0, 32);
+        do Output.printString(strHigh);
+        do Output.printInt(highScore);
+        do Output.moveCursor(21, 0);
+        do Output.printString(strControls);
+        return;
+    }
+
+    // -------------------------------------------------------------------------
+    // Game over screen — always restarts, any key continues
+    // -------------------------------------------------------------------------
+    method boolean showGameOver() {
+        var int key;
+
+        do Screen.clearScreen();
+
+        do Output.moveCursor(6, 20);
+        do Output.printString("GAME OVER");
+
+        do Output.moveCursor(8, 15);
+        do Output.printString("Score:      ");
+        do Output.printInt(score);
+
+        do Output.moveCursor(10, 15);
+        do Output.printString("Best Score: ");
+        do Output.printInt(highScore);
+
+        if (score = highScore) {
+            do Output.moveCursor(12, 14);
+            do Output.printString("** NEW HIGH SCORE! **");
+        }
+
+        do Output.moveCursor(15, 11);
+        do Output.printString("Press any key to play again");
+
+        // Drain any held key first
+        let key = Keyboard.keyPressed();
+        while (~(key = 0)) { do Sys.wait(10); let key = Keyboard.keyPressed(); }
+
+        // Wait for any key
+        let key = 0;
+        while (key = 0) {
+            do Sys.wait(10);
+            let key = Keyboard.keyPressed();
+        }
+
+        return true;
+    }
+
+    // -------------------------------------------------------------------------
+    // Cleanup
+    // -------------------------------------------------------------------------
+    method void dispose() {
+        var int i;
+        var Obstacle obs;
+
+        do ball.dispose();
+        do platform.dispose();
+        do strScore.dispose();
+        do strHigh.dispose();
+        do strControls.dispose();
+
+        let i = 0;
+        while (i < 5) {
+            let obs = obstacles[i];
+            do obs.dispose();
+            let i = i + 1;
+        }
+
+        do Memory.deAlloc(obstacles);
+        do Memory.deAlloc(this);
+        return;
+    }
+}

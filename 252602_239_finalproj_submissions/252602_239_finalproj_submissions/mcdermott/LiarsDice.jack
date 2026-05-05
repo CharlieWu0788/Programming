@@ -1,0 +1,1288 @@
+// Liar's Dice - player vs computer
+//
+// how to play:
+//   both players roll dice but keep them hidden
+//   you can see YOUR dice but not the computers
+//   players take turns making bids like "there are at least 3 fours total"
+//   the bid counts dice from BOTH players combined
+//   each new bid has to be higher than the last
+//   if you think the other person is lying, enter 0 then Enter to call liar
+//   whoever is wrong loses a die, lose all dice = game over
+
+class LiarsDice {
+
+    // game state
+    field Array myDice;
+    field Array compDice;
+    // x/y positions for each die so they land in different spots on the
+    // table every round. set inside rollAllDice
+    field Array myDiceX;
+    field Array myDiceY;
+    field Array compDiceX;
+    field Array compDiceY;
+    field int myDiceCount;
+    field int compDiceCount;
+    field int bidQty;
+    field int bidFace;
+    field boolean myTurn;
+    field boolean gameOver;
+
+    // every string the game prints is made ONCE here and reused.
+    // i kept getting an ERR6 crash at first because i was making strings
+    // inside methods. turns out jack never frees those, so the heap
+    // fills up and the game crashes after a few rounds. making them
+    // field variables means each string only gets made one time.
+    field String mCompHas;
+    field String mDice;
+    field String mYouHave;
+    field String mCurBid;
+    field String mX;
+    field String mNoBid;
+    field String mYourTurn;
+    field String mCallInstr;
+    field String mNoBidYet;
+    field String mPromptQty;
+    field String mPromptFace;
+    field String mBidTooLow;
+    field String mBadFace;
+    field String mBadQty;
+    field String mYouBid;
+    field String mCompTurn;
+    field String mCompLiar;
+    field String mCompBids;
+    field String mEnterYour;
+    field String mRevealing;
+    field String mYourDiceR;
+    field String mCompDiceR;
+    field String mBidWas;
+    field String mActualOf;
+    field String mSColon;
+    field String mRightComp;
+    field String mWrongMe;
+    field String mRightMe;
+    field String mWrongComp;
+    field String mGameOverC;
+    field String mGameOverMe;
+    field String mRollingBones;
+    field String mNextRound;
+    field String mCompDiceLbl;
+    field String mPlayerDiceLbl;
+    // bid summary format like "Blackbeard claimed: Three 4s!"
+    field String mClaimedBlk;
+    field String mClaimedCap;
+    field String mSExclaim;
+    field String mOne;
+    field String mTwo;
+    field String mThree;
+    field String mFour;
+    field String mFive;
+    field String mSix;
+    field String mSeven;
+    field String mEight;
+    field String mNine;
+    field String mTen;
+
+    constructor LiarsDice new() {
+        let myDice = Array.new(5);
+        let compDice = Array.new(5);
+        let myDiceX = Array.new(5);
+        let myDiceY = Array.new(5);
+        let compDiceX = Array.new(5);
+        let compDiceY = Array.new(5);
+        let myDiceCount = 5;
+        let compDiceCount = 5;
+        let bidQty = 0;
+        let bidFace = 0;
+        let myTurn = true;
+        let gameOver = false;
+        do Random.init(1337);
+
+        // make every string once - they stick around for the whole game
+        let mCompHas    = " dice. Blackbeard has ";
+        let mDice       = " dice.";
+        let mYouHave    = "Captain has ";
+        let mCurBid     = "Current bid: ";
+        let mX          = " x ";
+        let mNoBid      = "No bid yet.";
+        let mYourTurn   = "--- CAPTAIN'S TURN ---";
+        let mCallInstr  = "Enter 0 to call 'Liar!'";
+        let mNoBidYet   = "There be no bid to call liar on!";
+        let mPromptQty  = "How many dice? (0=Liar!): ";
+        let mPromptFace = "Which face? (1-6): ";
+        let mBidTooLow  = "Not higher than current bid. Try again.";
+        let mBadFace    = "Face must be 1-6. Try again.";
+        let mBadQty     = "Quantity must be 1-10. Try again.";
+        let mYouBid     = "Ye bid: ";
+        let mCompTurn   = "--- BLACKBEARD'S TURN ---";
+        let mCompLiar   = "Blackbeard cries 'Liar!'";
+        let mCompBids   = "Blackbeard bids: ";
+        let mEnterYour  = "Press enter for yer turn...";
+        let mRevealing  = "Revealing all dice...";
+        let mYourDiceR  = "Captain:";
+        let mCompDiceR  = "Blackbeard:";
+        let mBidWas     = "The bid was: ";
+        let mActualOf   = "Actual count of ";
+        let mSColon     = "s: ";
+        let mRightComp  = "Right, Captain! Blackbeard loses a die.";
+        let mWrongMe    = "Ye lost a die to Davy Jones' locker...";
+        let mRightMe    = "Ye lost a die to Davy Jones' locker...";
+        let mWrongComp  = "Blackbeard was WRONG! He loses a die.";
+        let mGameOverC  = "Ye lost all yer dice. Blackbeard wins!";
+        let mGameOverMe = "The plunder is yours, Captain!";
+        let mRollingBones = "--- ROLLING THE BONES... ---";
+        let mNextRound  = "Press enter to continue...";
+        let mCompDiceLbl   = "Blackbeard's dice: ";
+        let mPlayerDiceLbl = "Captain's Dice: ";
+        let mClaimedBlk    = "Blackbeard claimed: ";
+        let mClaimedCap    = "Captain claimed: ";
+        let mSExclaim      = "s!";
+        let mOne           = "One";
+        let mTwo           = "Two";
+        let mThree         = "Three";
+        let mFour          = "Four";
+        let mFive          = "Five";
+        let mSix           = "Six";
+        let mSeven         = "Seven";
+        let mEight         = "Eight";
+        let mNine          = "Nine";
+        let mTen           = "Ten";
+
+        return this;
+    }
+
+    method void dispose() {
+        do myDice.dispose();
+        do compDice.dispose();
+        do myDiceX.dispose();
+        do myDiceY.dispose();
+        do compDiceX.dispose();
+        do compDiceY.dispose();
+        do mCompHas.dispose();
+        do mDice.dispose();
+        do mYouHave.dispose();
+        do mCurBid.dispose();
+        do mX.dispose();
+        do mNoBid.dispose();
+        do mYourTurn.dispose();
+        do mCallInstr.dispose();
+        do mNoBidYet.dispose();
+        do mPromptQty.dispose();
+        do mPromptFace.dispose();
+        do mBidTooLow.dispose();
+        do mBadFace.dispose();
+        do mBadQty.dispose();
+        do mYouBid.dispose();
+        do mCompTurn.dispose();
+        do mCompLiar.dispose();
+        do mCompBids.dispose();
+        do mEnterYour.dispose();
+        do mRevealing.dispose();
+        do mYourDiceR.dispose();
+        do mCompDiceR.dispose();
+        do mBidWas.dispose();
+        do mActualOf.dispose();
+        do mSColon.dispose();
+        do mRightComp.dispose();
+        do mWrongMe.dispose();
+        do mRightMe.dispose();
+        do mWrongComp.dispose();
+        do mGameOverC.dispose();
+        do mGameOverMe.dispose();
+        do mRollingBones.dispose();
+        do mNextRound.dispose();
+        do mCompDiceLbl.dispose();
+        do mPlayerDiceLbl.dispose();
+        do mClaimedBlk.dispose();
+        do mClaimedCap.dispose();
+        do mSExclaim.dispose();
+        do mOne.dispose();
+        do mTwo.dispose();
+        do mThree.dispose();
+        do mFour.dispose();
+        do mFive.dispose();
+        do mSix.dispose();
+        do mSeven.dispose();
+        do mEight.dispose();
+        do mNine.dispose();
+        do mTen.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // ---------------------------------------------------------------
+
+    // reads an integer the user types in, one character at a time.
+    // i had to write my own version because Keyboard.readInt also leaks
+    // memory (it makes a string buffer inside that never gets freed).
+    // this one only uses int variables so nothing gets allocated.
+    //
+    // i also use keyPressed() instead of readChar() so i can pick exactly
+    // what shows up on screen. readChar() echoes everything, including
+    // arrow keys which print as weird boxes. here only digits and
+    // backspace get echoed and everything else is ignored.
+    method int safeReadInt(String prompt) {
+        var int result;
+        var int digit;
+        var int typedLen;
+        var char c;
+        let result = 0;
+        let typedLen = 0;       // how many digits are currently on the screen
+        do Output.printString(prompt);
+
+        let c = 0;
+        while (~(c = 128)) {            // 128 is the Enter key
+            // wait until a key is pressed
+            while (Keyboard.keyPressed() = 0) {}
+            let c = Keyboard.keyPressed();
+            // wait for it to be released so we don't read it twice
+            while (~(Keyboard.keyPressed() = 0)) {}
+
+            if ((c > 47) & (c < 58)) {
+                // ascii 48-57 are the digits 0-9. echo it and add to the number
+                let digit = c - 48;
+                let result = (result * 10) + digit;
+                let typedLen = typedLen + 1;
+                do Output.printChar(c);
+            }
+            // 129 is backspace, 139 is delete. either one wipes the last
+            // digit. Output.backSpace() only moves the cursor back, so
+            // i print a space over the old digit then backspace again to
+            // sit on the now-empty spot.
+            // typedLen check stops the cursor from running back into the
+            // prompt if you hit backspace before typing anything.
+            if ((c = 129) | (c = 139)) {
+                if (typedLen > 0) {
+                    let result = result / 10;
+                    let typedLen = typedLen - 1;
+                    do Output.backSpace();
+                    do Output.printChar(32);
+                    do Output.backSpace();
+                }
+            }
+            // anything else (arrows etc.) just gets ignored
+        }
+        // newline once Enter is hit
+        do Output.println();
+        // FIXME: if you type a number bigger than 32767 this overflows
+        // and goes negative. its fine for this game because qty is
+        // capped at 10 and face is capped at 6 but worth fixing later
+        return result;
+    }
+
+    // ---------------------------------------------------------------
+
+    method void rollAllDice() {
+        var int i;
+        var int slotStart;
+        // i split the table into 5 horizontal slots (70 px each, starting
+        // at x=42) so two dice never end up on top of each other. inside
+        // each slot the die is placed at a random offset so the layout
+        // looks freshly thrown each time.
+        // x offset is 0-40 (slot is 70 wide and the die is 24, so there's
+        // 46 of slack but i cap at 40 so the rightmost die doesn't bump
+        // into the cup at x=410). y offset is 0-40 inside the table band.
+        let i = 0;
+        while (i < myDiceCount) {
+            let myDice[i] = Random.rollDie();
+            let slotStart = 42 + (i * 70);
+            let myDiceX[i] = slotStart + Random.range(40);
+            let myDiceY[i] = 165 + Random.range(40);
+            let i = i + 1;
+        }
+        let i = 0;
+        while (i < compDiceCount) {
+            let compDice[i] = Random.rollDie();
+            let slotStart = 42 + (i * 70);
+            let compDiceX[i] = slotStart + Random.range(40);
+            let compDiceY[i] = 165 + Random.range(40);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // draws one 24x24 die at (x, y) with the given face (1-6).
+    // outline is a hollow square and the pips are filled circles in
+    // the standard die layout
+    method void drawDie(int x, int y, int face) {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 23, y + 23);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 2, y + 2, x + 21, y + 21);
+        do Screen.setColor(true);
+
+        if (face = 1) {
+            do Screen.drawCircle(x + 12, y + 12, 2);
+        }
+        if (face = 2) {
+            do Screen.drawCircle(x + 7,  y + 7,  2);
+            do Screen.drawCircle(x + 17, y + 17, 2);
+        }
+        if (face = 3) {
+            do Screen.drawCircle(x + 7,  y + 7,  2);
+            do Screen.drawCircle(x + 12, y + 12, 2);
+            do Screen.drawCircle(x + 17, y + 17, 2);
+        }
+        if (face = 4) {
+            do Screen.drawCircle(x + 7,  y + 7,  2);
+            do Screen.drawCircle(x + 17, y + 7,  2);
+            do Screen.drawCircle(x + 7,  y + 17, 2);
+            do Screen.drawCircle(x + 17, y + 17, 2);
+        }
+        if (face = 5) {
+            do Screen.drawCircle(x + 7,  y + 7,  2);
+            do Screen.drawCircle(x + 17, y + 7,  2);
+            do Screen.drawCircle(x + 12, y + 12, 2);
+            do Screen.drawCircle(x + 7,  y + 17, 2);
+            do Screen.drawCircle(x + 17, y + 17, 2);
+        }
+        if (face = 6) {
+            do Screen.drawCircle(x + 7,  y + 6,  2);
+            do Screen.drawCircle(x + 17, y + 6,  2);
+            do Screen.drawCircle(x + 7,  y + 12, 2);
+            do Screen.drawCircle(x + 17, y + 12, 2);
+            do Screen.drawCircle(x + 7,  y + 18, 2);
+            do Screen.drawCircle(x + 17, y + 18, 2);
+        }
+        return;
+    }
+
+    // draws a rectangle behind the dice so they look like they're sitting
+    // on a table instead of just floating. drawRectangle is always filled
+    // so to get a frame i draw a big black one then clear the inside
+    method void drawTable() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(38, 158, 472, 242);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(41, 161, 469, 239);
+        do Screen.setColor(true);
+        return;
+    }
+
+    // face-down die - same outline but with an X through it so the
+    // computer's hidden dice look different from the player's
+    method void drawDieBack(int x, int y) {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + 23, y + 23);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x + 2, y + 2, x + 21, y + 21);
+        do Screen.setColor(true);
+        do Screen.drawLine(x + 6,  y + 6,  x + 17, y + 17);
+        do Screen.drawLine(x + 17, y + 6,  x + 6,  y + 17);
+        return;
+    }
+
+    // dice cup that looks like a wooden barrel with a skull on it.
+    // top-left corner is (cx, cy), barrel is 40x50.
+    // i wanted it to look pirate themed instead of just a plain cup
+    method void drawCup(int cx, int cy) {
+        do Screen.setColor(true);
+
+        // barrel outline
+        // top and bottom are short horizontal lines
+        do Screen.drawLine(cx + 3,  cy,      cx + 37, cy);
+        do Screen.drawLine(cx + 3,  cy + 50, cx + 37, cy + 50);
+        // left side bows out (two segments meeting in the middle)
+        do Screen.drawLine(cx + 3,  cy,      cx,      cy + 25);
+        do Screen.drawLine(cx,      cy + 25, cx + 3,  cy + 50);
+        // right side bows out the same way
+        do Screen.drawLine(cx + 37, cy,      cx + 40, cy + 25);
+        do Screen.drawLine(cx + 40, cy + 25, cx + 37, cy + 50);
+
+        // wooden plank lines
+        // two thin lines split the barrel into 3 vertical staves. the
+        // skull will cover the middle so they only show top and bottom
+        do Screen.drawLine(cx + 14, cy + 1,  cx + 14, cy + 49);
+        do Screen.drawLine(cx + 26, cy + 1,  cx + 26, cy + 49);
+
+        // iron hoops near the top and bottom
+        // drawn after the planks so they sit on top cleanly
+        do Screen.drawRectangle(cx + 2,  cy + 3,  cx + 38, cy + 5);
+        do Screen.drawRectangle(cx + 2,  cy + 45, cx + 38, cy + 47);
+
+        // skull and crossbones decal
+        do Screen.drawCircle(cx + 20, cy + 20, 9);                       // skull
+        do Screen.setColor(false);
+        do Screen.drawCircle(cx + 20, cy + 20, 6);                       // hollow it out
+        do Screen.setColor(true);
+        do Screen.drawCircle(cx + 16, cy + 18, 2);                       // left eye
+        do Screen.drawCircle(cx + 24, cy + 18, 2);                       // right eye
+        do Screen.drawRectangle(cx + 15, cy + 28, cx + 25, cy + 32);     // teeth
+        do Screen.setColor(false);
+        do Screen.drawLine(cx + 17, cy + 28, cx + 17, cy + 32);          // gaps between teeth
+        do Screen.drawLine(cx + 20, cy + 28, cx + 20, cy + 32);
+        do Screen.drawLine(cx + 23, cy + 28, cx + 23, cy + 32);
+        // crossbones underneath
+        do Screen.setColor(true);
+        do Screen.drawLine(cx + 9,  cy + 35, cx + 31, cy + 41);
+        do Screen.drawLine(cx + 9,  cy + 36, cx + 31, cy + 42);
+        do Screen.drawLine(cx + 9,  cy + 41, cx + 31, cy + 35);
+        do Screen.drawLine(cx + 9,  cy + 42, cx + 31, cy + 36);
+        // little knobs at the ends of the bones
+        do Screen.drawCircle(cx + 9,  cy + 35, 1);
+        do Screen.drawCircle(cx + 31, cy + 41, 1);
+        do Screen.drawCircle(cx + 9,  cy + 41, 1);
+        do Screen.drawCircle(cx + 31, cy + 35, 1);
+        return;
+    }
+
+    // shakes the cup back and forth a few times before a roll, just for
+    // some game feel. only the cup area gets erased so the dice on the
+    // table don't move. ends back at the original position.
+    method void shakeCup(int baseX, int baseY) {
+        var int i;
+        var int dx;
+        let i = 0;
+        while (i < 8) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle(baseX - 5, baseY, baseX + 45, baseY + 51);
+            do Screen.setColor(true);
+            if ((i = 0) | (i = 2) | (i = 4) | (i = 6)) { let dx = -4; }
+            else                                        { let dx = 4; }
+            do drawCup(baseX + dx, baseY);
+            do Sys.wait(55);
+            let i = i + 1;
+        }
+        // put it back where it started
+        do Screen.setColor(false);
+        do Screen.drawRectangle(baseX - 5, baseY, baseX + 45, baseY + 51);
+        do Screen.setColor(true);
+        do drawCup(baseX, baseY);
+        return;
+    }
+
+    // the rolling animation, played once per round (NOT once per turn).
+    // shows an empty table + cup, shakes the cup, then waits a second
+    // before the round actually starts. the dice themselves get drawn
+    // later when each player's turn paints the screen.
+    method void animateRoll() {
+        do Screen.clearScreen();
+
+        // banner during the shake. "--- ROLLING THE BONES... ---" is 28
+        // chars so col 18 centers it
+        do Output.moveCursor(2, 18);
+        do Output.printString(mRollingBones);
+
+        // empty table and cup, no dice yet
+        do drawTable();
+        do drawCup(410, 175);
+
+        // shake!
+        do shakeCup(410, 175);
+
+        // little pause for suspense before the captain sees their hand
+        do Sys.wait(1000);
+        return;
+    }
+
+    // ---------- block-letter title ----------
+    // each letter sits in a 5-wide x 7-tall grid where each cell is `cs`
+    // pixels square. each letter is just a few drawRectangle calls (one
+    // per stroke), so the whole title is only a few dozen rectangles.
+    // the caller sets the screen color to true before calling these.
+
+    method void drawL(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, bx + cs - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx, by + (cs * 6), (bx + (cs * 5)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    method void drawI(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, (bx + (cs * 5)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx + (cs * 2), by, (bx + (cs * 3)) - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx, by + (cs * 6), (bx + (cs * 5)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    method void drawA(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx + cs, by, (bx + (cs * 4)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx, by + cs, bx + cs - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by + cs, (bx + (cs * 5)) - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx, by + (cs * 3), (bx + (cs * 5)) - 1, (by + (cs * 4)) - 1);
+        return;
+    }
+
+    method void drawR(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, bx + cs - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx, by, (bx + (cs * 4)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by + cs, (bx + (cs * 5)) - 1, (by + (cs * 3)) - 1);
+        do Screen.drawRectangle(bx, by + (cs * 3), (bx + (cs * 4)) - 1, (by + (cs * 4)) - 1);
+        // the diagonal leg is drawn as 3 little stair-step blocks
+        do Screen.drawRectangle(bx + (cs * 2), by + (cs * 4), (bx + (cs * 3)) - 1, (by + (cs * 5)) - 1);
+        do Screen.drawRectangle(bx + (cs * 3), by + (cs * 5), (bx + (cs * 4)) - 1, (by + (cs * 6)) - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by + (cs * 6), (bx + (cs * 5)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    method void drawS(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx + cs, by, (bx + (cs * 5)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx, by + cs, bx + cs - 1, (by + (cs * 3)) - 1);
+        do Screen.drawRectangle(bx + cs, by + (cs * 3), (bx + (cs * 4)) - 1, (by + (cs * 4)) - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by + (cs * 4), (bx + (cs * 5)) - 1, (by + (cs * 6)) - 1);
+        do Screen.drawRectangle(bx, by + (cs * 6), (bx + (cs * 4)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    method void drawD(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, bx + cs - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx, by, (bx + (cs * 4)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by + cs, (bx + (cs * 5)) - 1, (by + (cs * 6)) - 1);
+        do Screen.drawRectangle(bx, by + (cs * 6), (bx + (cs * 4)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    method void drawC(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx + cs, by, (bx + (cs * 5)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx, by + cs, bx + cs - 1, (by + (cs * 6)) - 1);
+        do Screen.drawRectangle(bx + cs, by + (cs * 6), (bx + (cs * 5)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    method void drawE(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, bx + cs - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx, by, (bx + (cs * 5)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx, by + (cs * 3), (bx + (cs * 4)) - 1, (by + (cs * 4)) - 1);
+        do Screen.drawRectangle(bx, by + (cs * 6), (bx + (cs * 5)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    // skinny apostrophe - just a short vertical bar near the top
+    method void drawApostrophe(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, bx + cs - 1, (by + (cs * 2)) - 1);
+        return;
+    }
+
+    // pirate skull and crossbones, centered at (cx, cy). skull is about
+    // 28 px tall and the crossbones go down to around cy+25
+    method void drawPirate(int cx, int cy) {
+        do Screen.setColor(true);
+        // skull is a filled circle with the inside cleared out
+        do Screen.drawCircle(cx, cy, 14);
+        do Screen.setColor(false);
+        do Screen.drawCircle(cx, cy, 11);
+        do Screen.setColor(true);
+        // eye sockets
+        do Screen.drawCircle(cx - 5, cy - 3, 3);
+        do Screen.drawCircle(cx + 5, cy - 3, 3);
+        // teeth - solid bar with white slits to look like individual teeth
+        do Screen.drawRectangle(cx - 5, cy + 4, cx + 5, cy + 9);
+        do Screen.setColor(false);
+        do Screen.drawLine(cx - 3, cy + 4, cx - 3, cy + 9);
+        do Screen.drawLine(cx,     cy + 4, cx,     cy + 9);
+        do Screen.drawLine(cx + 3, cy + 4, cx + 3, cy + 9);
+        do Screen.setColor(true);
+        // crossbones - two diagonal lines, doubled up so they look thicker
+        do Screen.drawLine(cx - 16, cy + 14, cx + 16, cy + 24);
+        do Screen.drawLine(cx - 16, cy + 15, cx + 16, cy + 25);
+        do Screen.drawLine(cx - 16, cy + 24, cx + 16, cy + 14);
+        do Screen.drawLine(cx - 16, cy + 25, cx + 16, cy + 15);
+        // little knobs on the ends of the bones
+        do Screen.drawCircle(cx - 16, cy + 14, 2);
+        do Screen.drawCircle(cx + 16, cy + 24, 2);
+        do Screen.drawCircle(cx - 16, cy + 24, 2);
+        do Screen.drawCircle(cx + 16, cy + 14, 2);
+        return;
+    }
+
+    // ---- extra letters i needed for "GAME OVER" ----
+
+    method void drawG(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx + cs, by, (bx + (cs * 5)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx, by + cs, bx + cs - 1, (by + (cs * 6)) - 1);
+        do Screen.drawRectangle(bx + (cs * 2), by + (cs * 3), (bx + (cs * 5)) - 1, (by + (cs * 4)) - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by + (cs * 3), (bx + (cs * 5)) - 1, (by + (cs * 6)) - 1);
+        do Screen.drawRectangle(bx + cs, by + (cs * 6), (bx + (cs * 4)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    method void drawM(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, bx + cs - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by, (bx + (cs * 5)) - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx + cs, by + cs, (bx + (cs * 2)) - 1, (by + (cs * 2)) - 1);
+        do Screen.drawRectangle(bx + (cs * 3), by + cs, (bx + (cs * 4)) - 1, (by + (cs * 2)) - 1);
+        do Screen.drawRectangle(bx + (cs * 2), by + (cs * 2), (bx + (cs * 3)) - 1, (by + (cs * 3)) - 1);
+        return;
+    }
+
+    method void drawO(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx + cs, by, (bx + (cs * 4)) - 1, by + cs - 1);
+        do Screen.drawRectangle(bx + cs, by + (cs * 6), (bx + (cs * 4)) - 1, (by + (cs * 7)) - 1);
+        do Screen.drawRectangle(bx, by + cs, bx + cs - 1, (by + (cs * 6)) - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by + cs, (bx + (cs * 5)) - 1, (by + (cs * 6)) - 1);
+        return;
+    }
+
+    method void drawV(int bx, int by, int cs) {
+        do Screen.drawRectangle(bx, by, bx + cs - 1, (by + (cs * 3)) - 1);
+        do Screen.drawRectangle(bx + (cs * 4), by, (bx + (cs * 5)) - 1, (by + (cs * 3)) - 1);
+        do Screen.drawRectangle(bx + cs, by + (cs * 3), (bx + (cs * 2)) - 1, (by + (cs * 5)) - 1);
+        do Screen.drawRectangle(bx + (cs * 3), by + (cs * 3), (bx + (cs * 4)) - 1, (by + (cs * 5)) - 1);
+        do Screen.drawRectangle(bx + (cs * 2), by + (cs * 5), (bx + (cs * 3)) - 1, (by + (cs * 7)) - 1);
+        return;
+    }
+
+    // puts the whole "LIAR'S DICE" title together at y=50, centered.
+    // pirates show up on either side at the same height.
+    method void drawTitle() {
+        var int cs;
+        var int x;
+        var int y;
+        let cs = 4;
+        let y = 50;
+        let x = 144;        // (512 - 224) / 2; total title width is 56*cs = 224
+
+        do Screen.setColor(true);
+
+        do drawL(x, y, cs);              let x = x + (cs * 6);
+        do drawI(x, y, cs);              let x = x + (cs * 6);
+        do drawA(x, y, cs);              let x = x + (cs * 6);
+        do drawR(x, y, cs);              let x = x + (cs * 6);
+        do drawApostrophe(x, y, cs);     let x = x + (cs * 2);
+        do drawS(x, y, cs);              let x = x + (cs * 7);   // gap between words
+
+        do drawD(x, y, cs);              let x = x + (cs * 6);
+        do drawI(x, y, cs);              let x = x + (cs * 6);
+        do drawC(x, y, cs);              let x = x + (cs * 6);
+        do drawE(x, y, cs);
+
+        // pirate skulls on either side of the title
+        do drawPirate(80,  64);
+        do drawPirate(432, 64);
+        return;
+    }
+
+    // "GAME OVER" in the same block letters at the same y as the main
+    // title, with the pirates next to it. total width is 192 px.
+    method void drawTitleGameOver() {
+        var int cs;
+        var int x;
+        var int y;
+        let cs = 4;
+        let y = 50;
+        let x = 160;        // (512 - 192) / 2
+
+        do Screen.setColor(true);
+
+        do drawG(x, y, cs);  let x = x + (cs * 6);
+        do drawA(x, y, cs);  let x = x + (cs * 6);
+        do drawM(x, y, cs);  let x = x + (cs * 6);
+        do drawE(x, y, cs);  let x = x + (cs * 7);   // word gap
+        do drawO(x, y, cs);  let x = x + (cs * 6);
+        do drawV(x, y, cs);  let x = x + (cs * 6);
+        do drawE(x, y, cs);  let x = x + (cs * 6);
+        do drawR(x, y, cs);
+
+        do drawPirate(80,  64);
+        do drawPirate(432, 64);
+        return;
+    }
+
+    // little helper - waits until Enter is pressed and then released.
+    // used at every "press enter to continue" prompt.
+    method void waitForEnter() {
+        while (~(Keyboard.keyPressed() = 128)) {
+            do Sys.wait(10);
+        }
+        while (Keyboard.keyPressed() = 128) {
+            do Sys.wait(10);
+        }
+        return;
+    }
+
+    // game over screen with the pirate-flanked block-letter title and
+    // the win/lose message
+    method void gameOverScreen() {
+        do Screen.clearScreen();
+        do drawTitleGameOver();
+
+        if (myDiceCount < 1) {
+            // "Ye lost all yer dice. Blackbeard wins!" is 38 chars, col 13
+            do Output.moveCursor(13, 13);
+            do Output.printString(mGameOverC);
+        } else {
+            // "The plunder is yours, Captain!" is 30 chars, col 17
+            do Output.moveCursor(13, 17);
+            do Output.printString(mGameOverMe);
+        }
+
+        // "Thanks for playing!" is 19 chars, col 22
+        do Output.moveCursor(17, 22);
+        do Output.printString("Thanks for playing!");
+
+        // restart prompt - 41 chars, centered at col 11
+        do Output.moveCursor(20, 11);
+        do Output.printString("Hit RETURN to brave the seas once more...");
+        return;
+    }
+
+    // draws the player's dice scattered on the table at the positions
+    // rollAllDice picked, so they look freshly thrown
+    method void showMyDice() {
+        var int i;
+        do drawTable();
+        let i = 0;
+        while (i < myDiceCount) {
+            do drawDie(myDiceX[i], myDiceY[i], myDice[i]);
+            let i = i + 1;
+        }
+        do drawCup(410, 175);
+        return;
+    }
+
+    // computer's dice get the same scattered positions but drawn face-down
+    // so the values stay hidden until the reveal
+    method void showCompDice() {
+        var int i;
+        do drawTable();
+        let i = 0;
+        while (i < compDiceCount) {
+            do drawDieBack(compDiceX[i], compDiceY[i]);
+            let i = i + 1;
+        }
+        do drawCup(410, 175);
+        return;
+    }
+
+    // prints the english word for a number 1-10. used in the bid summary
+    // ("Three 4s!" instead of "3 4s!")
+    method void printNumWord(int n) {
+        if (n = 1)  { do Output.printString(mOne);   return; }
+        if (n = 2)  { do Output.printString(mTwo);   return; }
+        if (n = 3)  { do Output.printString(mThree); return; }
+        if (n = 4)  { do Output.printString(mFour);  return; }
+        if (n = 5)  { do Output.printString(mFive);  return; }
+        if (n = 6)  { do Output.printString(mSix);   return; }
+        if (n = 7)  { do Output.printString(mSeven); return; }
+        if (n = 8)  { do Output.printString(mEight); return; }
+        if (n = 9)  { do Output.printString(mNine);  return; }
+        if (n = 10) { do Output.printString(mTen);   return; }
+        // shouldn't happen but just in case
+        do Output.printInt(n);
+        return;
+    }
+
+    // returns how many chars printNumWord(n) takes up. i need this to
+    // figure out where to put the cursor so the bid summary is centered
+    method int numWordLen(int n) {
+        if ((n = 3) | (n = 7) | (n = 8)) { return 5; }
+        if ((n = 4) | (n = 5) | (n = 9)) { return 4; }
+        return 3;
+    }
+
+    method void showDieCounts() {
+        do Output.printString(mYouHave);
+        do Output.printInt(myDiceCount);
+        do Output.printString(mCompHas);
+        do Output.printInt(compDiceCount);
+        do Output.printString(mDice);
+        do Output.println();
+        return;
+    }
+
+    method void showBid() {
+        if (bidQty > 0) {
+            do Output.printString(mCurBid);
+            do Output.printInt(bidQty);
+            do Output.printString(mX);
+            do Output.printInt(bidFace);
+            do Output.println();
+        } else {
+            do Output.printString(mNoBid);
+            do Output.println();
+        }
+        return;
+    }
+
+    // ---------------------------------------------------------------
+
+    method int countMatches(Array dice, int diceCount, int face) {
+        var int i;
+        var int total;
+        let i = 0;
+        let total = 0;
+        while (i < diceCount) {
+            if (dice[i] = face) {
+                let total = total + 1;
+            }
+            let i = i + 1;
+        }
+        return total;
+    }
+
+    method int totalMatches(int face) {
+        var int fromMe;
+        var int fromComp;
+        let fromMe   = countMatches(myDice,   myDiceCount,   face);
+        let fromComp = countMatches(compDice, compDiceCount, face);
+        return fromMe + fromComp;
+    }
+
+    method boolean bidIsValid(int qty, int face) {
+        if (bidQty = 0)                            { return true; }
+        if (qty > bidQty)                          { return true; }
+        if ((qty = bidQty) & (face > bidFace))     { return true; }
+        return false;
+    }
+
+    // looks at Blackbeard's hand and finds the face value that shows up
+    // most. ties go to the lower face. the AI uses this to pick a face
+    // it's most likely to actually have. defaults to 3 if Blackbeard
+    // somehow has no dice (just to be safe)
+    method int findMostFrequentFace() {
+        var int face;
+        var int count;
+        var int bestFace;
+        var int bestCount;
+        let bestFace  = 3;
+        let bestCount = 0;
+        let face = 1;
+        while (face < 7) {
+            let count = countMatches(compDice, compDiceCount, face);
+            if (count > bestCount) {
+                let bestCount = count;
+                let bestFace  = face;
+            }
+            let face = face + 1;
+        }
+        return bestFace;
+    }
+
+    // ---------------------------------------------------------------
+
+    method void callLiar(boolean playerCalledLiar) {
+        var int actual;
+        var int i;
+        var int rowStartX;
+        var int summaryWidth;
+
+        do Screen.clearScreen();
+
+        // title at row 2
+        // "Revealing all dice..." is 21 chars, col 21
+        do Output.moveCursor(2, 21);
+        do Output.printString(mRevealing);
+
+        // captain's dice as face-up sprites
+        // "Captain:" is 8 chars, col 28
+        do Output.moveCursor(5, 28);
+        do Output.printString(mYourDiceR);
+        // each die is 24 px wide with a 6 px gap. row width = count*30 - 6
+        let rowStartX = (512 - ((myDiceCount * 30) - 6)) / 2;
+        let i = 0;
+        while (i < myDiceCount) {
+            do drawDie(rowStartX + (i * 30), 72, myDice[i]);
+            let i = i + 1;
+        }
+
+        // blackbeard's dice as face-up sprites
+        // "Blackbeard:" is 11 chars, col 26
+        do Output.moveCursor(12, 26);
+        do Output.printString(mCompDiceR);
+        let rowStartX = (512 - ((compDiceCount * 30) - 6)) / 2;
+        let i = 0;
+        while (i < compDiceCount) {
+            do drawDie(rowStartX + (i * 30), 149, compDice[i]);
+            let i = i + 1;
+        }
+
+        let actual = totalMatches(bidFace);
+
+        // bid summary at row 17 - "X claimed: Word Ns!"
+        // bidder is whoever DIDN'T call liar
+        // total width = prefix + word + " " + face digit + "s!"
+        //             = (20 or 17) + numWordLen + 4
+        if (playerCalledLiar) {
+            let summaryWidth = 24 + numWordLen(bidQty);   // "Blackbeard claimed: " (20) + 4
+        } else {
+            let summaryWidth = 21 + numWordLen(bidQty);   // "Captain claimed: " (17) + 4
+        }
+        do Output.moveCursor(17, (64 - summaryWidth) / 2);
+        if (playerCalledLiar) {
+            do Output.printString(mClaimedBlk);
+        } else {
+            do Output.printString(mClaimedCap);
+        }
+        do printNumWord(bidQty);
+        do Output.printChar(32);
+        do Output.printInt(bidFace);
+        do Output.printString(mSExclaim);
+
+        // actual count at row 18
+        do Output.moveCursor(18, 21);
+        do Output.printString(mActualOf);
+        do Output.printInt(bidFace);
+        do Output.printString(mSColon);
+        do Output.printInt(actual);
+
+        // outcome at row 20
+        // bid holds if actual >= bidQty
+        // mRightComp is 39 chars (col 12), Davy Jones msg is 38 chars (col 13),
+        // mWrongComp is 37 chars (col 13)
+        if (playerCalledLiar) {
+            if (actual < bidQty) {
+                do Output.moveCursor(20, 12);
+                do Output.printString(mRightComp);
+                let compDiceCount = compDiceCount - 1;
+            } else {
+                do Output.moveCursor(20, 13);
+                do Output.printString(mWrongMe);
+                let myDiceCount = myDiceCount - 1;
+            }
+        } else {
+            if (actual < bidQty) {
+                do Output.moveCursor(20, 13);
+                do Output.printString(mRightMe);
+                let myDiceCount = myDiceCount - 1;
+            } else {
+                do Output.moveCursor(20, 13);
+                do Output.printString(mWrongComp);
+                let compDiceCount = compDiceCount - 1;
+            }
+        }
+
+        // i set the gameOver flag here but the game over screen actually
+        // gets shown by run() so the player gets to see the reveal first
+        if (myDiceCount < 1)   { let gameOver = true; }
+        if (compDiceCount < 1) { let gameOver = true; }
+
+        let bidQty = 0;
+        let bidFace = 0;
+        let myTurn = true;
+        return;
+    }
+
+    // ---------------------------------------------------------------
+
+    // wipes the middle of the screen between the header and the table.
+    // every retry of the input loop calls this so old prompts and error
+    // messages don't pile up on top of each other. table starts at y=158
+    // so we stop before that
+    method void clearMidRegion() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(0, 55, 511, 156);
+        do Screen.setColor(true);
+        return;
+    }
+
+    method boolean playerTurn() {
+        var int qty;
+        var int face;
+        var boolean gotGoodInput;
+        let gotGoodInput = false;
+
+        do Screen.clearScreen();
+
+        // row 2 - header split into 3 parts
+        // captain's dice count on the left (col 2), "CAPTAIN'S TURN" in
+        // the middle (col 21), blackbeard's dice count on the right (col 44)
+        do Output.moveCursor(2, 2);
+        do Output.printString(mPlayerDiceLbl);
+        do Output.printInt(myDiceCount);
+
+        do Output.moveCursor(2, 21);
+        do Output.printString(mYourTurn);
+
+        do Output.moveCursor(2, 44);
+        do Output.printString(mCompDiceLbl);
+        do Output.printInt(compDiceCount);
+
+        // bottom - dice on the table + cup
+        do showMyDice();
+
+        while (~gotGoodInput) {
+            do clearMidRegion();
+
+            // row 6 - centered bid info
+            // ("Current bid: X x Y" is around 18 chars centered at col 23,
+            //  "No bid yet." is 11 chars centered at col 26)
+            if (bidQty > 0) {
+                do Output.moveCursor(6, 23);
+                do Output.printString(mCurBid);
+                do Output.printInt(bidQty);
+                do Output.printString(mX);
+                do Output.printInt(bidFace);
+            } else {
+                do Output.moveCursor(6, 26);
+                do Output.printString(mNoBid);
+            }
+
+            // row 8 - call liar reminder (23 chars, col 20)
+            do Output.moveCursor(8, 20);
+            do Output.printString(mCallInstr);
+
+            // row 10 - quantity prompt (26 chars, col 19)
+            do Output.moveCursor(10, 19);
+            let qty = safeReadInt(mPromptQty);
+
+            if (qty = 0) {
+                if (bidQty = 0) {
+                    do Output.moveCursor(12, 16);
+                    do Output.printString(mNoBidYet);
+                    do Sys.wait(1500);
+                } else {
+                    // dice already rolled at the start of the round so
+                    // there's no shake here
+                    do callLiar(true);
+                    return true;
+                }
+            } else {
+                if ((qty > 0) & (qty < 11)) {
+                    // row 11 - face prompt (19 chars, col 22)
+                    do Output.moveCursor(11, 22);
+                    let face = safeReadInt(mPromptFace);
+                    if ((face > 0) & (face < 7)) {
+                        if (bidIsValid(qty, face)) {
+                            let bidQty = qty;
+                            let bidFace = face;
+                            let gotGoodInput = true;
+                            do Output.moveCursor(12, 23);
+                            do Output.printString(mYouBid);
+                            do Output.printInt(bidQty);
+                            do Output.printString(mX);
+                            do Output.printInt(bidFace);
+                            do Sys.wait(1000);
+                        } else {
+                            do Output.moveCursor(12, 12);
+                            do Output.printString(mBidTooLow);
+                            do Sys.wait(1500);
+                        }
+                    } else {
+                        do Output.moveCursor(12, 18);
+                        do Output.printString(mBadFace);
+                        do Sys.wait(1500);
+                    }
+                } else {
+                    do Output.moveCursor(12, 15);
+                    do Output.printString(mBadQty);
+                    do Sys.wait(1500);
+                }
+            }
+        }
+
+        let myTurn = false;
+        return false;
+    }
+
+    // ---------------------------------------------------------------
+
+    method boolean computerTurn() {
+        var int newQty;
+        var int newFace;
+        var int totalDice;
+        var int safeThreshold;
+
+        do Screen.clearScreen();
+
+        // row 2 - same 3-part header as the captain's turn
+        // labels are a bit tighter so the title sits one col left of center
+        do Output.moveCursor(2, 0);
+        do Output.printString(mPlayerDiceLbl);
+        do Output.printInt(myDiceCount);
+
+        do Output.moveCursor(2, 18);
+        do Output.printString(mCompTurn);
+
+        do Output.moveCursor(2, 44);
+        do Output.printString(mCompDiceLbl);
+        do Output.printInt(compDiceCount);
+
+        // bottom - just paint the current state of the dice. they were
+        // already rolled at the start of the round by animateRoll, so no
+        // shaking here
+        do showCompDice();
+        do Sys.wait(800);
+
+        let totalDice = myDiceCount + compDiceCount;
+
+        // figure out whether to call liar.
+        // we know how many of bid_face WE have, and we can guess the
+        // captain has about 1/3 of his dice on that face (since each
+        // face is 1 in 6, and 1/6 of his dice rounded down is roughly
+        // his_dice/3 once you have a few of them).
+        // plus a +1 buffer so blackbeard doesnt cry liar every other bid.
+        // if the bid is still higher than that guess, call liar.
+        if (bidQty > 0) {
+            let safeThreshold = countMatches(compDice, compDiceCount, bidFace)
+                              + (myDiceCount / 3) + 1;
+            if (bidQty > safeThreshold) {
+                do Output.moveCursor(6, 20);
+                do Output.printString(mCompLiar);
+                do Sys.wait(1500);
+                do callLiar(false);
+                return true;
+            }
+        }
+
+        // otherwise we make a bid of our own
+        if (bidQty = 0) {
+            // first bid of the round: just 1 of our most common face
+            let newFace = findMostFrequentFace();
+            let newQty  = 1;
+        } else {
+            // 25% of the time blackbeard bluffs instead of playing safe.
+            // either he picks a random face (qty + 1) or he keeps the
+            // same face but jumps the qty by 2. both are still valid
+            // raises (qty always goes up)
+            if (Random.range(4) = 0) {
+                if (Random.range(2) = 0) {
+                    let newFace = Random.range(6) + 1;
+                    let newQty  = bidQty + 1;
+                } else {
+                    let newFace = bidFace;
+                    let newQty  = bidQty + 2;
+                }
+            } else {
+                // honest raise: qty + 1 of our most common face
+                let newFace = findMostFrequentFace();
+                let newQty  = bidQty + 1;
+            }
+
+            // safety check - if the new qty is more than the total dice
+            // on the table, that's an obviously fake bid so don't make
+            // it. instead, keep the qty and bump the face up by one
+            if (newQty > totalDice) {
+                let newQty = bidQty;
+                if (bidFace < 6) {
+                    let newFace = bidFace + 1;
+                } else {
+                    // already at face 6 so we have no choice but to
+                    // raise the qty
+                    let newQty  = bidQty + 1;
+                    let newFace = 1;
+                }
+            }
+        }
+
+        let bidQty  = newQty;
+        let bidFace = newFace;
+
+        // "Blackbeard bids: X x Y" is around 22 chars, centered at col 20
+        do Output.moveCursor(6, 20);
+        do Output.printString(mCompBids);
+        do Output.printInt(bidQty);
+        do Output.printString(mX);
+        do Output.printInt(bidFace);
+
+        // "Press enter for yer turn..." is 27 chars, centered at col 18
+        do Output.moveCursor(8, 18);
+        do Output.printString(mEnterYour);
+
+        while (~(Keyboard.keyPressed() = 128)) {
+            do Sys.wait(10);
+        }
+        while (Keyboard.keyPressed() = 128) {
+            do Sys.wait(10);
+        }
+
+        let myTurn = true;
+        return false;
+    }
+
+    // ---------------------------------------------------------------
+
+    method void playRound() {
+        var boolean roundDone;
+        let roundDone = false;
+
+        // start the round - roll the dice and play the rolling animation
+        // BEFORE either player gets to see their hand. each player's
+        // turn paints the dice on the screen after that
+        do rollAllDice();
+        do animateRoll();
+
+        let myTurn  = true;
+        let bidQty  = 0;
+        let bidFace = 0;
+
+        while (~roundDone & ~gameOver) {
+            if (myTurn) {
+                let roundDone = playerTurn();
+            } else {
+                let roundDone = computerTurn();
+            }
+        }
+        return;
+    }
+
+    // paints the title screen - block letter title, pirates, instructions,
+    // "press enter to start" prompt. shown at the very beginning AND
+    // after every game over restart
+    method void showTitleScreen() {
+        do Screen.clearScreen();
+        do drawTitle();
+
+        // "How to play:" centered (12 chars, col 26)
+        do Output.moveCursor(9, 26);
+        do Output.printString("How to play:");
+
+        // each instruction line centered for its own length, double-spaced
+        do Output.moveCursor(11, 14);
+        do Output.printString("Both players roll 5 dice (secretly).");
+        do Output.moveCursor(13, 14);
+        do Output.printString("Bid how many dice TOTAL show a face.");
+        do Output.moveCursor(15, 11);
+        do Output.printString("Next bid must raise the quantity or face.");
+        do Output.moveCursor(17, 12);
+        do Output.printString("Bid 0 to call 'Liar!' on a dirty bluff.");
+        do Output.moveCursor(19, 4);
+        do Output.printString("Lose all your dice, and ye be sleeping with the fishes.");
+
+        do Output.moveCursor(21, 20);
+        do Output.printString("Press enter to start...");
+        return;
+    }
+
+    // resets all the per-game variables so the same LiarsDice object
+    // can host a fresh game after game over without leftover state
+    method void resetGameState() {
+        let myDiceCount  = 5;
+        let compDiceCount = 5;
+        let bidQty   = 0;
+        let bidFace  = 0;
+        let myTurn   = true;
+        let gameOver = false;
+        return;
+    }
+
+    method void run() {
+        // outer loop - one iteration is one full game (title, rounds,
+        // game over, press enter to restart, back to title). there's no
+        // exit; the user just closes the emulator window when done
+        while (true) {
+            do showTitleScreen();
+
+            // keep ticking the random seed while we wait so each game
+            // starts off different
+            while (~(Keyboard.keyPressed() = 128)) {
+                do Random.tick();
+            }
+            while (Keyboard.keyPressed() = 128) {
+                do Sys.wait(10);
+            }
+
+            // fresh state for every new game
+            do resetGameState();
+
+            while (~gameOver) {
+                do playRound();
+                // ALWAYS show the prompt and wait for enter, even if the
+                // round just ended the game. this way the player gets to
+                // see the reveal screen (final dice, claim/actual, who
+                // lost a die) before the game over screen takes over.
+                // the loop checks gameOver again after this wait, and
+                // only then do we go to gameOverScreen.
+                // "Press enter to continue..." is 26 chars, col 19
+                do Output.moveCursor(22, 19);
+                do Output.printString(mNextRound);
+                do waitForEnter();
+            }
+
+            // game over screen with the pirate-flanked title.
+            // waitForEnter is the restart trigger - it blocks until
+            // ENTER is pressed and released, then the outer loop shows
+            // the title screen again for another game
+            do gameOverScreen();
+            do waitForEnter();
+        }
+        return;
+    }
+}

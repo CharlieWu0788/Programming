@@ -1,0 +1,100 @@
+/* The PlayerIcons class handles the display of the possible towers players can place, including their
+ * cost, name, and which tower they've currently selected. 
+ */
+
+class PlayerIcons {
+    field String tetoName;
+    field String mariName;
+    field String drPName;
+    field String inklingName;
+    field String tetoCost;
+    field String mariCost;
+    field String drPCost;
+    field String inklingCost;
+
+    constructor PlayerIcons new() {
+        let tetoName    = "Teto";
+        let mariName    = "Mari";
+        let drPName     = "Dr.P";
+        let inklingName = "Inkling";
+        let tetoCost    = "Cost: 4";
+        let mariCost    = "Cost: 3";
+        let drPCost     = "Cost: 10";
+        let inklingCost = "Cost: 7";
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //draws the number needed to select an object in a rectangle
+    method void drawNumbers(int x, int y) {
+        do Screen.setColor(true);
+        do Screen.drawLine(x + 4, y + 10, x + 28, y + 10);
+        do Screen.drawLine(x + 4, y + 44, x + 28, y + 44);
+        do Screen.drawLine(x + 4, y + 10, x + 4,  y + 44);
+        do Screen.drawLine(x + 28, y + 10, x + 28, y + 44);
+        return;
+    }
+
+    //draws a rectangle for tower info
+    method void drawSlotBorder(int index) {
+        var int slotY;
+        let slotY = index * 55;
+        do Screen.setColor(true);
+        do Screen.drawLine(416, slotY, 511, slotY);
+        do Screen.drawLine(416, slotY + 54, 511, slotY + 54);
+        do Screen.drawLine(416, slotY, 416, slotY + 54);
+        do Screen.drawLine(511, slotY, 511, slotY + 54);
+        return;
+    }
+
+    //draws all the slots and necessary information needed for the possible towers
+    method void drawTowerPanel() {
+        var int i;
+        let i = 0;
+        while (i < 4) {
+            do drawNumbers(384, i * 55);
+            do drawSlotBorder(i);
+            let i = i + 1;
+        }
+
+        //numbers associated with each tower
+        do Output.moveCursor(2,  50);
+        do Output.printString("1");
+        do Output.moveCursor(7,  50);
+        do Output.printString("2");
+        do Output.moveCursor(12, 50);
+        do Output.printString("3");
+        do Output.moveCursor(17, 50);
+        do Output.printString("4");
+
+        //slot 0: Teto
+        do Output.moveCursor(1, 53);
+        do Output.printString(tetoName);
+        do Output.moveCursor(3, 53);
+        do Output.printString(tetoCost);
+
+        //slot 1: Mari
+        do Output.moveCursor(6, 53);
+        do Output.printString(mariName);
+        do Output.moveCursor(8, 53);
+        do Output.printString(mariCost);
+
+        //slot 2: Dr.P
+        do Output.moveCursor(11, 53);
+        do Output.printString(drPName);
+        do Output.moveCursor(13, 53);
+        do Output.printString(drPCost);
+
+        //slot 3: Inkling
+        do Output.moveCursor(16, 53);
+        do Output.printString(inklingName);
+        do Output.moveCursor(18, 53);
+        do Output.printString(inklingCost);
+
+        return;
+    }
+}

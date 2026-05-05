@@ -1,0 +1,22 @@
+class Collision {
+    function boolean intersects(int ax, int ay, int aw, int ah, int bx, int by, int bw, int bh) {
+        //  stops early if one box is fully left of the other box.
+        if ((ax + aw) < bx) {
+            return false;
+        }
+        if ((bx + bw) < ax) {
+            return false;
+        }
+
+        // stops early if one box is fully above the other box.
+        if ((ay + ah) < by) {
+            return false;
+        }
+        if ((by + bh) < ay) {
+            return false;
+        }
+
+        // the two boxes overlap.
+        return true;
+    }
+}

@@ -1,0 +1,530 @@
+function Obstacles.new 0
+    push constant 5
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 4
+    push constant 9001
+    pop this 3
+    push constant 0
+    pop this 2
+    push constant 50
+    call Array.new 1
+    pop this 0
+    push constant 50
+    call Array.new 1
+    pop this 1
+    push pointer 0
+    return
+function Obstacles.isNear 2
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push argument 3
+    sub
+    pop local 0
+    push argument 2
+    push argument 4
+    sub
+    pop local 1
+    push local 0
+    push constant 0
+    lt
+    not
+    if-goto Obstacles_1
+    push local 0
+    neg
+    pop local 0
+    goto Obstacles_0
+label Obstacles_1
+label Obstacles_0
+    push local 1
+    push constant 0
+    lt
+    not
+    if-goto Obstacles_3
+    push local 1
+    neg
+    pop local 1
+    goto Obstacles_2
+label Obstacles_3
+label Obstacles_2
+    push local 0
+    push constant 3
+    lt
+    push local 1
+    push constant 3
+    lt
+    and
+    return
+function Obstacles.addObstacle 5
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 3
+    push constant 0
+    pop local 2
+label Obstacles_4
+    push local 2
+    not
+    push local 3
+    push constant 50
+    lt
+    and
+    not
+    if-goto Obstacles_5
+    push this 3
+    push constant 31
+    call Math.multiply 2
+    push constant 7
+    add
+    pop this 3
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Obstacles_7
+    push this 3
+    neg
+    pop this 3
+    goto Obstacles_6
+label Obstacles_7
+label Obstacles_6
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Obstacles_9
+    push constant 32767
+    pop this 3
+    goto Obstacles_8
+label Obstacles_9
+label Obstacles_8
+    push constant 2
+    push this 3
+    push this 3
+    push constant 28
+    call Math.divide 2
+    push constant 28
+    call Math.multiply 2
+    sub
+    add
+    pop local 0
+    push local 0
+    push constant 2
+    lt
+    not
+    if-goto Obstacles_11
+    push constant 2
+    pop local 0
+    goto Obstacles_10
+label Obstacles_11
+label Obstacles_10
+    push local 0
+    push constant 29
+    gt
+    not
+    if-goto Obstacles_13
+    push constant 29
+    pop local 0
+    goto Obstacles_12
+label Obstacles_13
+label Obstacles_12
+    push this 3
+    push constant 31
+    call Math.multiply 2
+    push constant 7
+    add
+    pop this 3
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Obstacles_15
+    push this 3
+    neg
+    pop this 3
+    goto Obstacles_14
+label Obstacles_15
+label Obstacles_14
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Obstacles_17
+    push constant 32767
+    pop this 3
+    goto Obstacles_16
+label Obstacles_17
+label Obstacles_16
+    push constant 2
+    push this 3
+    push this 3
+    push constant 12
+    call Math.divide 2
+    push constant 12
+    call Math.multiply 2
+    sub
+    add
+    pop local 1
+    push local 1
+    push constant 2
+    lt
+    not
+    if-goto Obstacles_19
+    push constant 2
+    pop local 1
+    goto Obstacles_18
+label Obstacles_19
+label Obstacles_18
+    push local 1
+    push constant 13
+    gt
+    not
+    if-goto Obstacles_21
+    push constant 13
+    pop local 1
+    goto Obstacles_20
+label Obstacles_21
+label Obstacles_20
+    push constant 1
+    neg
+    pop local 2
+    push constant 0
+    pop local 4
+label Obstacles_22
+    push local 4
+    push argument 3
+    lt
+    not
+    if-goto Obstacles_23
+    push pointer 0
+    push local 0
+    push local 1
+    push local 4
+    push argument 1
+    add
+    pop pointer 1
+    push that 0
+    push local 4
+    push argument 2
+    add
+    pop pointer 1
+    push that 0
+    call Obstacles.isNear 5
+    not
+    if-goto Obstacles_25
+    push constant 0
+    pop local 2
+    goto Obstacles_24
+label Obstacles_25
+label Obstacles_24
+    push local 4
+    push constant 1
+    add
+    pop local 4
+    goto Obstacles_22
+label Obstacles_23
+    push local 0
+    push argument 4
+    eq
+    push local 1
+    push argument 5
+    eq
+    and
+    not
+    if-goto Obstacles_27
+    push constant 0
+    pop local 2
+    goto Obstacles_26
+label Obstacles_27
+label Obstacles_26
+    push constant 0
+    pop local 4
+label Obstacles_28
+    push local 4
+    push this 2
+    lt
+    not
+    if-goto Obstacles_29
+    push local 0
+    push local 4
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    eq
+    push local 1
+    push local 4
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    eq
+    and
+    not
+    if-goto Obstacles_31
+    push constant 0
+    pop local 2
+    goto Obstacles_30
+label Obstacles_31
+label Obstacles_30
+    push local 4
+    push constant 1
+    add
+    pop local 4
+    goto Obstacles_28
+label Obstacles_29
+    push local 3
+    push constant 1
+    add
+    pop local 3
+    goto Obstacles_4
+label Obstacles_5
+    push local 2
+    not
+    if-goto Obstacles_33
+    push this 2
+    push this 0
+    add
+    push local 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push this 2
+    push this 1
+    add
+    push local 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push this 2
+    push constant 1
+    add
+    pop this 2
+    push pointer 0
+    push this 2
+    push constant 1
+    sub
+    call Obstacles.drawOne 2
+    pop temp 0
+    goto Obstacles_32
+label Obstacles_33
+label Obstacles_32
+    push constant 0
+    return
+function Obstacles.drawOne 2
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push this 4
+    call Math.multiply 2
+    pop local 0
+    push argument 1
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push this 4
+    call Math.multiply 2
+    pop local 1
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    push local 1
+    push constant 1
+    add
+    push local 0
+    push this 4
+    add
+    push constant 2
+    sub
+    push local 1
+    push this 4
+    add
+    push constant 2
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push local 0
+    push constant 3
+    add
+    push local 1
+    push constant 3
+    add
+    push local 0
+    push this 4
+    add
+    push constant 3
+    sub
+    push local 1
+    push this 4
+    add
+    push constant 3
+    sub
+    call Screen.drawLine 4
+    pop temp 0
+    push local 0
+    push this 4
+    add
+    push constant 3
+    sub
+    push local 1
+    push constant 3
+    add
+    push local 0
+    push constant 3
+    add
+    push local 1
+    push this 4
+    add
+    push constant 3
+    sub
+    call Screen.drawLine 4
+    pop temp 0
+    push constant 0
+    return
+function Obstacles.draw 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Obstacles_34
+    push local 0
+    push this 2
+    lt
+    not
+    if-goto Obstacles_35
+    push pointer 0
+    push local 0
+    call Obstacles.drawOne 2
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Obstacles_34
+label Obstacles_35
+    push constant 0
+    return
+function Obstacles.hitsObstacle 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Obstacles_36
+    push local 0
+    push this 2
+    lt
+    not
+    if-goto Obstacles_37
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push argument 1
+    eq
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push argument 2
+    eq
+    and
+    not
+    if-goto Obstacles_39
+    push constant 1
+    neg
+    return
+    goto Obstacles_38
+label Obstacles_39
+label Obstacles_38
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Obstacles_36
+label Obstacles_37
+    push constant 0
+    return
+function Obstacles.reset 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop this 2
+    push constant 0
+    return
+function Obstacles.addForScore 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push argument 1
+    push constant 5
+    call Math.divide 2
+    push constant 5
+    call Math.multiply 2
+    sub
+    push constant 0
+    eq
+    not
+    if-goto Obstacles_41
+    push pointer 0
+    push argument 2
+    push argument 3
+    push argument 4
+    push argument 5
+    push argument 6
+    call Obstacles.addObstacle 6
+    pop temp 0
+    push argument 1
+    push constant 9
+    gt
+    not
+    if-goto Obstacles_43
+    push pointer 0
+    push argument 2
+    push argument 3
+    push argument 4
+    push argument 5
+    push argument 6
+    call Obstacles.addObstacle 6
+    pop temp 0
+    goto Obstacles_42
+label Obstacles_43
+label Obstacles_42
+    push argument 1
+    push constant 14
+    gt
+    not
+    if-goto Obstacles_45
+    push pointer 0
+    push argument 2
+    push argument 3
+    push argument 4
+    push argument 5
+    push argument 6
+    call Obstacles.addObstacle 6
+    pop temp 0
+    goto Obstacles_44
+label Obstacles_45
+label Obstacles_44
+    goto Obstacles_40
+label Obstacles_41
+label Obstacles_40
+    push constant 0
+    return

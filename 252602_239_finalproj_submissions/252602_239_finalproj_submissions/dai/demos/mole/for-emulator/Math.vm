@@ -1,0 +1,216 @@
+function Math.init 0
+push constant 0
+return
+function Math.abs 0
+push argument 0
+push constant 0
+lt
+not
+if-goto L0
+push argument 0
+neg
+return
+label L0
+push argument 0
+return
+function Math.min 0
+push argument 0
+push argument 1
+lt
+not
+if-goto L2
+push argument 0
+return
+label L2
+push argument 1
+return
+function Math.max 0
+push argument 0
+push argument 1
+lt
+not
+if-goto L4
+push argument 1
+return
+label L4
+push argument 0
+return
+function Math.multiply 3
+push constant 0
+pop local 0
+push argument 0
+pop local 1
+push constant 1
+pop local 2
+label L6
+push local 2
+push constant 0
+eq
+not
+not
+if-goto L7
+push argument 1
+push local 2
+and
+push constant 0
+eq
+not
+not
+if-goto L8
+push local 0
+push local 1
+add
+pop local 0
+label L8
+push local 1
+push local 1
+add
+pop local 1
+push local 2
+push local 2
+add
+pop local 2
+goto L6
+label L7
+push local 0
+return
+function Math.divide 2
+push argument 1
+push constant 0
+eq
+not
+if-goto L10
+push constant 0
+return
+label L10
+push constant 0
+pop local 1
+push argument 0
+push constant 0
+lt
+not
+if-goto L12
+push argument 0
+neg
+pop argument 0
+push local 1
+not
+pop local 1
+label L12
+push argument 1
+push constant 0
+lt
+not
+if-goto L14
+push argument 1
+neg
+pop argument 1
+push local 1
+not
+pop local 1
+label L14
+push argument 0
+push argument 1
+call Math.divideHelper 2
+pop local 0
+push local 1
+not
+if-goto L16
+push local 0
+neg
+return
+label L16
+push local 0
+return
+function Math.divideHelper 1
+push argument 1
+push argument 0
+gt
+not
+if-goto L18
+push constant 0
+return
+label L18
+push argument 1
+push constant 0
+lt
+not
+if-goto L20
+push constant 0
+return
+label L20
+push argument 0
+push argument 1
+push argument 1
+add
+call Math.divideHelper 2
+pop local 0
+push argument 0
+push local 0
+push local 0
+add
+push argument 1
+call Math.multiply 2
+sub
+push argument 1
+lt
+not
+if-goto L22
+push local 0
+push local 0
+add
+return
+label L22
+push local 0
+push local 0
+add
+push constant 1
+add
+return
+function Math.sqrt 5
+push constant 0
+pop local 0
+push constant 7
+pop local 1
+push constant 128
+pop local 4
+label L24
+push local 1
+push constant 0
+lt
+not
+not
+if-goto L25
+push local 0
+push local 4
+add
+pop local 2
+push local 2
+push local 2
+call Math.multiply 2
+pop local 3
+push local 3
+push argument 0
+gt
+not
+push local 3
+push constant 0
+gt
+and
+not
+if-goto L26
+push local 2
+pop local 0
+label L26
+push local 1
+push constant 1
+sub
+pop local 1
+push local 4
+push constant 2
+call Math.divide 2
+pop local 4
+goto L24
+label L25
+push local 0
+return

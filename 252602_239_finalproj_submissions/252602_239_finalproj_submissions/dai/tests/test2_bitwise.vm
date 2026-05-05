@@ -1,0 +1,9 @@
+// test 2: bitwise OR
+// 5 | 10 = 15
+// 5  = 0101
+// 10 = 1010
+// OR = 1111, all 4 LEDs should light up
+// LED: 1111
+push constant 5
+push constant 10
+or

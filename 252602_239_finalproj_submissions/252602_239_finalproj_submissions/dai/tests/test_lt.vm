@@ -1,0 +1,7 @@
+// test: less than edge case
+// 10 < 10 should be false (equal, not less)
+// false = 0x0000, low 4 bits = 0000
+// LED: 0000 (all off)
+push constant 10
+push constant 10
+lt

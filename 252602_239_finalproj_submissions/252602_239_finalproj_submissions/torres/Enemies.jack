@@ -1,0 +1,321 @@
+class Enemies {
+    field int gridX, gridY; //location of the enemy, where gridX can range from 0-23, and y from 0-3
+                            //gridX will move ahead 16 bits instead of 48 in order to make movement more gradual
+    field int health;       //the health of the enemy
+    field int enemyID;      /*a numerical value for the enemy to determine which type of enemy we want
+                            * 0 = null
+                            * 1 = basic enemy
+                            * 2 = the wall, skipped leg day, so walks slow, but has a lot of health
+                            * 3 = the blob, rushes towards the front, but fragile
+                            * 4 = the thinker, unable to think straight, let alone walk straight (moves diagonally forward every movement oppurtunity)*/
+    field int counter;      //a counter to count how many times Sys.wait() has been used in TDGame
+    field String gameOver;
+    field int direction;    //used to determine which direction the thinker will jump. 1 = up, -1 = down
+
+    constructor Enemies new(int Ax, int Ay, int Ahealth, int ID) {
+        let gridX = Ax;
+        let gridY = Ay;
+        let health = Ahealth;
+        let enemyID = ID;
+        let counter = 0;
+        let gameOver = "       You got overwhelmed. Game over D:        ";
+        let direction = 1;
+        return this;
+    }
+
+    method void dispose() {
+        do gameOver.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //returns the current row the enemy is on to help PlayerObjects detect an enemy
+    method int getRow() {
+        return gridY;
+    }
+
+    method void setRow(int row) {
+        let gridY = row;
+        return;
+    }
+
+    method int getGridX() {
+        return gridX;
+    }
+
+    method void takeDamage(int amount) {
+        let health = health - amount;
+        return;
+    }
+
+    method int getHealth() {
+        return health;
+    }
+
+    method void draw() {
+	    var int memAddress;
+        var int location;
+        var int x, y;
+        var int column;
+        let x = 2 + (gridX * 16);
+        let y = 2 + (gridY * 48);
+
+        let column = x / 16;
+        let location = (y * 32) + column;
+        let memAddress = 16384+location;
+        if (enemyID = 1) {       //basic enemy
+            // column 0
+            do Memory.poke(memAddress, 960);
+            do Memory.poke(memAddress +32, 2016);
+            do Memory.poke(memAddress +64, 1696);
+            do Memory.poke(memAddress +96, 2016);
+            do Memory.poke(memAddress +128, 2016);
+            do Memory.poke(memAddress +160, 2016);
+            do Memory.poke(memAddress +192, 384);
+            do Memory.poke(memAddress +224, 960);
+            do Memory.poke(memAddress +256, 2016);
+            do Memory.poke(memAddress +288, 3504);
+            do Memory.poke(memAddress +320, 6552);
+            do Memory.poke(memAddress +352, 4488);
+            do Memory.poke(memAddress +384, 14748);
+            do Memory.poke(memAddress +416, 14748);
+            do Memory.poke(memAddress +448, 14748);
+            do Memory.poke(memAddress +480, 960);
+            do Memory.poke(memAddress +512, 1632);
+            do Memory.poke(memAddress +544, 1056);
+            do Memory.poke(memAddress +576, 3120);
+            do Memory.poke(memAddress +608, 2064);
+            do Memory.poke(memAddress +640, 6168);
+            do Memory.poke(memAddress +672, 4104);
+            do Memory.poke(memAddress +704, 12300);
+            do Memory.poke(memAddress +736, 8196);
+            do Memory.poke(memAddress +768, 8196);
+            do Memory.poke(memAddress +800, 8196);
+            do Memory.poke(memAddress +832, -2017);
+            do Memory.poke(memAddress +864, -2017);
+            do Memory.poke(memAddress +896, -2017);
+            do Memory.poke(memAddress +928, -2017);
+            do Memory.poke(memAddress +960, -2017);
+            do Memory.poke(memAddress +992, 28686);
+            return;
+        }
+        if (enemyID = 2) {
+            // column 0
+            do Memory.poke(memAddress, 0);
+            do Memory.poke(memAddress +32, 0);
+            do Memory.poke(memAddress +64, 0);
+            do Memory.poke(memAddress +96, 0);
+            do Memory.poke(memAddress +128, 0);
+            do Memory.poke(memAddress +160, 0);
+            do Memory.poke(memAddress +192, 0);
+            do Memory.poke(memAddress +224, 2016);
+            do Memory.poke(memAddress +256, 2064);
+            do Memory.poke(memAddress +288, 4104);
+            do Memory.poke(memAddress +320, 8196);
+            do Memory.poke(memAddress +352, 8468);
+            do Memory.poke(memAddress +384, 8628);
+            do Memory.poke(memAddress +416, 8628);
+            do Memory.poke(memAddress +448, 8196);
+            do Memory.poke(memAddress +480, 8196);
+            do Memory.poke(memAddress +512, 4104);
+            do Memory.poke(memAddress +544, 3120);
+            do Memory.poke(memAddress +576, 2016);
+            do Memory.poke(memAddress +608, 1056);
+            do Memory.poke(memAddress +640, 6168);
+            do Memory.poke(memAddress +672, 31806);
+            do Memory.poke(memAddress +704, -32191);
+            do Memory.poke(memAddress +736, -32383);
+            do Memory.poke(memAddress +768, -28663);
+            do Memory.poke(memAddress +800, -28663);
+            do Memory.poke(memAddress +832, -26599);
+            do Memory.poke(memAddress +864, -26599);
+            do Memory.poke(memAddress +896, -25543);
+            do Memory.poke(memAddress +928, -27607);
+            do Memory.poke(memAddress +960, -2449);
+            do Memory.poke(memAddress +992, -28087);
+            do Memory.poke(memAddress +1024, -27703);
+            do Memory.poke(memAddress +1056, 25158);
+            do Memory.poke(memAddress +1088, 576);
+            do Memory.poke(memAddress +1120, 576);
+            do Memory.poke(memAddress +1152, 576);
+            do Memory.poke(memAddress +1184, 576);
+            do Memory.poke(memAddress +1216, 576);
+            do Memory.poke(memAddress +1248, 576);
+            do Memory.poke(memAddress +1280, 576);
+            do Memory.poke(memAddress +1312, 3696);
+            do Memory.poke(memAddress +1344, 0);
+            do Memory.poke(memAddress +1376, 0);
+            do Memory.poke(memAddress +1408, 0);
+            do Memory.poke(memAddress +1440, 0);
+            do Memory.poke(memAddress +1472, 0);
+            do Memory.poke(memAddress +1504, 0);
+            return;
+        }
+        if (enemyID = 3) {         //the blob
+            // column 0
+            do Memory.poke(memAddress, 0);
+            do Memory.poke(memAddress +32, 0);
+            do Memory.poke(memAddress +64, 0);
+            do Memory.poke(memAddress +96, 0);
+            do Memory.poke(memAddress +128, 0);
+            do Memory.poke(memAddress +160, 0);
+            do Memory.poke(memAddress +192, 0);
+            do Memory.poke(memAddress +224, 0);
+            do Memory.poke(memAddress +256, 0);
+            do Memory.poke(memAddress +288, 0);
+            do Memory.poke(memAddress +320, 0);
+            do Memory.poke(memAddress +352, 0);
+            do Memory.poke(memAddress +384, 0);
+            do Memory.poke(memAddress +416, 2016);
+            do Memory.poke(memAddress +448, 7192);
+            do Memory.poke(memAddress +480, 12300);
+            do Memory.poke(memAddress +512, 24578);
+            do Memory.poke(memAddress +544, 16906);
+            do Memory.poke(memAddress +576, 17178);
+            do Memory.poke(memAddress +608, -15431);
+            do Memory.poke(memAddress +640, -32767);
+            do Memory.poke(memAddress +672, -32767);
+            do Memory.poke(memAddress +704, -32541);
+            do Memory.poke(memAddress +736, -32590);
+            do Memory.poke(memAddress +768, -32610);
+            do Memory.poke(memAddress +800, -32576);
+            do Memory.poke(memAddress +832, -32697);
+            do Memory.poke(memAddress +864, -16259);
+            do Memory.poke(memAddress +896, 16385);
+            do Memory.poke(memAddress +928, 16385);
+            do Memory.poke(memAddress +960, 16385);
+            do Memory.poke(memAddress +992, 16387);
+            do Memory.poke(memAddress +1024, 16386);
+            do Memory.poke(memAddress +1056, 24578);
+            do Memory.poke(memAddress +1088, 8196);
+            do Memory.poke(memAddress +1120, 28678);
+            do Memory.poke(memAddress +1152, -4081);
+            do Memory.poke(memAddress +1184, -1);
+            do Memory.poke(memAddress +1216, -1);
+            do Memory.poke(memAddress +1248, -1);
+            do Memory.poke(memAddress +1280, 32766);
+            do Memory.poke(memAddress +1312, 16380);
+            do Memory.poke(memAddress +1344, 0);
+            do Memory.poke(memAddress +1376, 0);
+            do Memory.poke(memAddress +1408, 0);
+            do Memory.poke(memAddress +1440, 0);
+            do Memory.poke(memAddress +1472, 0);
+            do Memory.poke(memAddress +1504, 0);
+            return;
+        }
+        if (enemyID = 4) {         //the thinker
+            // column 0
+            do Memory.poke(memAddress, 0);
+            do Memory.poke(memAddress +32, 0);
+            do Memory.poke(memAddress +64, 254);
+            do Memory.poke(memAddress +96, 387);
+            do Memory.poke(memAddress +128, 257);
+            do Memory.poke(memAddress +160, 275);
+            do Memory.poke(memAddress +192, 311);
+            do Memory.poke(memAddress +224, 257);
+            do Memory.poke(memAddress +256, 257);
+            do Memory.poke(memAddress +288, 198);
+            do Memory.poke(memAddress +320, 58);
+            do Memory.poke(memAddress +352, 98);
+            do Memory.poke(memAddress +384, 196);
+            do Memory.poke(memAddress +416, 452);
+            do Memory.poke(memAddress +448, 936);
+            do Memory.poke(memAddress +480, 1832);
+            do Memory.poke(memAddress +512, 3600);
+            do Memory.poke(memAddress +544, 7184);
+            do Memory.poke(memAddress +576, 6168);
+            do Memory.poke(memAddress +608, 6184);
+            do Memory.poke(memAddress +640, 6344);
+            do Memory.poke(memAddress +672, 6544);
+            do Memory.poke(memAddress +704, 7952);
+            do Memory.poke(memAddress +736, 8080);
+            do Memory.poke(memAddress +768, 16336);
+            do Memory.poke(memAddress +800, 32720);
+            do Memory.poke(memAddress +832, 32764);
+            do Memory.poke(memAddress +864, 32752);
+            do Memory.poke(memAddress +896, 16368);
+            do Memory.poke(memAddress +928, 16320);
+            do Memory.poke(memAddress +960, 8128);
+            do Memory.poke(memAddress +992, 3968);
+            do Memory.poke(memAddress +1024, 1536);
+            do Memory.poke(memAddress +1056, 0);
+            do Memory.poke(memAddress +1088, 0);
+            do Memory.poke(memAddress +1120, 0);
+            do Memory.poke(memAddress +1152, 0);
+            do Memory.poke(memAddress +1184, 0);
+            do Memory.poke(memAddress +1216, 0);
+            do Memory.poke(memAddress +1248, 16380);
+            do Memory.poke(memAddress +1280, 32766);
+            do Memory.poke(memAddress +1312, 32766);
+            do Memory.poke(memAddress +1344, 32766);
+            do Memory.poke(memAddress +1376, 16380);
+            do Memory.poke(memAddress +1408, 0);
+            do Memory.poke(memAddress +1440, 0);
+            do Memory.poke(memAddress +1472, 0);
+            do Memory.poke(memAddress +1504, 0);
+            return;
+        }
+        return;
+    }
+
+    method void eraseEnemy() {
+        var int x, y;
+
+        //prevents the program from crashing when it tries to erase an enemy that could be considered off screen
+        if (gridX < 0) {
+            return;
+        }
+        let x = 2 + (gridX * 16);
+        let y = 2 + (gridY * 48);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + 15, y + 47);
+        return;
+    }
+
+    //moves the enemy across the screen
+    method void move(int time) {
+        do eraseEnemy();
+        let counter = counter + time;
+        if (enemyID = 1) {             //basic enemy
+            if (counter > 999) {
+                let counter = 0;
+                let gridX = gridX - 1;
+            }
+        }
+        if (enemyID = 2) {             //the wall moves at a 5th of the basic enemy's speed
+            if (counter > 4999) {
+                let counter = 0;
+                let gridX = gridX - 1;
+            }
+        }
+        if (enemyID = 3) {
+            if (counter > 329) {       //the blob moves quickly, so counter threshold should be lower than basic enemy
+                let counter = 0;
+                let gridX = gridX - 1;
+            }
+        }
+        if (enemyID = 4) {
+            if (counter > 1224) {       //the thinker, moves slower than the basic enemy, faster than the wall, but moves diagonally
+                let counter = 0;
+                let gridX = gridX - 1;
+                let gridY = gridY - direction;
+                if (gridY < 0) {        //stick to top and reverse
+                    let gridY = 0;
+                    let direction = -direction;
+                }
+                if (gridY > 3) {        //stick to bottom and reverse
+                    let gridY = 3;
+                    let direction = -direction;
+                }
+            }
+        }
+        if (gridX < 0) {       //detects if the left edge of the grid has been reached
+                do Output.moveCursor(20, 0);
+                do Output.printString(gameOver);
+                do Sys.halt();
+                return;
+        }
+        do draw();
+        return;
+    }
+}

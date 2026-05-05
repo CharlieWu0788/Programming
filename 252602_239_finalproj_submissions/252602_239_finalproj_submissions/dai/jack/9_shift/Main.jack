@@ -1,0 +1,18 @@
+// program 9: left shift via doubling
+// 3 << 2 = 12
+// jack has no shift operator so x + x doubles the value
+// do it twice to shift left by 2
+// LED: 1100
+class Main {
+    function void main() {
+        var int x, i;
+        let x = 3;
+        let i = 0;
+        while (i < 2) {
+            let x = x + x;
+            let i = i + 1;
+        }
+        // x = 12
+        return;
+    }
+}

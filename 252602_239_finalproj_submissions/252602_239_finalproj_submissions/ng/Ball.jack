@@ -1,0 +1,95 @@
+class Ball {
+    field int lane;
+    field int x;
+    field int y;
+    field int radius;
+
+    method int targetX() {
+        if (lane = 0) { return 160; }
+        if (lane = 1) { return 256; }
+        return 352;
+    }
+
+    constructor Ball new() {
+        let lane   = 1;
+        let x      = 256;
+        let y      = 220;
+        let radius = 8;
+        return this;
+    }
+
+    method void update() {
+        var int tx, diff;
+
+        // Slide x toward target lane
+        let tx   = targetX();
+        let diff = tx - x;
+        if (diff > 3)  { let x = x + 3; }
+        if (diff < -3) { let x = x - 3; }
+        if ((diff > -3) & (diff < 3)) { let x = tx; }
+
+        return;
+    }
+
+    method void resetPosition() {
+        let lane = 1;
+        let x    = 256;
+        let y    = 220;
+        return;
+    }
+
+    method void moveLeft() {
+        if (lane > 0) { let lane = lane - 1; }
+        return;
+    }
+
+    method void moveRight() {
+        if (lane < 2) { let lane = lane + 1; }
+        return;
+    }
+
+    method int getLane() { return lane; }
+    method int getX()    { return x;    }
+    method int getY()    { return y;    }
+
+    method void draw() {
+        if ((x - radius) < 0)   { return; }
+        if ((x + radius) > 511) { return; }
+        if ((y - radius) < 0)   { return; }
+        if ((y + radius) > 255) { return; }
+        do Screen.setColor(true);
+        do Screen.drawCircle(x, y, radius);
+        return;
+    }
+
+    method boolean collidesWith(Obstacle obstacle) {
+        var int obX, obY, obW, obH;
+
+        // Only test when obstacle is close enough to reach the ball's y position.
+        // Threshold z<50 is generous enough to survive the accelerating speed jumps.
+        if (obstacle.getZ() > 50) { return false; }
+
+        let obX = obstacle.getX();
+        let obY = obstacle.getY();
+        let obW = obstacle.getWidth();
+        let obH = obstacle.getHeight();
+
+        // Use actual screen x position (not lane field) so sliding ball is
+        // never immune mid-transition and never blamed for a lane it has left.
+        if ((x + radius) > obX) {
+            if ((x - radius) < (obX + obW)) {
+                if ((y + radius) > obY) {
+                    if ((y - radius) < (obY + obH)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

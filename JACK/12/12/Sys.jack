@@ -1,0 +1,62 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+/**
+ * A library of system functions.
+ */
+class Sys
+{
+    /** Performs all the initializations required by the OS. */
+    function void init()
+    {
+        do Math.init();
+        do Memory.init();
+        do Screen.init();
+        do Output.init();
+        do Keyboard.init();
+        do Main.main();
+        do Sys.halt();
+        return;
+    }
+
+    /** Halts the program execution. */
+    function void halt()
+    {
+        while (true)
+        {
+        }
+        return;
+    }
+
+    /** Waits approximately duration milliseconds. */
+    function void wait(int duration)
+    {
+        var int i;
+        var int j;
+
+        let i = 0;
+
+        while (i < duration)
+        {
+            let j = 0;
+
+            while (j < 200)
+            {
+                let j = j + 1;
+            }
+
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    /** Displays the given error code and halts. */
+    function void error(int errorCode)
+    {
+        do Output.printString("ERR");
+        do Output.printInt(errorCode);
+        do Sys.halt();
+        return;
+    }
+}

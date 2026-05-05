@@ -1,0 +1,248 @@
+function Food.new 0
+    push constant 4
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 2
+    push constant 1337
+    pop this 3
+    push pointer 0
+    call Food.place 1
+    pop temp 0
+    push pointer 0
+    return
+function Food.place 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    push constant 31
+    call Math.multiply 2
+    push constant 7
+    add
+    pop this 3
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Food_1
+    push this 3
+    neg
+    pop this 3
+    goto Food_0
+label Food_1
+label Food_0
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Food_3
+    push constant 32767
+    pop this 3
+    goto Food_2
+label Food_3
+label Food_2
+    push constant 2
+    push this 3
+    push this 3
+    push constant 28
+    call Math.divide 2
+    push constant 28
+    call Math.multiply 2
+    sub
+    add
+    pop this 0
+    push this 0
+    push constant 2
+    lt
+    not
+    if-goto Food_5
+    push constant 2
+    pop this 0
+    goto Food_4
+label Food_5
+label Food_4
+    push this 0
+    push constant 29
+    gt
+    not
+    if-goto Food_7
+    push constant 29
+    pop this 0
+    goto Food_6
+label Food_7
+label Food_6
+    push this 3
+    push constant 31
+    call Math.multiply 2
+    push constant 7
+    add
+    pop this 3
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Food_9
+    push this 3
+    neg
+    pop this 3
+    goto Food_8
+label Food_9
+label Food_8
+    push this 3
+    push constant 0
+    lt
+    not
+    if-goto Food_11
+    push constant 32767
+    pop this 3
+    goto Food_10
+label Food_11
+label Food_10
+    push constant 2
+    push this 3
+    push this 3
+    push constant 12
+    call Math.divide 2
+    push constant 12
+    call Math.multiply 2
+    sub
+    add
+    pop this 1
+    push this 1
+    push constant 2
+    lt
+    not
+    if-goto Food_13
+    push constant 2
+    pop this 1
+    goto Food_12
+label Food_13
+label Food_12
+    push this 1
+    push constant 13
+    gt
+    not
+    if-goto Food_15
+    push constant 13
+    pop this 1
+    goto Food_14
+label Food_15
+label Food_14
+    push constant 0
+    return
+function Food.draw 2
+    push argument 0
+    pop pointer 0
+    push this 0
+    push this 2
+    call Math.multiply 2
+    pop local 0
+    push this 1
+    push this 2
+    call Math.multiply 2
+    pop local 1
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push local 0
+    push constant 8
+    add
+    push local 1
+    push constant 9
+    add
+    push constant 5
+    call Screen.drawCircle 3
+    pop temp 0
+    push local 0
+    push constant 7
+    add
+    push local 1
+    push constant 3
+    add
+    push local 0
+    push constant 9
+    add
+    push local 1
+    push constant 5
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 0
+    push constant 9
+    add
+    push local 1
+    push constant 2
+    add
+    push local 0
+    push constant 12
+    add
+    push local 1
+    push constant 4
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 0
+    return
+function Food.erase 2
+    push argument 0
+    pop pointer 0
+    push this 0
+    push this 2
+    call Math.multiply 2
+    pop local 0
+    push this 1
+    push this 2
+    call Math.multiply 2
+    pop local 1
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push local 0
+    push local 1
+    push local 0
+    push this 2
+    add
+    push constant 1
+    sub
+    push local 1
+    push this 2
+    add
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 0
+    return
+function Food.isEaten 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 0
+    eq
+    push argument 2
+    push this 1
+    eq
+    and
+    return
+function Food.respawn 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Food.place 1
+    pop temp 0
+    push pointer 0
+    call Food.draw 1
+    pop temp 0
+    push constant 0
+    return
+function Food.getX 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Food.getY 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return

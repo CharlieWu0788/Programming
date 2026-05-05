@@ -1,0 +1,84 @@
+// Math: multiply, divide, abs, min, max, sqrt.
+// no twoToThe array (Memory.alloc would land past AVR SRAM), masks
+// are computed inline by doubling.
+
+class Math {
+    function void init() {
+        return;
+    }
+
+    function int abs(int x) {
+        if (x < 0) { return -x; }
+        return x;
+    }
+
+    function int min(int a, int b) {
+        if (a < b) { return a; }
+        return b;
+    }
+
+    function int max(int a, int b) {
+        if (a < b) { return b; }
+        return a;
+    }
+
+    // shift-and-add multiply. mask doubles each iteration; loop exits when
+    // it overflows back to 0 after 16 doubles.
+    function int multiply(int x, int y) {
+        var int sum, shiftedX, mask;
+        let sum = 0;
+        let shiftedX = x;
+        let mask = 1;
+        while (~(mask = 0)) {
+            if (~((y & mask) = 0)) {
+                let sum = sum + shiftedX;
+            }
+            let shiftedX = shiftedX + shiftedX;
+            let mask = mask + mask;
+        }
+        return sum;
+    }
+
+    // recursive bit-shift divide, Hack book version. handles signs by
+    // taking abs first. Math.multiply gets called inside, so we lean on
+    // the function above.
+    function int divide(int x, int y) {
+        var int q;
+        var boolean neg;
+        if (y = 0) { return 0; }
+        let neg = false;
+        if (x < 0) { let x = -x; let neg = ~neg; }
+        if (y < 0) { let y = -y; let neg = ~neg; }
+        let q = Math.divideHelper(x, y);
+        if (neg) { return -q; }
+        return q;
+    }
+
+    function int divideHelper(int x, int y) {
+        var int q;
+        if (y > x) { return 0; }
+        if (y < 0) { return 0; }
+        let q = Math.divideHelper(x, y + y);
+        if ((x - Math.multiply(q + q, y)) < y) {
+            return q + q;
+        }
+        return q + q + 1;
+    }
+
+    function int sqrt(int x) {
+        var int y, j, approx, approxSq, mask;
+        let y = 0;
+        let j = 7;
+        let mask = 128;        // 1 << 7
+        while (~(j < 0)) {
+            let approx = y + mask;
+            let approxSq = Math.multiply(approx, approx);
+            if ((~(approxSq > x)) & (approxSq > 0)) {
+                let y = approx;
+            }
+            let j = j - 1;
+            let mask = mask / 2;
+        }
+        return y;
+    }
+}

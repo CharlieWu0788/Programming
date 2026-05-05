@@ -1,0 +1,1314 @@
+function Tetris.new 0
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push constant 20
+pop this 0
+push constant 25
+pop this 1
+push constant 10
+pop this 2
+push constant 4
+push constant 4
+push this 0
+push this 1
+push constant 8
+call DisplayGrid.new 5
+pop this 4
+push constant 3
+push constant 4
+call Enemy.new 2
+pop this 5
+push constant 6784
+pop this 3
+push pointer 0
+return
+function Tetris.dispose 0
+push argument 0
+pop pointer 0
+push this 4
+call DisplayGrid.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Tetris.drawBorder 2
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 2
+push constant 1
+add
+push argument 3
+push constant 1
+sub
+push argument 4
+push constant 1
+sub
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push argument 1
+push constant 3
+add
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 3
+push constant 3
+sub
+lt
+not
+if-goto WHILE_END0
+push local 0
+push argument 2
+call Screen.drawPixel 2
+pop temp 0
+push local 0
+push argument 4
+call Screen.drawPixel 2
+pop temp 0
+push local 0
+push argument 1
+push argument 5
+push constant 2
+add
+add
+gt
+push local 0
+push argument 3
+push argument 5
+push constant 2
+add
+sub
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push argument 2
+push argument 5
+add
+call Screen.drawPixel 2
+pop temp 0
+push local 0
+push argument 4
+push argument 5
+sub
+call Screen.drawPixel 2
+pop temp 0
+label IF_FALSE0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push argument 2
+push constant 3
+add
+pop local 0
+label WHILE_EXP1
+push local 0
+push argument 4
+push constant 3
+sub
+lt
+not
+if-goto WHILE_END1
+push argument 1
+push local 0
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push local 0
+call Screen.drawPixel 2
+pop temp 0
+push local 0
+push argument 2
+push argument 5
+push constant 2
+add
+add
+gt
+push local 0
+push argument 4
+push argument 5
+push constant 2
+add
+sub
+lt
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 1
+push argument 5
+add
+push local 0
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push argument 5
+sub
+push local 0
+call Screen.drawPixel 2
+pop temp 0
+label IF_FALSE1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push argument 1
+push constant 1
+add
+push argument 2
+push constant 1
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 2
+add
+push argument 2
+push constant 1
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 2
+push constant 2
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 2
+push constant 1
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 2
+sub
+push argument 2
+push constant 1
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 2
+push constant 2
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 4
+push constant 1
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 2
+add
+push argument 4
+push constant 1
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 4
+push constant 2
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 4
+push constant 1
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 2
+sub
+push argument 4
+push constant 1
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 4
+push constant 2
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 5
+add
+push argument 2
+push constant 1
+add
+push argument 5
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 2
+add
+push argument 5
+add
+push argument 2
+push constant 1
+add
+push argument 5
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 5
+add
+push argument 2
+push constant 2
+add
+push argument 5
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 5
+sub
+push argument 2
+push constant 1
+add
+push argument 5
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 2
+sub
+push argument 5
+sub
+push argument 2
+push constant 1
+add
+push argument 5
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 5
+sub
+push argument 2
+push constant 2
+add
+push argument 5
+add
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 5
+add
+push argument 4
+push constant 1
+sub
+push argument 5
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 2
+add
+push argument 5
+add
+push argument 4
+push constant 1
+sub
+push argument 5
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 5
+add
+push argument 4
+push constant 2
+sub
+push argument 5
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 5
+sub
+push argument 4
+push constant 1
+sub
+push argument 5
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 2
+sub
+push argument 5
+sub
+push argument 4
+push constant 1
+sub
+push argument 5
+sub
+call Screen.drawPixel 2
+pop temp 0
+push argument 3
+push constant 1
+sub
+push argument 5
+sub
+push argument 4
+push constant 2
+sub
+push argument 5
+sub
+call Screen.drawPixel 2
+pop temp 0
+push constant 0
+return
+function Tetris.drawNextTetro 9
+push argument 0
+pop pointer 0
+push constant 275
+pop local 0
+push constant 30
+pop local 1
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 0
+push constant 6
+sub
+push local 1
+push local 0
+push constant 30
+add
+push local 1
+push constant 24
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push argument 1
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 270
+pop local 0
+label IF_FALSE0
+push argument 1
+push constant 10
+call Tetromino.new 2
+pop local 7
+push local 7
+call Tetromino.getSprite 1
+pop local 8
+push constant 0
+pop local 2
+label WHILE_EXP0
+push local 2
+push local 7
+call Tetromino.getHeight 1
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 3
+label WHILE_EXP1
+push local 3
+push local 7
+call Tetromino.getWidth 1
+lt
+not
+if-goto WHILE_END1
+push local 2
+push local 7
+call Tetromino.getWidth 1
+call Math.multiply 2
+push local 3
+add
+pop local 6
+push local 6
+push local 8
+add
+pop pointer 1
+push that 0
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 6
+push constant 2
+add
+push local 3
+call Math.multiply 2
+push local 0
+add
+pop local 4
+push constant 6
+push constant 2
+add
+push local 2
+call Math.multiply 2
+push local 1
+add
+pop local 5
+push local 4
+push local 5
+push local 4
+push constant 6
+add
+push local 5
+push constant 6
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE1
+push local 3
+push constant 1
+add
+pop local 3
+goto WHILE_EXP1
+label WHILE_END1
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Tetris.animateZeke 2
+push argument 0
+pop pointer 0
+push argument 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 15
+pop local 1
+goto IF_END0
+label IF_FALSE0
+push constant 10
+pop local 1
+label IF_END0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push local 1
+lt
+not
+if-goto WHILE_END0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push constant 0
+push constant 0
+push constant 300
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push constant 0
+call Sprites.drawBackground 1
+pop temp 0
+push argument 2
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 5
+call Enemy.updateEntrance 1
+pop temp 0
+goto IF_END1
+label IF_FALSE1
+push this 5
+call Enemy.updateExit 1
+pop temp 0
+label IF_END1
+push this 5
+call Enemy.draw 1
+pop temp 0
+push this 3
+push this 5
+call Enemy.getHP 1
+call Sprites.drawHealthBar 2
+pop temp 0
+push pointer 0
+push constant 315
+push constant 8
+push constant 505
+push constant 248
+push constant 2
+call Tetris.drawBorder 6
+pop temp 0
+push pointer 0
+push constant 262
+push constant 8
+push constant 310
+push constant 58
+push constant 2
+call Tetris.drawBorder 6
+pop temp 0
+push constant 1
+push constant 34
+call Output.moveCursor 2
+pop temp 0
+push constant 4
+call String.new 1
+push constant 78
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 88
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push pointer 0
+push argument 1
+call Tetris.drawNextTetro 2
+pop temp 0
+push constant 70
+call Sys.wait 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Tetris.moveTetromino 3
+push argument 0
+pop pointer 0
+push this 4
+push argument 1
+push constant 0
+call DisplayGrid.paintTetromino 3
+pop temp 0
+push this 4
+push argument 1
+push argument 2
+push argument 3
+call DisplayGrid.moveIsLegal 4
+pop local 2
+push local 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+push argument 2
+call Tetromino.setX 2
+pop temp 0
+push argument 1
+push argument 3
+call Tetromino.setY 2
+pop temp 0
+label IF_FALSE0
+push this 4
+push argument 1
+push constant 1
+call DisplayGrid.paintTetromino 3
+pop temp 0
+push local 2
+return
+function Tetris.rotateAndKick 2
+push argument 0
+pop pointer 0
+push this 4
+push argument 1
+push constant 0
+call DisplayGrid.paintTetromino 3
+pop temp 0
+push argument 1
+call Tetromino.rotateRight 1
+pop temp 0
+push this 4
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push argument 1
+call Tetromino.getY 1
+call DisplayGrid.moveIsLegal 4
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push constant 0
+pop local 1
+push this 4
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 1
+sub
+push argument 1
+call Tetromino.getY 1
+call DisplayGrid.moveIsLegal 4
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 1
+sub
+call Tetromino.setX 2
+pop temp 0
+push constant 0
+not
+pop local 1
+goto IF_END1
+label IF_FALSE1
+push this 4
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push argument 1
+call Tetromino.getY 1
+push constant 1
+sub
+call DisplayGrid.moveIsLegal 4
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push argument 1
+push argument 1
+call Tetromino.getY 1
+push constant 1
+sub
+call Tetromino.setY 2
+pop temp 0
+push constant 0
+not
+pop local 1
+goto IF_END2
+label IF_FALSE2
+push this 4
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 1
+add
+push argument 1
+call Tetromino.getY 1
+call DisplayGrid.moveIsLegal 4
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 1
+add
+call Tetromino.setX 2
+pop temp 0
+push constant 0
+not
+pop local 1
+label IF_FALSE3
+label IF_END2
+label IF_END1
+push local 1
+not
+push argument 1
+call Tetromino.getWidth 1
+push constant 4
+eq
+and
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push this 4
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 2
+sub
+push argument 1
+call Tetromino.getY 1
+call DisplayGrid.moveIsLegal 4
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 2
+sub
+call Tetromino.setX 2
+pop temp 0
+push constant 0
+not
+pop local 1
+goto IF_END5
+label IF_FALSE5
+push this 4
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push argument 1
+call Tetromino.getY 1
+push constant 2
+sub
+call DisplayGrid.moveIsLegal 4
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push argument 1
+push argument 1
+call Tetromino.getY 1
+push constant 2
+sub
+call Tetromino.setY 2
+pop temp 0
+push constant 0
+not
+pop local 1
+goto IF_END6
+label IF_FALSE6
+push this 4
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 2
+add
+push argument 1
+call Tetromino.getY 1
+call DisplayGrid.moveIsLegal 4
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push constant 2
+add
+call Tetromino.setX 2
+pop temp 0
+push constant 0
+not
+pop local 1
+label IF_FALSE7
+label IF_END6
+label IF_END5
+label IF_FALSE4
+push local 1
+not
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push argument 1
+call Tetromino.rotateLeft 1
+pop temp 0
+goto IF_END8
+label IF_FALSE8
+push this 4
+push argument 1
+push constant 1
+call DisplayGrid.paintTetromino 3
+pop temp 0
+label IF_END8
+push constant 0
+return
+function Tetris.printGameOverMessage 0
+push argument 0
+pop pointer 0
+push pointer 0
+push constant 176
+push constant 112
+push constant 336
+push constant 138
+push constant 2
+call Tetris.drawBorder 6
+pop temp 0
+push constant 11
+push constant 28
+call Output.moveCursor 2
+pop temp 0
+push argument 1
+call Output.printString 1
+pop temp 0
+push constant 0
+return
+function Tetris.run 12
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+push constant 0
+not
+pop local 3
+push constant 0
+not
+pop local 4
+push constant 2053
+pop local 10
+push constant 0
+pop local 11
+push constant 0
+pop local 6
+push constant 0
+pop local 7
+push constant 6
+pop local 8
+push local 7
+push this 0
+call Tetromino.new 2
+pop local 5
+push constant 0
+call Sprites.drawBackground 1
+pop temp 0
+push this 3
+push this 5
+call Enemy.getHP 1
+call Sprites.drawHealthBar 2
+pop temp 0
+push pointer 0
+push constant 315
+push constant 8
+push constant 505
+push constant 248
+push constant 2
+call Tetris.drawBorder 6
+pop temp 0
+push pointer 0
+push constant 262
+push constant 8
+push constant 310
+push constant 58
+push constant 2
+call Tetris.drawBorder 6
+pop temp 0
+push constant 1
+push constant 34
+call Output.moveCursor 2
+pop temp 0
+push constant 4
+call String.new 1
+push constant 78
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+push constant 88
+call String.appendChar 2
+push constant 84
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push pointer 0
+push local 8
+call Tetris.drawNextTetro 2
+pop temp 0
+push pointer 0
+push local 8
+push constant 0
+not
+call Tetris.animateZeke 3
+pop temp 0
+push this 4
+push local 5
+push constant 1
+call DisplayGrid.paintTetromino 3
+pop temp 0
+push this 4
+call DisplayGrid.draw 1
+pop temp 0
+label WHILE_EXP0
+push local 1
+not
+not
+if-goto WHILE_END0
+push local 11
+push constant 50
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop local 11
+goto IF_END0
+label IF_FALSE0
+push local 11
+push constant 1
+add
+pop local 11
+label IF_END0
+push local 10
+push constant 30000
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 11
+pop local 10
+label IF_FALSE1
+call Keyboard.keyPressed 0
+pop local 0
+push local 0
+push constant 133
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push local 5
+push local 5
+call Tetromino.getX 1
+push local 5
+call Tetromino.getY 1
+push constant 1
+add
+call Tetris.moveTetromino 4
+pop temp 0
+label IF_FALSE2
+push local 0
+push constant 130
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+push local 5
+push local 5
+call Tetromino.getX 1
+push constant 1
+sub
+push local 5
+call Tetromino.getY 1
+call Tetris.moveTetromino 4
+pop temp 0
+label IF_FALSE3
+push local 0
+push constant 132
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+push local 5
+push local 5
+call Tetromino.getX 1
+push constant 1
+add
+push local 5
+call Tetromino.getY 1
+call Tetris.moveTetromino 4
+pop temp 0
+label IF_FALSE4
+push local 0
+push constant 131
+eq
+push local 3
+and
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push pointer 0
+push local 5
+call Tetris.rotateAndKick 2
+pop temp 0
+push pointer 0
+push local 5
+push local 5
+call Tetromino.getX 1
+push local 5
+call Tetromino.getY 1
+call Tetris.moveTetromino 4
+pop temp 0
+push constant 0
+pop local 3
+label IF_FALSE5
+push local 0
+push constant 131
+eq
+not
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push constant 0
+not
+pop local 3
+label IF_FALSE6
+push local 0
+push constant 32
+eq
+push local 4
+and
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push pointer 0
+push local 5
+push local 5
+call Tetromino.getX 1
+push this 4
+push local 5
+call DisplayGrid.getDropY 2
+call Tetris.moveTetromino 4
+pop temp 0
+push constant 50
+call Sys.wait 1
+pop temp 0
+push this 2
+push constant 1
+add
+pop local 6
+push constant 0
+pop local 4
+label IF_FALSE7
+push local 0
+push constant 32
+eq
+not
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push constant 0
+not
+pop local 4
+label IF_FALSE8
+push local 6
+push this 2
+gt
+if-goto IF_TRUE9
+goto IF_FALSE9
+label IF_TRUE9
+push constant 0
+pop local 6
+push pointer 0
+push local 5
+push local 5
+call Tetromino.getX 1
+push local 5
+call Tetromino.getY 1
+push constant 1
+add
+call Tetris.moveTetromino 4
+pop local 2
+push local 2
+not
+if-goto IF_TRUE10
+goto IF_FALSE10
+label IF_TRUE10
+push this 4
+push local 5
+push constant 2
+call DisplayGrid.paintTetromino 3
+pop temp 0
+push local 8
+pop local 7
+push local 10
+push constant 2053
+call Math.multiply 2
+push constant 13849
+add
+pop local 10
+push local 10
+push constant 0
+lt
+if-goto IF_TRUE11
+goto IF_FALSE11
+label IF_TRUE11
+push local 10
+neg
+pop local 10
+label IF_FALSE11
+push local 10
+push local 10
+push constant 7
+call Math.divide 2
+push constant 7
+call Math.multiply 2
+sub
+pop local 8
+push pointer 0
+push local 8
+call Tetris.drawNextTetro 2
+pop temp 0
+push this 4
+call DisplayGrid.clearFilledLines 1
+pop local 9
+push this 5
+push local 9
+call Enemy.damage 2
+pop temp 0
+push this 3
+push this 5
+call Enemy.getHP 1
+call Sprites.drawHealthBar 2
+pop temp 0
+push this 5
+call Enemy.getHP 1
+push constant 0
+eq
+if-goto IF_TRUE12
+goto IF_FALSE12
+label IF_TRUE12
+push constant 0
+not
+pop local 1
+push pointer 0
+push local 8
+push constant 0
+call Tetris.animateZeke 3
+pop temp 0
+push pointer 0
+push constant 8
+call String.new 1
+push constant 89
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 87
+call String.appendChar 2
+push constant 73
+call String.appendChar 2
+push constant 78
+call String.appendChar 2
+push constant 33
+call String.appendChar 2
+call Tetris.printGameOverMessage 2
+pop temp 0
+label IF_FALSE12
+push this 2
+push local 9
+sub
+pop this 2
+push local 7
+push this 0
+call Tetromino.new 2
+pop local 5
+push this 4
+push local 5
+push local 5
+call Tetromino.getX 1
+push local 5
+call Tetromino.getY 1
+call DisplayGrid.moveIsLegal 4
+not
+if-goto IF_TRUE13
+goto IF_FALSE13
+label IF_TRUE13
+push pointer 0
+push constant 8
+call String.new 1
+push constant 89
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 85
+call String.appendChar 2
+push constant 32
+call String.appendChar 2
+push constant 76
+call String.appendChar 2
+push constant 79
+call String.appendChar 2
+push constant 83
+call String.appendChar 2
+push constant 69
+call String.appendChar 2
+call Tetris.printGameOverMessage 2
+pop temp 0
+push constant 0
+not
+pop local 1
+goto IF_END13
+label IF_FALSE13
+push this 4
+push local 5
+push constant 1
+call DisplayGrid.paintTetromino 3
+pop temp 0
+label IF_END13
+label IF_FALSE10
+goto IF_END9
+label IF_FALSE9
+push local 6
+push constant 1
+add
+pop local 6
+label IF_END9
+push local 1
+not
+if-goto IF_TRUE14
+goto IF_FALSE14
+label IF_TRUE14
+push this 4
+call DisplayGrid.draw 1
+pop temp 0
+label IF_FALSE14
+push constant 50
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

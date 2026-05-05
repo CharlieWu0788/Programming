@@ -1,0 +1,8 @@
+function Main.getFive 0
+push constant 5
+return
+function Main.main 1
+call Main.getFive 0
+pop local 0
+push constant 0
+return

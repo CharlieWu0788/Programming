@@ -1,0 +1,319 @@
+function Bullet.new 0
+    push constant 12
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 0
+    push argument 1
+    pop this 1
+    push constant 2
+    pop this 2
+    push constant 4
+    pop this 3
+    push constant 6
+    neg
+    pop this 4
+    push constant 0
+    pop this 5
+    push constant 0
+    pop this 6
+    push constant 0
+    pop this 7
+    push constant 0
+    pop this 8
+    push constant 4
+    pop this 9
+    push constant 4
+    pop this 10
+    push constant 0
+    pop this 11
+    push pointer 0
+    return
+function Bullet.reset 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    pop this 4
+    push argument 4
+    pop this 5
+    push constant 0
+    pop this 6
+    push constant 0
+    pop this 7
+    push constant 0
+    pop this 8
+    push constant 4
+    pop this 9
+    push constant 4
+    pop this 10
+    push constant 1
+    neg
+    pop this 11
+    push constant 0
+    return
+function Bullet.resetWithBonus 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    pop this 4
+    push argument 4
+    pop this 5
+    push argument 5
+    pop this 6
+    push argument 5
+    pop this 7
+    push constant 0
+    pop this 8
+    push constant 4
+    pop this 9
+    push constant 4
+    pop this 10
+    push constant 1
+    neg
+    pop this 11
+    push constant 0
+    return
+function Bullet.resetAngled 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    pop this 4
+    push argument 4
+    pop this 5
+    push argument 5
+    pop this 6
+    push argument 5
+    pop this 7
+    push argument 6
+    pop this 8
+    push constant 4
+    pop this 9
+    push constant 4
+    pop this 10
+    push constant 1
+    neg
+    pop this 11
+    push constant 0
+    return
+function Bullet.resetAngledWithGap 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    pop this 0
+    push argument 2
+    pop this 1
+    push argument 3
+    pop this 4
+    push argument 4
+    pop this 5
+    push argument 5
+    pop this 6
+    push argument 5
+    pop this 7
+    push argument 6
+    pop this 8
+    push argument 7
+    pop this 9
+    push argument 7
+    pop this 10
+    push constant 1
+    neg
+    pop this 11
+    push constant 0
+    return
+function Bullet.update 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    push this 4
+    add
+    pop this 1
+    push this 6
+    push constant 0
+    gt
+    not
+    if-goto Bullet_1
+    push this 7
+    push constant 1
+    sub
+    pop this 7
+    push this 7
+    push constant 1
+    lt
+    not
+    if-goto Bullet_3
+    push this 1
+    push this 4
+    add
+    pop this 1
+    push this 6
+    pop this 7
+    goto Bullet_2
+label Bullet_3
+label Bullet_2
+    goto Bullet_0
+label Bullet_1
+label Bullet_0
+    push this 8
+    push constant 0
+    eq
+    not
+    not
+    if-goto Bullet_5
+    push this 9
+    push constant 1
+    sub
+    pop this 9
+    push this 9
+    push constant 1
+    lt
+    not
+    if-goto Bullet_7
+    push this 0
+    push this 8
+    add
+    pop this 0
+    push this 10
+    pop this 9
+    goto Bullet_6
+label Bullet_7
+label Bullet_6
+    goto Bullet_4
+label Bullet_5
+label Bullet_4
+    push this 0
+    push constant 0
+    lt
+    not
+    if-goto Bullet_9
+    push constant 0
+    pop this 11
+    goto Bullet_8
+label Bullet_9
+label Bullet_8
+    push this 0
+    push this 2
+    add
+    push constant 511
+    gt
+    not
+    if-goto Bullet_11
+    push constant 0
+    pop this 11
+    goto Bullet_10
+label Bullet_11
+label Bullet_10
+    push this 1
+    push constant 0
+    lt
+    not
+    if-goto Bullet_13
+    push constant 0
+    pop this 11
+    goto Bullet_12
+label Bullet_13
+label Bullet_12
+    push this 1
+    push this 3
+    add
+    push constant 255
+    gt
+    not
+    if-goto Bullet_15
+    push constant 0
+    pop this 11
+    goto Bullet_14
+label Bullet_15
+label Bullet_14
+    push constant 0
+    return
+function Bullet.deactivate 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop this 11
+    push constant 0
+    return
+function Bullet.isActive 0
+    push argument 0
+    pop pointer 0
+    push this 11
+    return
+function Bullet.draw 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    push constant 0
+    lt
+    not
+    if-goto Bullet_17
+    push constant 0
+    return
+    goto Bullet_16
+label Bullet_17
+label Bullet_16
+    push this 1
+    push this 3
+    add
+    push constant 255
+    gt
+    not
+    if-goto Bullet_19
+    push constant 0
+    return
+    goto Bullet_18
+label Bullet_19
+label Bullet_18
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push this 0
+    push this 1
+    push this 0
+    push this 2
+    add
+    push this 1
+    push this 3
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 0
+    return
+function Bullet.getX 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Bullet.getY 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function Bullet.getWidth 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function Bullet.getHeight 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    return
+function Bullet.getOwner 0
+    push argument 0
+    pop pointer 0
+    push this 5
+    return

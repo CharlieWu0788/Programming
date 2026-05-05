@@ -1,0 +1,8 @@
+class Main {
+    function void main() {
+        var TDGame game;
+        let game = TDGame.new();
+        do game.run();
+        return;
+    }
+}

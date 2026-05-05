@@ -1,0 +1,18 @@
+class GameManager {
+    
+    function void runGame() {
+        var SlopeGame game;
+        
+        // Initialize OS
+        do Screen.clearScreen();
+        do Output.moveCursor(0, 0);
+        
+        // Create and run game
+        let game = SlopeGame.new();
+        do game.run();
+        do game.dispose();
+        
+        return;
+    }
+    
+}

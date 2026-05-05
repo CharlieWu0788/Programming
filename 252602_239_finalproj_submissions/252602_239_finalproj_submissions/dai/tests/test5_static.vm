@@ -1,0 +1,10 @@
+// test 5: static variable read/write
+// store 9 into static 0, read it back, add 2
+// 9 + 2 = 11 = 1011
+// tests that sts/lds to SRAM actually roundtrips correctly
+// LED: 1011
+push constant 9
+pop static 0
+push static 0
+push constant 2
+add

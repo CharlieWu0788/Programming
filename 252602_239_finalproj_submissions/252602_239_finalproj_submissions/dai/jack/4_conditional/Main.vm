@@ -1,0 +1,20 @@
+// compiled from 4_conditional/Main.jack
+// if(7>3) x=9 else x=6, LED: 1001
+// locals: x(0)
+// if-else compiles to gt, if-goto true, goto false, labels
+function Main.main 1
+push constant 7
+push constant 3
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 9
+pop local 0
+goto IF_END0
+label IF_FALSE0
+push constant 6
+pop local 0
+label IF_END0
+push constant 0
+return

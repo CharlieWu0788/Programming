@@ -1,0 +1,135 @@
+// Project 12
+// Ariel
+// string library for the jack OS
+// stores characters in an array and tracks the current length
+
+class String {
+    // the actual characters
+    field Array chars;
+    // how many characters are in the string right now
+    field int len;
+    // the max number of characters this string can hold
+    field int maxLen;
+
+    // creates a new empty string that can hold up to maxLength characters
+    constructor String new(int maxLength) {
+        // need at least 1 to avoid allocating 0
+        if (maxLength < 1) {
+            let maxLength = 1;
+        }
+        let chars = Array.new(maxLength);
+        let len = 0;
+        let maxLen = maxLength;
+        return this;
+    }
+
+    // frees the char array and then the string object itself
+    method void dispose() {
+        do chars.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // returns how many characters are in the string
+    method int length() {
+        return len;
+    }
+
+    // returns the character at position j
+    method char charAt(int j) {
+        return chars[j];
+    }
+
+    // sets the character at position j
+    method void setCharAt(int j, char c) {
+        let chars[j] = c;
+        return;
+    }
+
+    // adds a character to the end and returns this string
+    method String appendChar(char c) {
+        if (len < maxLen) {
+            let chars[len] = c;
+            let len = len + 1;
+        }
+        return this;
+    }
+
+    // removes the last character by just decreasing the length
+    method void eraseLastChar() {
+        if (len > 0) {
+            let len = len - 1;
+        }
+        return;
+    }
+
+    // reads the string as a number using string2Int from lecture
+    // i added handling for a leading minus sign which the pseudocode didnt cover
+    method int intValue() {
+        var int val, i, d;
+        var boolean neg;
+        let val = 0;
+        let i = 0;
+        let neg = false;
+        // check for minus sign (ascii 45)
+        if ((len > 0) & (chars[0] = 45)) {
+            let neg = true;
+            let i = 1;
+        }
+        // go through each digit and build up the number
+        while (i < len) {
+            let d = chars[i] - 48;
+            if ((d < 0) | (d > 9)) {
+                // not a digit, stop here
+                if (neg) { return -val; }
+                return val;
+            }
+            let val = (val * 10) + d;
+            let i = i + 1;
+        }
+        if (neg) { return -val; }
+        return val;
+    }
+
+    // clears the string and writes the number into it as characters
+    // if negative, puts a minus sign first then handles the positive part
+    method void setInt(int val) {
+        let len = 0;
+        if (val < 0) {
+            // ascii 45 = minus sign
+            do appendChar(45);
+            let val = -val;
+        }
+        do setIntHelper(val);
+        return;
+    }
+
+    // recurses to get to the most significant digit first
+    // then appends digits on the way back
+    method void setIntHelper(int val) {
+        var int q, mod;
+        let q = val / 10;
+        let mod = val - (q * 10);
+        if (val > 9) {
+            do setIntHelper(q);
+        }
+        // ascii 48 = digit 0
+        do appendChar(mod + 48);
+        return;
+    }
+
+    // returns the newline character code
+    function char newLine() {
+        return 128;
+    }
+
+    // returns the backspace character code
+    function char backSpace() {
+        return 129;
+    }
+
+    // returns the double quote character code
+    function char doubleQuote() {
+        return 34;
+    }
+}

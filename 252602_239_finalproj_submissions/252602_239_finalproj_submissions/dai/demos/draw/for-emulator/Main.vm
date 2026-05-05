@@ -1,0 +1,173 @@
+function Main.main 3
+push constant 64
+pop local 0
+push constant 24
+pop local 1
+call Screen.clearScreen 0
+pop temp 0
+push local 0
+push local 1
+call Screen.drawPixel 2
+pop temp 0
+push local 0
+call Main.drawHud 1
+pop temp 0
+label L0
+push constant 0
+not
+not
+if-goto L1
+call Main.readKey 0
+pop local 2
+push local 2
+push constant 1
+eq
+not
+if-goto L2
+push local 1
+push constant 1
+sub
+pop local 1
+push local 1
+push constant 18
+lt
+not
+if-goto L4
+push constant 31
+pop local 1
+label L4
+label L2
+push local 2
+push constant 2
+eq
+not
+if-goto L6
+push local 1
+push constant 1
+add
+pop local 1
+push local 1
+push constant 31
+gt
+not
+if-goto L8
+push constant 18
+pop local 1
+label L8
+label L6
+push local 2
+push constant 3
+eq
+not
+if-goto L10
+push local 0
+push constant 1
+sub
+pop local 0
+push local 0
+push constant 0
+lt
+not
+if-goto L12
+push constant 127
+pop local 0
+label L12
+push local 0
+call Main.drawHud 1
+pop temp 0
+label L10
+push local 2
+push constant 4
+eq
+not
+if-goto L14
+push local 0
+push constant 1
+add
+pop local 0
+push local 0
+push constant 127
+gt
+not
+if-goto L16
+push constant 0
+pop local 0
+label L16
+push local 0
+call Main.drawHud 1
+pop temp 0
+label L14
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push local 0
+push local 1
+call Screen.drawPixel 2
+pop temp 0
+push constant 8
+call Sys.wait 1
+pop temp 0
+goto L0
+label L1
+push constant 0
+return
+function Main.drawHud 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push constant 0
+push constant 0
+push constant 127
+push constant 14
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push argument 0
+push constant 0
+push constant 14
+call Screen.drawVLine 3
+pop temp 0
+push constant 0
+return
+function Main.readKey 1
+label L18
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+if-goto L19
+goto L18
+label L19
+call Keyboard.keyPressed 0
+pop local 0
+label L20
+call Keyboard.keyPressed 0
+push constant 0
+eq
+not
+not
+if-goto L21
+goto L20
+label L21
+push local 0
+push constant 47
+gt
+not
+if-goto L22
+push local 0
+push constant 58
+lt
+not
+if-goto L24
+push local 0
+push constant 48
+sub
+return
+label L24
+label L22
+push local 0
+return

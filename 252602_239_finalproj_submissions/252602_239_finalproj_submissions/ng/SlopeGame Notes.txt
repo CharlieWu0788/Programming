@@ -1,0 +1,11 @@
+Current slope isn't a downward slope; more like a road. Should try to lower horizon line, maybe even have trees on the horizon for 3d illusion reference
+
+Currently, the obstacle slows down as it approaches the player. It should be moving at a consistent speed. FIXED
+
+Jumps do NOT save you. Remove jumps and just do obstacle acceleration like actual game?
+
+Add restart game button for replayability("press any key to exit" screen does not change upon key press)
+
+Once bugs are fixed/optimized:
+	Add more obstacle variants(maybe a ramp to jump over obstacles?)
+	Add obstacle acceleration over time or as the score increases.

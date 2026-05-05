@@ -1,0 +1,527 @@
+/* The Cursor class keeps track of a cursor to be used on the grid and the Output class cursor to change information as needed.
+ * This class also handles the placement of towers, and creates methods to handle collisions between
+ * towers, bullets, and enemies, which are then used by TDGame.jack.
+*/
+class Cursor {
+    field int x, y;           //location of the Cursor relative to the screen
+    field int gridX, gridY;   //location of the Cursor relative to the grid
+    field Array objectInGrid; //keeps track of where object player placed is, relative to a 8x4 grid
+    field Array objectType;   //stores the ID of each object placed
+    field Array bullets;      //tracks all the bullets, up to 32
+    field int selectedObject; //keeps track of which object the user wants to place
+    field int lastKey;        //tracks the last key pressed
+    field int currency;       //keeps track of how much "money" the player has
+    field int score;
+    field int time;
+    field String moneyLabel;
+    field String scoreLabel;
+    field String moneyVal;
+    field String scoreVal;
+    field String tetoDesc;
+    field String mariDesc;
+    field String drPDesc;
+    field String inklingDesc;
+
+    constructor Cursor new() {
+        var int i;
+        let gridX = 0;
+        let gridY = 0;
+        let selectedObject = 0;
+        let objectInGrid = Array.new(32);
+        let objectType = Array.new(32);
+        let bullets = Array.new(32);
+        let i = 0;
+        let currency = 3;       //starting currency, enough for Mari (producer) only
+        let score = 0;
+        while (i < 32) {
+            let objectInGrid[i] = 0;
+            let objectType[i] = 0;
+            let bullets[i] = 0;
+            let i = i + 1;
+        }
+        let lastKey = 0;
+        let time = 10;
+        let moneyLabel = "Money: ";
+        let scoreLabel = "31 pts to win. Score: ";
+        let moneyVal = String.new(6);
+        let scoreVal = String.new(6);
+        let tetoDesc    = "           Shoots bullets at enemies            ";
+        let mariDesc    = "Increments your total money by 1 after some time";
+        let drPDesc     = "       Charges a powerful attack overtime       ";
+        let inklingDesc = "  Kills an enemy upon collision, dying as well  ";
+        do draw();
+        return this;
+    }
+
+    //draws Cursor
+    method void draw() {
+        var int location;
+        var int memAddress;
+        var int column;
+        
+        //the Cursor grid location changed to Screen location
+        let x = 1 + (gridX * 48);
+        let y = 2 + (gridY * 48);
+
+        let column = x / 16;
+        let location = (y * 32) + column;
+        let memAddress = 16384 + location;
+        // column 0
+        do Memory.poke(memAddress, 1023);
+        do Memory.poke(memAddress +32, 1023);
+        do Memory.poke(memAddress +64, 3);
+        do Memory.poke(memAddress +96, 3);
+        do Memory.poke(memAddress +128, 3);
+        do Memory.poke(memAddress +160, 3);
+        do Memory.poke(memAddress +192, 3);
+        do Memory.poke(memAddress +224, 3);
+        do Memory.poke(memAddress +256, 3);
+        do Memory.poke(memAddress +288, 3);
+        do Memory.poke(memAddress +320, 3);
+        do Memory.poke(memAddress +1184, 3);
+        do Memory.poke(memAddress +1216, 3);
+        do Memory.poke(memAddress +1248, 3);
+        do Memory.poke(memAddress +1280, 3);
+        do Memory.poke(memAddress +1312, 3);
+        do Memory.poke(memAddress +1344, 3);
+        do Memory.poke(memAddress +1376, 3);
+        do Memory.poke(memAddress +1408, 3);
+        do Memory.poke(memAddress +1440, 1023);
+        do Memory.poke(memAddress +1472, 1023);
+        // column 1
+        // column 2
+        do Memory.poke(memAddress +2, 32752);
+        do Memory.poke(memAddress +34, 32752);
+        do Memory.poke(memAddress +66, 24576);
+        do Memory.poke(memAddress +98, 24576);
+        do Memory.poke(memAddress +130, 24576);
+        do Memory.poke(memAddress +162, 24576);
+        do Memory.poke(memAddress +194, 24576);
+        do Memory.poke(memAddress +226, 24576);
+        do Memory.poke(memAddress +258, 24576);
+        do Memory.poke(memAddress +290, 24576);
+        do Memory.poke(memAddress +322, 24576);
+        do Memory.poke(memAddress +1186, 24576);
+        do Memory.poke(memAddress +1218, 24576);
+        do Memory.poke(memAddress +1250, 24576);
+        do Memory.poke(memAddress +1282, 24576);
+        do Memory.poke(memAddress +1314, 24576);
+        do Memory.poke(memAddress +1346, 24576);
+        do Memory.poke(memAddress +1378, 24576);
+        do Memory.poke(memAddress +1410, 24576);
+        do Memory.poke(memAddress +1442, 32752);
+        do Memory.poke(memAddress +1474, 32752);
+        return;
+    }
+
+    method int getScore() {
+        return score;
+    }
+
+    //returns the value of the last key pressed, which will be used to help determine spawn locations of enemy (see TDGame class)
+    method int getLastKey() {
+        return lastKey;
+    }
+
+    //returns the array for objectInGrid so that TDGame can make use of it
+    method Array getObjectInGrid() {
+        return objectInGrid;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //prints information about score and currency used to place objects, printing empty spaces to prevent incorrect values from displaying
+    method void printBasicInfo() {
+        do Output.moveCursor(18, 0);
+        do Output.printString(moneyLabel);
+        do moneyVal.setInt(currency);
+        do Output.printString(moneyVal);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.moveCursor(18, 20);
+        do Output.printString(scoreLabel);
+        do scoreVal.setInt(score);
+        do Output.printString(scoreVal);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        do Output.printChar(32);
+        return;
+    }
+
+    //places a sprite on current Cursor location when space bar is pressed
+    method void placeSprite(int key) {
+        var PlayerObjects obj;
+        var int index;
+
+        if (key = 32) {       //space bar
+            let index = (gridY * 8) + gridX;
+            if (objectInGrid[index] = 0) {
+                if (selectedObject = 49) {      //1, so teto type
+                    if (currency > 3) {        //teto costs 4
+                        let currency = currency - 4;
+                        let obj = PlayerObjects.new(gridX, gridY);
+                        do obj.setName(1);
+                        let objectInGrid[(gridY * 8) + gridX] = obj; //places the newly created object in index associated with grid location
+                        let objectType[(gridY * 8) + gridX] = 1; //sets the space in the grid as 1, which represents teto object
+                    }
+                }
+                if (selectedObject = 50) {      //2, so Mari type
+                    if (currency > 2) {
+                        let currency = currency - 3;
+                        let obj = PlayerObjects.new(gridX, gridY);
+                        do obj.setName(2);
+                        let objectInGrid[(gridY * 8) + gridX] = obj;
+                        let objectType[(gridY * 8) + gridX] = 2; //sets the space in the grid as 2, the Mari object
+                    }
+                }
+                if (selectedObject = 51) {     //3, so Dr. P type
+                    if (currency > 9) {
+                        let currency = currency - 10;
+                        let obj = PlayerObjects.new(gridX, gridY);
+                        do obj.setName(3);
+                        let objectInGrid[(gridY * 8) + gridX] = obj;
+                        let objectType[(gridY * 8) + gridX] = 3; //sets the space in the grid as 3, the Dr. P object
+                    }
+                }
+                if (selectedObject = 52) {     //4, so inkling type
+                    if (currency > 6) {
+                        let currency = currency - 7;
+                        let obj = PlayerObjects.new(gridX, gridY);
+                        do obj.setName(4);
+                        let objectInGrid[(gridY * 8) + gridX] = obj;
+                        let objectType[(gridY * 8) + gridX] = 4; //sets the space in the grid as 3, the inkling object
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    //method used in TDGame.jack file to draw all towers that have been placed
+    method void drawObjects() {
+        var int count;
+        var PlayerObjects obj;
+
+        let count = 0;
+        while (count < 32) {
+            let obj = objectInGrid[count];
+
+            //draws the sprites if obj is a PlayerObjects reference 
+            if (~(obj = 0)) {
+                do obj.setName(objectType[count]);     //updates what type of PlayerObjects is in the current grid location
+                do obj.draw();
+
+                //update currency if current
+                if (obj.getNameID() = 2) {       //Mari increases total currency
+                    let currency = currency + obj.updateCurrency(time);
+                }
+                do obj.attack(time); //advance attack counter
+            }
+            let count = count + 1;
+        }
+        return;
+    }
+
+    //deletes a sprite from the screen and memory at the Cursor's current location, if there is an object there
+    method void deleteCurrent() {
+        var int index;
+        var PlayerObjects temp;
+
+        let index = (gridY * 8) + gridX;
+        let temp = objectInGrid[index];
+        if (~(temp = 0)) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle(2 + (gridX * 48), 2 + (gridY * 48), 2 + (gridX * 48) + 47, 2 + (gridY * 48) + 47);
+            do temp.dispose();
+            let objectInGrid[index] = 0;
+            let objectType[index] = 0;
+        }
+        return;
+    }
+
+    //player object dies if enemy reaches it
+    method void checkCollisions(Enemies enemy) {
+        var int count;
+        var int enemyCol;
+        var PlayerObjects obj;
+
+        if (enemy.getGridX() < 0) {
+            return;
+        }
+        let enemyCol = enemy.getGridX() / 3;      //divide by 3 to match player grid
+        let count = 0;
+        while (count < 32) {
+            let obj = objectInGrid[count];
+            if (~(obj = 0)) {
+                if ((obj.getRow() = enemy.getRow()) & (obj.getGridX() = enemyCol)) {
+                    do Screen.setColor(false);
+                    do Screen.drawRectangle(2 + (obj.getGridX() * 48), 2 + (obj.getRow() * 48),  2 + (obj.getGridX() * 48) + 47, 2 + (obj.getRow() * 48) + 47);
+                    let objectInGrid[count] = 0;
+                    let objectType[count] = 0;
+
+                    //inkling (nameID = 4) kill the colliding enemy and itself
+                    //all other towers just die and let the enemy pass through
+                    if (obj.getNameID() = 4) {
+                        do enemy.takeDamage(500);
+                        let score = score + 1;
+                    }
+                    do obj.dispose();
+                }
+            }
+            let count = count + 1;
+        }
+        return;
+    }
+
+    //spawns a bullet when a player object's attack cooldown is ready
+    method void attackEnemy(Enemies enemy, int time) {
+        var int count;
+        var PlayerObjects obj;
+        var int damage;
+        var int i;
+
+        if (enemy.getGridX() < 0) {
+            return;
+        }
+        let count = 0;
+        while (count < 32) {
+            let obj = objectInGrid[count];
+            if (~(obj = 0)) {
+                if (obj.getRow() = enemy.getRow()) {
+                    if ((enemy.getGridX() / 3) > obj.getGridX()) {
+                        let damage = obj.fire();
+                        if (damage > 0) {
+
+                            //find first empty bullet slot
+                            let i = 0;
+                            while (i < 32) {
+                                if (bullets[i] = 0) {
+                                    if (obj.getNameID() = 1) {       //teto's bullet
+                                        let bullets[i] = Bullet.new(obj.getGridX(), obj.getRow(), damage, 2);
+                                    }
+                                    if (obj.getNameID() = 3) {       //Dr. P's bullet
+                                        let bullets[i] = Bullet.new(obj.getGridX(), obj.getRow(), damage, 5);
+                                    }
+                                    let i = 32;     //break out of the search loop
+                                }
+                                let i = i + 1;
+                            }
+                        }
+                    }
+                }
+            }
+            let count = count + 1;
+        }
+        return;
+    }
+
+    method void drawBullets() {
+        var int i;
+        var Bullet bullet;
+        let i = 0;
+        while (i < 32) {
+            let bullet = bullets[i];
+            if (~(bullet = 0)) {
+                do bullet.draw();
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    //moves every bullet, disposing any that leave the screen
+    method void moveBullets() {
+        var int i;
+        var Bullet bullet;
+        var boolean alive;
+
+        let i = 0;
+        while (i < 32) {
+            let bullet = bullets[i];
+            if (~(bullet = 0)) {
+                let alive = bullet.move();
+                if (~alive) {
+                    do bullet.dispose();
+                    let bullets[i] = 0;
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    //checks whether any bullet has hit the given enemy
+    method void checkBulletsVsEnemy(Enemies enemy) {
+        var int i;
+        var Bullet bullet;
+        var int enemyX;
+        var int bulletX;
+
+        if (enemy.getHealth() < 1) {       //less than 0: dead
+            return;
+        }
+        let i = 0;
+        while (i < 32) {
+            let bullet = bullets[i];
+            if (~(bullet = 0)) {
+                if (bullet.getRow() = enemy.getRow()) {
+                    let enemyX = 2 + (enemy.getGridX() * 16);
+                    let bulletX = bullet.getX();
+                    if ((bulletX > (enemyX - 5)) & (bulletX < (enemyX + 20))) {
+                        do enemy.takeDamage(bullet.getDamage());
+                        do bullet.erase();
+                        do bullet.dispose();
+                        let bullets[i] = 0;
+                        if (enemy.getHealth() < 1) {
+                            let score = score + 1;
+                        }
+                    }
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    //moves all bullets and checks if any hit an enemy
+    method void updateBullets(Enemies enemy) {
+        var int i;
+        var Bullet bullet;
+        var boolean alive;
+        var int enemyX;
+        var int bulletX;
+
+        let i = 0;
+        while (i < 32) {
+            let bullet = bullets[i];
+            if (~(bullet = 0)) {
+                let alive = bullet.move();
+                if (alive) {
+
+                    //check collision with enemy if enemy is alive
+                    if (enemy.getHealth() > 0) {
+                        if (bullet.getRow() = enemy.getRow()) {
+                            let enemyX = 2 + (enemy.getGridX() * 16);
+                            let bulletX = bullet.getX();
+                            if ((bulletX > (enemyX - 5)) & (bulletX < (enemyX + 20))) {
+                                do enemy.takeDamage(bullet.getDamage());
+                                do bullet.erase();
+                                do bullet.dispose();
+                                let bullets[i] = 0;
+
+                                //if enemy is dead, increment score by 1
+                                if (enemy.getHealth() < 1) {
+                                    let score = score + 1;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    //bullet went off the grid
+                    do bullet.dispose();
+                    let bullets[i] = 0;
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    //updates the Screen based on user input
+    method void update() {
+        var int key;
+        var int oldX;
+        var int oldY;
+
+        let oldX = gridX;
+        let oldY = gridY;
+        let key = Keyboard.keyPressed();
+
+        if (((key = 97) & ~(lastKey = 97)) | ((key = 130) & ~(lastKey = 130))) {          //a or left arrow
+            if (gridX > 0) {
+                let gridX = gridX - 1;
+            }
+        }
+        if (((key = 100) & ~(lastKey = 100)) | ((key = 132) & ~(lastKey = 132))) {        //d or right arrow
+            if (gridX < 7) {
+                let gridX = gridX + 1;
+            }
+        }
+        if (((key = 119) & ~(lastKey = 119)) | ((key = 131) & ~(lastKey = 131))) {        //w or up arrow
+            if (gridY > 0) {
+                let gridY = gridY - 1;
+            }
+        }
+        if (((key = 115) & ~(lastKey = 115)) | ((key = 133) & ~(lastKey = 133))) {        //s or down arrow
+            if (gridY < 3) {
+                let gridY = gridY + 1;
+            }
+        }
+
+        //print information onto the screen
+        do printBasicInfo();
+
+        //erases the old cursor's position
+        do Screen.setColor(false);
+        do Screen.drawRectangle(1 + (oldX * 48), 2 + (oldY * 48), 1 + (oldX * 48) + 47, 2 + (oldY * 48) + 47);
+        
+        if ((key = 101) & ~(lastKey = 101)) {      //e
+            do deleteCurrent();
+        }
+
+        //selecting object to place and draws a rectangle on the right side of the info slot given
+        if (key = 49) {       //1, teto
+            let selectedObject = 49;
+            do Output.moveCursor(20, 0);
+            do Output.printString(tetoDesc);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(500, 70,  509, 94);   //clear Mari
+            do Screen.drawRectangle(500, 125, 509, 149);  //clear Dr.P
+            do Screen.drawRectangle(500, 180, 509, 204);  //clear Inkling
+            do Screen.setColor(true);
+            do Screen.drawRectangle(500, 15,  509, 39);   //draw Teto
+        }
+        if (key = 50) {       //2, Mari
+            let selectedObject = 50;
+            do Output.moveCursor(20, 0);
+            do Output.printString(mariDesc);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(500, 15,  509, 39);   //clear Teto
+            do Screen.drawRectangle(500, 125, 509, 149);  //clear Dr.P
+            do Screen.drawRectangle(500, 180, 509, 204);  //clear Inkling
+            do Screen.setColor(true);
+            do Screen.drawRectangle(500, 70,  509, 94);   //draw Mari
+        }
+        if (key = 51) {       //3, Dr. P
+            let selectedObject = 51;
+            do Output.moveCursor(20, 0);
+            do Output.printString(drPDesc);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(500, 15,  509, 39);   //clear Teto
+            do Screen.drawRectangle(500, 70,  509, 94);   //clear Mari
+            do Screen.drawRectangle(500, 180, 509, 204);  //clear Inkling
+            do Screen.setColor(true);
+            do Screen.drawRectangle(500, 125, 509, 149);  //draw Dr.P
+        }
+        if (key = 52) {       //4, Inkling
+            let selectedObject = 52;
+            do Output.moveCursor(20, 0);
+            do Output.printString(inklingDesc);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(500, 15,  509, 39);   //clear Teto
+            do Screen.drawRectangle(500, 70,  509, 94);   //clear Mari
+            do Screen.drawRectangle(500, 125, 509, 149);  //clear Dr.P
+            do Screen.setColor(true);
+            do Screen.drawRectangle(500, 180, 509, 204);  //draw Inkling
+        }
+        
+        do placeSprite(key);
+
+        let lastKey = key;
+        return;
+    }
+}

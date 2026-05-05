@@ -1,0 +1,88 @@
+function Output.init 0
+push constant 0
+pop static 0
+push constant 0
+pop static 1
+push constant 0
+return
+function Output.moveCursor 0
+push argument 0
+pop static 1
+push argument 1
+pop static 0
+push constant 0
+return
+function Output.printChar 0
+push static 0
+push static 1
+call Screen.drawPixel 2
+pop temp 0
+push static 0
+push constant 2
+add
+pop static 0
+push static 0
+push constant 63
+gt
+not
+if-goto L0
+push constant 0
+pop static 0
+push static 1
+push constant 2
+add
+pop static 1
+label L0
+push constant 0
+return
+function Output.println 0
+push constant 0
+pop static 0
+push static 1
+push constant 2
+add
+pop static 1
+push constant 0
+return
+function Output.printInt 0
+push argument 0
+push constant 0
+lt
+not
+if-goto L2
+push constant 45
+call Output.printChar 1
+pop temp 0
+push argument 0
+neg
+pop argument 0
+label L2
+push argument 0
+push constant 9
+gt
+not
+if-goto L4
+push argument 0
+push constant 10
+call Math.divide 2
+call Output.printInt 1
+pop temp 0
+label L4
+push constant 48
+call Output.printChar 1
+pop temp 0
+push constant 0
+return
+function Output.backSpace 0
+push static 0
+push constant 0
+gt
+not
+if-goto L6
+push static 0
+push constant 2
+sub
+pop static 0
+label L6
+push constant 0
+return

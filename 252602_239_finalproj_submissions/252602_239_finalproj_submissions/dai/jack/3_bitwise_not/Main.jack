@@ -1,0 +1,11 @@
+// program 3: bitwise NOT masked with AND
+// (~12) & 15 = 3
+// 12 = 1100, ~12 = ...0011, mask with 0x000F to get 0011
+// LED: 0011
+class Main {
+    function void main() {
+        var int x;
+        let x = (~12) & 15;
+        return;
+    }
+}

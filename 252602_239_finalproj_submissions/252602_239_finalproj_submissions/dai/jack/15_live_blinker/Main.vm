@@ -1,0 +1,62 @@
+// hand-compiled live blinker (Stage 3).
+// uses Main.delay (nArgs=0) and writes to Hack addr 16384 via pop that 0.
+// this one also sanity-checks the nArgs=0 return path (it collides with the
+// saved-LCL slot and the translator has to handle it).
+function Main.main 0
+label LOOP
+push constant 16384
+pop pointer 1
+push constant 1
+pop that 0
+call Main.delay 0
+pop temp 0
+push constant 16384
+pop pointer 1
+push constant 2
+pop that 0
+call Main.delay 0
+pop temp 0
+push constant 16384
+pop pointer 1
+push constant 4
+pop that 0
+call Main.delay 0
+pop temp 0
+push constant 16384
+pop pointer 1
+push constant 8
+pop that 0
+call Main.delay 0
+pop temp 0
+push constant 16384
+pop pointer 1
+push constant 15
+pop that 0
+call Main.delay 0
+pop temp 0
+push constant 16384
+pop pointer 1
+push constant 0
+pop that 0
+call Main.delay 0
+pop temp 0
+goto LOOP
+push constant 0
+return
+function Main.delay 1
+push constant 0
+pop local 0
+label DELAY_LOOP
+push local 0
+push constant 20000
+lt
+not
+if-goto DELAY_END
+push local 0
+push constant 1
+add
+pop local 0
+goto DELAY_LOOP
+label DELAY_END
+push constant 0
+return

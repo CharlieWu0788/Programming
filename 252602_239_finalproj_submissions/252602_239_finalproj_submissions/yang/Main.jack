@@ -1,0 +1,14 @@
+class Main {
+    function void main() {
+        var Game game;
+
+        // creates the game object.
+        let game = Game.new();
+
+        // Initialize and starts the game loop.
+        do game.init();
+        do game.run();
+
+        return;
+    }
+}

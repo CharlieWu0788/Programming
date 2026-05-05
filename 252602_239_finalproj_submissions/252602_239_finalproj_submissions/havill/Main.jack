@@ -1,0 +1,13 @@
+// entry point - just spins up the game and runs it
+class Main {
+    function void main() {
+        var CatcherGame game;
+        // creates a new game instance
+        let game = CatcherGame.new();
+        // starts the game loop
+        do game.run();
+        // cleans up memory when done
+        do game.dispose();
+        return;
+    }
+}

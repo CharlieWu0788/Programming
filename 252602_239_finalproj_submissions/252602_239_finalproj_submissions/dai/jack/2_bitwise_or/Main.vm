@@ -1,0 +1,10 @@
+// compiled from 2_bitwise_or/Main.jack
+// 5 | 10 = 15, LED: 1111
+// locals: x(0)
+function Main.main 1
+push constant 5
+push constant 10
+or
+pop local 0
+push constant 0
+return

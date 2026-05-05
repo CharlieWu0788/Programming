@@ -1,0 +1,162 @@
+/*
+ - Obstacles.jack
+ - Unmovable cells that end the game if there is contact
+ - Rules for spawning: 
+     - score 5:  1 obstacle
+     - score 10: 2 obstacles
+     - score 15+: 3 obstacles every 5 points
+ - Placement avoids the snake body, current food, and existing obstacles
+
+ - linear congruential generator: next = (a × current + c) mod m
+ */
+class Obstacles {
+    field Array obsX, obsY; 
+    field int count; // number of active obstacles
+    field int seed; // lcg state for pseudo random placement
+    field int size;
+
+    constructor Obstacles new(int cellSize) {
+        let size = cellSize;
+        let seed = 9001; // different starting seed from food 
+        let count = 0;
+        let obsX = Array.new(50);
+        let obsY = Array.new(50);
+        return this;
+    }
+
+    // returns true if (ax, ay) is within 3 cells of (bx, by)
+    // to keep obstacles from spawning on or realy close to the snake
+    method boolean isNear(int ax, int ay, int bx, int by) {
+        var int dx, dy;
+        let dx = ax - bx;
+        let dy = ay - by;
+        if (dx < 0) { let dx = -dx; }
+        if (dy < 0) { let dy = -dy; }
+        return ((dx < 3) & (dy < 3));
+    }
+
+    // not within 3 cells of any snake segment, not on the food cell, not overlapping an existing obstacle
+    method void addObstacle(Array bodyX, Array bodyY, int snakeLen, int foodX, int foodY) {
+        var int ax, ay;
+        var boolean valid;
+        var int attempts;
+        var int i;
+
+        let attempts = 0;
+        let valid = false;
+
+        while ((~valid) & (attempts < 50)) {
+            // advance lcg seed for x
+            let seed = (seed * 31) + 7;
+            if (seed < 0) { let seed = -seed; }
+            if (seed < 0) { let seed = 32767; } 
+            let ax = 2 + (seed - ((seed / 28) * 28)); // column 2-29
+            if (ax < 2)  { let ax = 2;  }
+            if (ax > 29) { let ax = 29; }
+
+            // advance lcg seed for y
+            let seed = (seed * 31) + 7;
+            if (seed < 0) { let seed = -seed; }
+            if (seed < 0) { let seed = 32767; }
+            let ay = 2 + (seed - ((seed / 12) * 12)); // row 2-13
+            if (ay < 2)  { let ay = 2;  }
+            if (ay > 13) { let ay = 13; }
+
+            let valid = true;
+
+            // reject if its too close to any snake segment 
+            let i = 0;
+            while (i < snakeLen) {
+                if (isNear(ax, ay, bodyX[i], bodyY[i])) {
+                    let valid = false;
+                }
+                let i = i + 1;
+            }
+
+            // reject if its on the food cell
+            if ((ax = foodX) & (ay = foodY)) {
+                let valid = false;
+            }
+
+            // reject if its on an existing obstacle
+            let i = 0;
+            while (i < count) {
+                if ((ax = obsX[i]) & (ay = obsY[i])) {
+                    let valid = false;
+                }
+                let i = i + 1;
+            }
+
+            let attempts = attempts + 1;
+        }
+
+        // only place it if a valid position was found 
+        if (valid) {
+            let obsX[count] = ax;
+            let obsY[count] = ay;
+            let count = count + 1;
+            do drawOne(count - 1);
+        }
+
+        return;
+    }
+
+    // draws one obstacle, filled square with a white X through it
+    method void drawOne(int idx) {
+        var int px, py;
+        let px = obsX[idx] * size;
+        let py = obsY[idx] * size;
+        do Screen.setColor(true);
+        do Screen.drawRectangle(px + 1, py + 1, px + size - 2, py + size - 2); // solid block
+        do Screen.setColor(false);
+        do Screen.drawLine(px + 3, py + 3, px + size - 3, py + size - 3); // slash: \
+        do Screen.drawLine(px + size - 3, py + 3, px + 3, py + size - 3); // slash: /
+        return;
+    }
+
+    // redraws all active obstacles, used after screen clears 
+    method void draw() {
+        var int i;
+        let i = 0;
+        while (i < count) {
+            do drawOne(i);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // returns true if (hx, hy) matches any obstacle position
+    method boolean hitsObstacle(int hx, int hy) {
+        var int i;
+        let i = 0;
+        while (i < count) {
+            if ((obsX[i] = hx) & (obsY[i] = hy)) {
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    // clears all obstacles at the start of a new game session
+    method void reset() {
+        let count = 0;
+        return;
+    }
+
+    // called after every score increment - decides how many obstacles to add
+    // each addObstacle call happens after the previous one has been registered,
+    // later placements in the same milestone cannot overlap earlier ones
+    method void addForScore(int score, Array bodyX, Array bodyY, int snakeLen, int foodX, int foodY) {
+        if ((score - ((score / 5) * 5)) = 0) {
+            do addObstacle(bodyX, bodyY, snakeLen, foodX, foodY); // 1 at every 5-point milestone
+            if (score > 9) {
+                do addObstacle(bodyX, bodyY, snakeLen, foodX, foodY); // 2nd obstacle from score 10+
+            }
+            if (score > 14) {
+                do addObstacle(bodyX, bodyY, snakeLen, foodX, foodY); // 3rd obstacle from score 15+ 
+            }
+        }
+        return;
+    }
+}

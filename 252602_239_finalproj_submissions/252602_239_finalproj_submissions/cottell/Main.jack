@@ -1,0 +1,10 @@
+class Main {
+
+	function void main() {
+
+		var DrawingGame draw;
+		let draw = DrawingGame.new();
+		do draw.run();
+		return;
+	}
+}

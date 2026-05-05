@@ -1,0 +1,175 @@
+// main game class - owns the basket, the falling object, score, and the game loop
+class CatcherGame {
+    field Basket basket;
+    field int direction;
+    field FallingObject ball;
+    field int score;
+    field int missed; // how many lives lost (game ends at 3)
+    field int counter; // cycles 0-15, used to spread out where objects spawn
+
+    // initializes everything, shows instructions, then sets up the board
+    constructor CatcherGame new() {
+        do showInstructions();
+        let basket = Basket.new(230, 240);
+        let direction = 0;
+        let ball = FallingObject.new(100, 20);
+        let score = 0;
+        let missed = 0;
+        let counter = 0;
+        do showScore();
+        do showHealth();
+        return this;
+    }
+
+    // cleans up basket, ball, and itself
+    method void dispose() {
+        do basket.dispose();
+        do ball.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // picks the next x spawn position based on counter - spreads objects across the screen
+    method int nextX() {
+        return (counter * 30) + 10;
+    }
+
+    // shows a how-to-play screen before the game starts, waits for a keypress to continue
+    method void showInstructions() {
+        do Screen.clearScreen();
+
+        do Output.moveCursor(3, 27);
+        do Output.printString("HOW TO PLAY");
+
+        // solid block = safe to catch
+        do Screen.setColor(true);
+        do Screen.drawRectangle(174, 94, 186, 106);
+        do Output.moveCursor(9, 24);
+        do Output.printString("= CATCH for points");
+
+        // hollow block = dangerous, avoid it
+        do Screen.setColor(true);
+        do Screen.drawLine(174, 126, 186, 126);
+        do Screen.drawLine(186, 126, 186, 138);
+        do Screen.drawLine(174, 138, 186, 138);
+        do Screen.drawLine(174, 126, 174, 138);
+        do Output.moveCursor(12, 24);
+        do Output.printString("= AVOID, costs health");
+
+        do Output.moveCursor(17, 21);
+        do Output.printString("Press any key to start");
+
+        // wait for key down then key up before starting
+        while (Keyboard.keyPressed() = 0) {}
+        while (~(Keyboard.keyPressed() = 0)) {}
+
+        do Screen.clearScreen();
+        return;
+    }
+
+    // prints score in top-left and the "HP:" label in top-right
+    method void showScore() {
+        do Output.moveCursor(0, 0);
+        do Output.printString("Score: ");
+        do Output.printInt(score);
+        do Output.printString("                ");
+        do Output.moveCursor(0, 46);
+        do Output.printString("HP:");
+        return;
+    }
+
+    // draws a health bar in the top-right corner, shrinks as you miss things
+    method void showHealth() {
+        var int fillEnd;
+        do Screen.setColor(true);
+        do Screen.drawRectangle(390, 1, 511, 9);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(391, 2, 510, 8);
+        if (missed < 3) {
+            // each missed hit removes one third of the bar
+            let fillEnd = 391 + ((3 - missed) * 39);
+            do Screen.setColor(true);
+            do Screen.drawRectangle(391, 2, fillEnd, 8);
+        }
+        return;
+    }
+
+    // checks if the falling object hit or passed the basket
+    // - caught safe object: +1 score
+    // - caught dangerous object: -1 hp
+    // - missed safe object: -1 hp
+    // - missed dangerous object: nothing (good thing)
+    method void checkCollision() {
+        var int ballX, ballY, basketX, basketY;
+        let ballX = ball.getX();
+        let ballY = ball.getY();
+        let basketX = basket.getX();
+        let basketY = basket.getY();
+
+        if ((ballY + 6) > basketY) {
+            if (((ballX + 6) > basketX) & ((ballX - 6) < (basketX + 40))) {
+                // ball is within basket x-range = caught
+                if (ball.isDangerous()) {
+                    let missed = missed + 1;
+                } else {
+                    let score = score + 1;
+                }
+            } else {
+                // ball fell past the basket
+                if (~ball.isDangerous()) {
+                    let missed = missed + 1;
+                }
+            }
+            // after any landing, reset ball to top; dangerous objects start appearing after counter > 10
+            do ball.resetPosition(nextX(), counter > 10);
+            do showScore();
+            do showHealth();
+        }
+        return;
+    }
+
+    // shows game over screen with final score, waits 4 seconds then exits
+    method void gameOver() {
+        do Output.moveCursor(10, 18);
+        do Output.printString("GAME  OVER");
+        do Output.moveCursor(12, 16);
+        do Output.printString("Final Score: ");
+        do Output.printInt(score);
+        do Sys.wait(4000);
+        return;
+    }
+
+    // the main game loop - drops the ball, checks collision, handles input, runs at ~60fps
+    method void run() {
+        var char key;
+        var boolean exit;
+        let exit = false;
+
+        while (~exit) {
+            let counter = counter + 1;
+            if (counter > 15) { let counter = 0; }
+
+            do ball.drop();
+            do basket.draw(); // redraw so ball's erase doesn't leave a gap in the basket
+            do checkCollision();
+
+            let key = Keyboard.keyPressed();
+            if (key = 81) { let exit = true; }   // Q = quit
+            if (key = 130) { let direction = 1; } // left arrow
+            if (key = 132) { let direction = 2; } // right arrow
+            if (key = 0) { let direction = 0; }   // no key = stop
+
+            if (direction = 1) { do basket.moveLeft(); }
+            if (direction = 2) { do basket.moveRight(); }
+
+            do Sys.wait(16);
+
+            // 3 misses = game over
+            if (missed > 2) {
+                do gameOver();
+                let exit = true;
+            }
+        }
+        return;
+    }
+}

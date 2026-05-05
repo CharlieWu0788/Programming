@@ -1,0 +1,310 @@
+class Room {
+    //Room node object. Contains previous room and next room, layout type, npc locations, 
+    //prop locations, gift locations, and draw methods for all
+
+        //room layouts, indicates where the doors are located
+        //0=start_right (starting room), 1=left_right, 2=left_up, 3=left_down, 4=end_right, 5=wLeft_right, 6=end
+        //7=bStart_left (start of black room), 8=bLeft_right, 9=bEnd_right (end of black rooms)
+    field int start_right, left_right, left_up, left_down, end_right, wLeft_right, end, sLeft_right;
+    field int bStart_left, bLeft_right, bEnd_right;
+    field int layout_type;
+
+    field int npcLeftX, npcTopY, npcRightX, npcBottomY;
+    field int giftLeftX, giftTopY, giftRightX, giftBottomY;
+
+    field Array prop_arr;
+    field int index;
+    field NPC npc;
+    field Gift gift;
+    field boolean hasNPC, hasGift;
+
+    field Room nextR, prevR;
+    
+    constructor Room new(int room_layout) {
+        let start_right = 0;
+        let left_right = 1;
+        let left_up = 2;
+        let left_down = 3;
+        let end_right = 4;
+        let end = 5;
+        let bStart_left = 6;
+        let bLeft_right = 7;
+        let bEnd_right = 8;
+        let wLeft_right = 9;
+        let sLeft_right = 10;
+
+        let layout_type = room_layout;
+        let hasNPC = false;
+        let hasGift = false;
+        let prop_arr = Array.new(10);
+        let index = 0;
+        return this;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //-----------------------------------------------------------------------------------------------Getter and setter methods
+    method void setNextRoom(Room next) {
+        let nextR = next;
+        return;
+    }
+    method void setPrevRoom(Room prev) {
+        let prevR = prev;
+        return;
+    }
+    method void setLayoutType(int room_type) {
+        let layout_type = room_type;
+        return;
+    }
+
+
+    method void setNPC(int x, int y) {
+        let npcLeftX = x;
+        let npcTopY = y;
+        let npcRightX = x + 18;
+        let npcBottomY = y + 37;
+
+        let npc = NPC.new(x, y);
+        let hasNPC = true;
+        return;
+    }
+    method void setGift(int x, int y) {
+        let giftLeftX = x;
+        let giftTopY = y;
+        let giftRightX = x + 15;
+        let giftBottomY = y + 15;
+
+        let gift = Gift.new(x, y);
+        let hasGift = true;
+        return;
+    }
+
+
+    method int getLayoutType() {
+        return layout_type;
+    }
+    method Room getNextRoom() {
+        return nextR;
+    }
+    method Room getPrevRoom() {
+        return prevR;
+    }
+
+    //NPC and gift positional getter methods were implemented in room for faster dev time, 
+    //it may not be more efficient
+    method int getTopOfNPC() {
+        return npcTopY;
+    }
+    method int getBottomOfNPC() {
+        return npcBottomY;
+    }
+    method int getLeftOfNPC() {
+        return npcLeftX;
+    }
+    method int getRightOfNPC() {
+        return npcRightX;
+    }
+
+
+    method int getTopOfGift() {
+        return giftTopY;
+    }
+    method int getBottomOfGift() {
+        return giftBottomY;
+    }
+    method int getLeftOfGift() {
+        return giftLeftX;
+    }
+    method int getRightOfGift() {
+        return giftRightX;
+    }
+
+
+    method boolean getHasNPC() {
+        return hasNPC;
+    }
+    method boolean getHasGift() {
+        return hasGift;
+    }
+
+
+    method NPC getNPC() {
+        return npc;
+    }
+    method Gift getGift() {
+        return gift;
+    }
+    //-----------------------------------------------------------------------------------------------Add prop method
+
+    method void addProp(int prop_type, int pos_x, int pos_y) {
+        var Prop newProp;
+        let newProp = Prop.new(prop_type, pos_x, pos_y);
+        let prop_arr[index] = newProp;
+        let index = index + 1;
+        return;
+    }
+
+    //------------------------------------------------------------------------------------------------------- interaction logic
+    method boolean attemptUpdateNPC(boolean hasGift) {
+        //If the player has a gift, update the npc sprite and recievedGift boolean.
+        //Otherwise, do nothing
+
+        if (hasGift & ~npc.getRecievedGift()) {
+            do npc.updateRecievedGift();
+            return true;
+        }
+        return false;
+    }
+
+    method boolean attemptPickUpGift(boolean hasGift) {
+        //If the player does not have a gift, erase sprite and update collected boolean.
+        //Otherwise, do nothing
+
+        if (~hasGift) {
+            do gift.updateCollected();
+            return true;
+        }
+        return false;
+    }
+
+    //-------------------------------------------------------------------------------------------------------Draw rooms
+    method void drawRoom() {
+        var Prop prop;
+        var int i;
+        do Screen.setColor(true);
+        //doors to the left and right
+        if ((layout_type = left_right) | (layout_type = wLeft_right)) {
+            do Screen.drawRectangle(0, 246, 512, 256);
+            do Screen.drawRectangle(0, 0, 512, 10);
+            
+            //left wall
+            do Screen.drawRectangle(0, 0, 10, 98);
+            do Screen.drawRectangle(0, 158, 10, 256);
+
+            //right wall
+            do Screen.drawRectangle(502, 0, 512, 98);
+            do Screen.drawRectangle(502, 158, 512, 256);
+        }
+        if (layout_type = sLeft_right) {
+            do Screen.drawRectangle(0, 246, 512, 256);
+            do Screen.drawRectangle(0, 0, 512, 10);
+            
+            //left wall
+            do Screen.drawRectangle(0, 0, 10, 98);
+            do Screen.drawRectangle(0, 158, 10, 256);
+
+            //right wall
+            do Screen.drawRectangle(502, 0, 512, 98);
+            do Screen.drawRectangle(502, 158, 512, 256);
+
+            do Output.moveCursor(8, 25);
+            do Output.printString("Deliver Gifts!");
+        }
+        //doors are left and up
+        if (layout_type = left_up) {
+            do Screen.drawRectangle(0, 246, 512, 256);
+            do Screen.drawRectangle(502, 0, 512, 256);
+
+            //left wall
+            do Screen.drawRectangle(0, 0, 10, 98);
+            do Screen.drawRectangle(0, 158, 10, 256);
+
+            //upper wall
+            do Screen.drawRectangle(0, 0, 226, 10);
+            do Screen.drawRectangle(286, 0, 512, 10);
+        }
+        //doors are left and down
+        if (layout_type = left_down) {
+            do Screen.drawRectangle(0, 0, 512, 10);
+            do Screen.drawRectangle(502, 0, 512, 256);
+
+            //left wall
+            do Screen.drawRectangle(0, 0, 10, 103);
+            do Screen.drawRectangle(0, 153, 10, 256);
+
+            //lower wall
+            do Screen.drawRectangle(0, 246, 236, 256);
+            do Screen.drawRectangle(286, 246, 512, 256);
+        }
+        //root room
+        if (layout_type = start_right) {
+            do Screen.drawRectangle(0, 246, 512, 256);
+            do Screen.drawRectangle(0, 0, 10, 256);
+            do Screen.drawRectangle(0, 0, 512, 10);
+
+            //right wall
+            do Screen.drawRectangle(502, 0, 512, 98);
+            do Screen.drawRectangle(502, 158, 512, 256);
+            
+            do Output.moveCursor(8, 25);
+            do Output.printString("Deliver Gifts!");
+        }
+
+        //bedroom
+        if (layout_type = end_right) {
+            do Screen.drawRectangle(0, 246, 512, 256);
+            do Screen.drawRectangle(0, 0, 10, 256);
+            do Screen.drawRectangle(0, 0, 512, 10);
+
+            //right wall
+            do Screen.drawRectangle(502, 0, 512, 98);
+            do Screen.drawRectangle(502, 158, 512, 256);
+        }
+        
+        if (layout_type = end) {
+            do Screen.drawRectangle(0, 246, 512, 256);
+            do Screen.drawRectangle(0, 0, 10, 256);
+            do Screen.drawRectangle(0, 0, 512, 10);
+
+            //right wall
+            do Screen.drawRectangle(502, 0, 512, 98);
+            do Screen.drawRectangle(502, 158, 512, 256);
+
+            do Output.moveCursor(7, 20);
+            do Output.printString("Congradulations!");
+            do Output.moveCursor(8, 15);
+            do Output.printString("Thank You For Your Dedication!");
+        }
+        
+        //following room layouts have inverted colors (black background, white props)
+
+        if ((layout_type = bStart_left) | (layout_type = bLeft_right)) {
+            do Screen.setColor(true);
+            do Screen.drawRectangle(0, 6, 511, 249);
+        }
+
+        if ((layout_type = bEnd_right)) {
+            do Screen.setColor(true);
+            do Screen.drawRectangle(0, 246, 512, 256);
+            do Screen.drawRectangle(0, 0, 10, 256);
+            do Screen.drawRectangle(0, 0, 512, 10);
+
+            //right wall
+            do Screen.drawRectangle(502, 0, 512, 98);
+            do Screen.drawRectangle(502, 158, 512, 256);
+
+            do Output.moveCursor(8, 20);
+            do Output.printString("Deliver Me More Gifts");
+        }
+
+        let i = 0;
+        while (i < index) {
+            let prop = prop_arr[i];
+            do prop.drawProp();
+            let i = i + 1;
+        }
+
+        if (hasNPC) {
+            do npc.draw();
+        }
+        if (hasGift) {
+            do Screen.setColor(true);
+            do gift.draw();
+        }
+        return;
+    }
+}

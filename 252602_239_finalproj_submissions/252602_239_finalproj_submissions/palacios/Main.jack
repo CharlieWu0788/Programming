@@ -1,0 +1,9 @@
+class Main {
+    function void main() {
+        var ArrowEscapeGame game;
+        let game = ArrowEscapeGame.new();
+        do game.run();
+        do game.dispose();
+        return;
+    }
+}

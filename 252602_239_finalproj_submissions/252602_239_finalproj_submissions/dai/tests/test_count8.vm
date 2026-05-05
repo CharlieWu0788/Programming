@@ -1,0 +1,22 @@
+// test: while loop counting to 8
+// while (x < 8) x = x + 1
+// 8 = 1000, only one LED on (bit 3)
+// good for checking that higher bits work
+// LED: 1000
+function Main.main 1
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 8
+lt
+not
+if-goto WHILE_END0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

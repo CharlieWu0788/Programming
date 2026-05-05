@@ -1,0 +1,12 @@
+// compiled from 1_arithmetic/Main.jack
+// 3 + 4 - 2 = 5, LED: 0101
+// locals: x(0)
+function Main.main 1
+push constant 3
+push constant 4
+add
+push constant 2
+sub
+pop local 0
+push constant 0
+return

@@ -1,0 +1,948 @@
+class Game {
+    static int MAX_ENEMIES;
+    static int MAX_BULLETS;
+
+    field Player player; // player object
+    field Array enemies; // enemy pool
+    field Array bullets; // bullet pool
+    field int score; // current score
+    field int spawnTimer; // period between enemy occur
+    field int shootTimer; // player shoot timer
+    field int playerMoveTimer; // player move timer
+    field int bulletMoveTimer; // bullet move timer
+    field int enemyMoveTimer; // enemy move timer
+    field int playerDx; // horizontal input
+    field int playerDy; // vertical input
+    field int currentKey; // current key
+    field boolean controlKeyDown; // control key held
+    field boolean gameOver; // game over flag
+    field boolean paused; // pause flag
+    field int randomSeed; // used to choose a random enemy lane
+    field int wavesUntilBoss; // boss countdown
+    field int waveNumber; // wave count
+    field int bossesKilled; // boss kills
+    field int highScore; // best score
+    field boolean newRecord; // record flag
+    field String scoreText; // hud text
+    field String hpText; // hud text
+    field String bossHpText; // hud text
+    field String pausedText; // hud text
+    field String waveText; // hud text
+    field String highText; // hud text
+    field String newRecordText; // hud text
+    field String gameOverText; // screen text
+    field String highestScoreText; // screen text
+    field String restartText; // screen text
+    field String titleText; // screen text
+    field String rulesText; // screen text
+    field String startText; // screen text
+    field String pauseHelpText; // screen text
+
+    constructor Game new() {
+        return this;
+    }
+
+    method void init() {
+        var int i;
+        var Enemy enemy;
+        var Bullet bullet;
+
+        // sets the fixed pool sizes for enemies and bullets (for now).
+        let MAX_ENEMIES = 4;
+        let MAX_BULLETS = 30;
+
+        // creates the player and the two object pools.
+        // The player starts on a 16-pixel boundary for bitmap drawing.
+        let player = Player.new(240, 220); // (240, 220) is the position
+        let enemies = Array.new(MAX_ENEMIES);
+        let bullets = Array.new(MAX_BULLETS);
+
+        // resets the game state values.
+        let score = 0;
+        let spawnTimer = 30;
+        let shootTimer = 0;
+        let playerMoveTimer = 0;
+        let bulletMoveTimer = 0;
+        let enemyMoveTimer = 0;
+        let playerDx = 0;
+        let playerDy = 0;
+        let currentKey = 0;
+        let controlKeyDown = false;
+        let gameOver = false;
+        let paused = false;
+        let randomSeed = 17;
+        let wavesUntilBoss = 4;
+        let waveNumber = 0;
+        let bossesKilled = 0;
+        let highScore = 0;
+        let newRecord = false;
+        let scoreText = "Score: ";
+        let hpText = "HP: ";
+        let bossHpText = "Boss HP: ";
+        let pausedText = "Paused";
+        let waveText = "Wave: ";
+        let highText = "High: ";
+        let newRecordText = "New Record";
+        let gameOverText = "Game Over";
+        let highestScoreText = "Highest Score: ";
+        let restartText = "Press [R] to restart";
+        let titleText = "Thunder Fighter";
+        let rulesText = "Shoot automatically, use Arrows to dodge";
+        let startText = "Press [S] to start";
+        let pauseHelpText = "Press [Space] to pause";
+
+        // makes the fixed enemy pool, enemy inside can be reused, not activated yet
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = Enemy.new(0, 0);
+            let enemies[i] = enemy;
+            let i = i + 1;
+        }
+
+        // makes the fixed bullet pool, bullets can be reused.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = Bullet.new(0, 0);
+            let bullets[i] = bullet;
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    method void run() {
+        // main game flow
+        do showStartScreen();
+        do waitForStart();
+        do resetGameState();
+
+        // keeps the program alive so the player can restart with the restart key without restart the vm.
+        while (true) {
+            // one full game until the player dies.
+            while (~gameOver) {
+                do update();
+                do render();
+                // helps the game run more smoothly.
+                do Sys.wait(10);
+            }
+
+            // shows "gameover" and waits for restart.
+            do updateHighScore();
+            do showGameOverScreen();
+            do waitForRestart();
+            do resetGameState();
+        }
+        return;
+    }
+
+    method void update() {
+        // update one frame
+        let currentKey = Keyboard.keyPressed();
+
+        if (handleControlKeys()) {
+            return;
+        }
+
+        // updates systems on separate timers.
+        do readPlayerInput();
+        do updatePlayerByTimer();
+
+        // controls the automatic shooting timer.
+        if (shootTimer > 0) {
+            let shootTimer = shootTimer - 1;
+        }
+        if (shootTimer = 0) {
+            do firePlayerBullet();
+            let shootTimer = 5;
+        }
+
+        // controls the enemy spawn timer.
+        if (spawnTimer > 0) {
+            let spawnTimer = spawnTimer - 1;
+        }
+        if (spawnTimer = 0) {
+            do spawnEnemy();
+            let spawnTimer = 36;
+        }
+
+        do updateBulletsByTimer();
+        do updateEnemiesByTimer();
+
+        // checks hits, then removes dead objects.
+        do checkCollisions();
+        do removeInactiveObjects();
+
+        // ends the game when the player HP is gone.
+        if (player.isDead()) {
+            let gameOver = true;
+        }
+        return;
+    }
+
+    method void render() {
+        // draw one frame
+        var int i;
+        var Bullet bullet;
+        var Enemy enemy;
+
+        // clears the old frame
+        do Screen.clearScreen();
+
+        // draws the player's fighter.
+        do player.draw();
+
+        // draws all active bullets.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if (bullet.isActive()) {
+                do bullet.draw();
+            }
+            let i = i + 1;
+        }
+
+        // draws all active enemies.
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (enemy.isActive()) {
+                do enemy.draw();
+            }
+            let i = i + 1;
+        }
+
+        // prints reused HUD strings at the top.
+        do Output.moveCursor(0, 0);
+        do Output.printString(scoreText);
+        do Output.printInt(score);
+        do Output.moveCursor(1, 0);
+        do Output.printString(hpText);
+        do Output.printInt(player.getHp());
+        if (bossActive()) {
+            do Output.moveCursor(2, 0);
+            do Output.printString(bossHpText);
+            do Output.printInt(getBossHp());
+        }
+        if (paused) {
+            do Output.moveCursor(6, 0);
+            do Output.printString(pausedText);
+        }
+        do Output.moveCursor(3, 0);
+        do Output.printString(waveText);
+        do Output.printInt(waveNumber);
+        do Output.moveCursor(4, 0);
+        do Output.printString(highText);
+        do Output.printInt(highScore);
+        if ((newRecord) | (score > highScore)) {
+            do Output.moveCursor(5, 0);
+            do Output.printString(newRecordText);
+        }
+        return;
+    }
+
+    method void readPlayerInput() {
+        // read move intent
+        let playerDx = 0;
+        let playerDy = 0;
+
+        if (currentKey = 131) {
+            let playerDy = -1;
+        }
+        if (currentKey = 133) {
+            let playerDy = 1;
+        }
+        if (currentKey = 130) {
+            let playerDx = -1;
+        }
+        if (currentKey = 132) {
+            let playerDx = 1;
+        }
+        return;
+    }
+
+    method void updatePlayer() {
+        // apply move intent
+        if (playerDy = -1) {
+            do player.moveUp();
+        }
+        if (playerDy = 1) {
+            do player.moveDown();
+        }
+        if (playerDx = -1) {
+            do player.moveLeft();
+        }
+        if (playerDx = 1) {
+            do player.moveRight();
+        }
+        return;
+    }
+
+    method void updatePlayerByTimer() {
+        // timed player move
+        if (playerMoveTimer > 0) {
+            let playerMoveTimer = playerMoveTimer - 1;
+        }
+        if (playerMoveTimer = 0) {
+            do updatePlayer();
+            let playerMoveTimer = 1;
+        }
+        return;
+    }
+
+    method void updateBullets() {
+        // move bullets
+        var int i;
+        var Bullet bullet;
+
+        // updates each active bullet in the pool.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if (bullet.isActive()) {
+                do bullet.update();
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void updateBulletsByTimer() {
+        // timed bullet move
+        if (bulletMoveTimer > 0) {
+            let bulletMoveTimer = bulletMoveTimer - 1;
+        }
+        if (bulletMoveTimer = 0) {
+            do updateBullets();
+            let bulletMoveTimer = 1;
+        }
+        return;
+    }
+
+    method void updateEnemies() {
+        // move enemies
+        var int i;
+        var Enemy enemy;
+
+        // updates each active enemy in the pool.
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (enemy.isActive()) {
+                do enemy.update();
+
+                // fires one enemy bullet after the enemy reaches its position
+                if (enemy.canShoot()) {
+                    if (enemy.isBoss()) {
+                        do fireBossBullets(enemy);
+                    }
+                    else {
+                        do fireEnemyBullet(enemy);
+                    }
+                    do enemy.resetShootTimer(getEnemyShootInterval());
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void updateEnemiesByTimer() {
+        // timed enemy move
+        if (enemyMoveTimer > 0) {
+            let enemyMoveTimer = enemyMoveTimer - 1;
+        }
+        if (enemyMoveTimer = 0) {
+            do updateEnemies();
+            let enemyMoveTimer = 1;
+        }
+        return;
+    }
+
+    method void spawnEnemy() {
+        // choose wave type
+        if (anyEnemyActive()) {
+            return;
+        }
+
+        if (wavesUntilBoss = 0) {
+            do spawnBoss();
+        }
+        else {
+            do spawnWave();
+        }
+        return;
+    }
+
+    method void spawnWave() {
+        // spawn four enemies
+        var int i;
+        var int cnt;
+        var int lane;
+        var int enemyX;
+        var Enemy enemy;
+
+        // Spawns one wave of four small enemies in random, non-overlapping lanes.
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            let cnt = 0;
+            while (cnt < getLaneCount()) {
+                let lane = nextRandomLane();
+                let enemyX = getLaneX(lane);
+
+                if (~(doLaneOccupied(enemyX))) {
+                    do enemy.reset(enemyX, 0);
+                    let cnt = getLaneCount();
+                }
+                let cnt = cnt + 1;
+            }
+            if (~(enemy.isActive())) {
+                let cnt = 0;
+                while (cnt < getLaneCount()) {
+                    let enemyX = getLaneX(cnt);
+                    if (~(doLaneOccupied(enemyX))) {
+                        do enemy.reset(enemyX, 0);
+                        let cnt = getLaneCount();
+                    }
+                    let cnt = cnt + 1;
+                }
+            }
+            let i = i + 1;
+        }
+        let wavesUntilBoss = wavesUntilBoss - 1;
+        let waveNumber = waveNumber + 1;
+        return;
+    }
+
+    method void spawnBoss() {
+        // spawn boss
+        var int i;
+        var Enemy enemy;
+
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (~(enemy.isActive())) {
+                do enemy.resetBoss(208, 0, getNextBossHp(), bossesKilled);
+                let wavesUntilBoss = 4;
+                let waveNumber = waveNumber + 1;
+                return;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void firePlayerBullet() {
+        // player fires
+        var int i;
+        var Bullet bullet;
+
+        // finds one inactive bullet and reuses it.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if (~(bullet.isActive())) {
+                do bullet.reset(player.getX() + 7, player.getY() - 4, -6, 0);
+                return;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void fireEnemyBullet(Enemy shooter) {
+        // normal enemy fires
+        if (isWideAngleWave()) {
+            do fireEnemyBulletAtWideAngle(shooter.getBulletX(), shooter.getBulletY(), 1, getEnemyBulletBonusGap(), -1);
+            do fireEnemyBulletAtWideAngle(shooter.getBulletX(), shooter.getBulletY(), 1, getEnemyBulletBonusGap(), 1);
+        }
+        else {
+        if (isEvenWave()) {
+            do fireEnemyBulletAtAngle(shooter.getBulletX(), shooter.getBulletY(), 1, getEnemyBulletBonusGap(), -1);
+            do fireEnemyBulletAtAngle(shooter.getBulletX(), shooter.getBulletY(), 1, getEnemyBulletBonusGap(), 1);
+        }
+        else {
+            do fireEnemyBulletAt(shooter.getBulletX(), shooter.getBulletY(), 1, getEnemyBulletBonusGap());
+        }
+        }
+        return;
+    }
+
+    method void fireBossBullets(Enemy shooter) {
+        // boss triple shot
+        var int startY;
+
+        let startY = shooter.getBulletY();
+        if (isWideAngleWave()) {
+            do fireEnemyBulletAtWideAngle(shooter.getX() + 8, startY, 1, getEnemyBulletBonusGap(), -1);
+        }
+        else {
+        if (isEvenWave()) {
+            do fireEnemyBulletAtAngle(shooter.getX() + 8, startY, 1, getEnemyBulletBonusGap(), -1);
+        }
+        else {
+            do fireEnemyBulletAt(shooter.getX() + 8, startY, 1, getEnemyBulletBonusGap());
+        }
+        }
+        do fireEnemyBulletAt(shooter.getX() + 47, startY, 1, getEnemyBulletBonusGap());
+        if (isWideAngleWave()) {
+            do fireEnemyBulletAtWideAngle(shooter.getX() + 86, startY, 1, getEnemyBulletBonusGap(), 1);
+        }
+        else {
+        if (isEvenWave()) {
+            do fireEnemyBulletAtAngle(shooter.getX() + 86, startY, 1, getEnemyBulletBonusGap(), 1);
+        }
+        else {
+            do fireEnemyBulletAt(shooter.getX() + 86, startY, 1, getEnemyBulletBonusGap());
+        }
+        }
+        return;
+    }
+
+    method void fireEnemyBulletAt(int startX, int startY, int speedY, int bonusGap) {
+        // reuse enemy bullet
+        var int i;
+        var Bullet bullet;
+
+        // finds one inactive bullet and reuses it for an enemy shot.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if (~(bullet.isActive())) {
+                if (bonusGap > 0) {
+                    do bullet.resetWithBonus(startX, startY, speedY, 1, bonusGap);
+                }
+                else {
+                    do bullet.reset(startX, startY, speedY, 1);
+                }
+                return;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void fireEnemyBulletAtAngle(int startX, int startY, int speedY, int bonusGap, int moveX) {
+        // angled enemy bullet
+        var int i;
+        var Bullet bullet;
+
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if (~(bullet.isActive())) {
+                do bullet.resetAngled(startX, startY, speedY, 1, bonusGap, moveX);
+                return;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void fireEnemyBulletAtWideAngle(int startX, int startY, int speedY, int bonusGap, int moveX) {
+        // steeper enemy bullet
+        var int i;
+        var Bullet bullet;
+
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if (~(bullet.isActive())) {
+                do bullet.resetAngledWithGap(startX, startY, speedY, 1, bonusGap, moveX, 2);
+                return;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void checkCollisions() {
+        // check all hits
+        var int i;
+        var int j;
+        var Bullet bullet;
+        var Enemy enemy;
+
+        // checks if a player bullet hits an enemy.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if ((bullet.isActive()) & (bullet.getOwner() = 0)) {
+                let j = 0;
+                while (j < MAX_ENEMIES) {
+                    let enemy = enemies[j];
+                    if (enemy.isActive()) {
+                        if (Collision.intersects(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight(), enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight())) {
+                            do bullet.deactivate();
+                            if (enemy.takeHit()) {
+                                do countEnemyKill(enemy);
+                            }
+                            let j = MAX_ENEMIES;
+                        }
+                    }
+                    let j = j + 1;
+                }
+            }
+            let i = i + 1;
+        }
+
+        // checks if an enemy bullet hits the player.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            if ((bullet.isActive()) & (bullet.getOwner() = 1)) {
+                if (Collision.intersects(bullet.getX(), bullet.getY(), bullet.getWidth(), bullet.getHeight(), player.getX(), player.getY(), player.getWidth(), player.getHeight())) {
+                    do bullet.deactivate();
+                    do player.takeDamage();
+                }
+            }
+            let i = i + 1;
+        }
+
+        //  checks if an enemy crashes into the player.
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (enemy.isActive()) {
+                if (Collision.intersects(enemy.getX(), enemy.getY(), enemy.getWidth(), enemy.getHeight(), player.getX(), player.getY(), player.getWidth(), player.getHeight())) {
+                    if (~(enemy.isBoss())) {
+                        do enemy.deactivate();
+                    }
+                    do player.takeDamage();
+                }
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void removeInactiveObjects() {
+        // keeps old objects in memory so the game can reuse them.
+        return;
+    }
+
+    method void resetGameState() {
+        // reset current run
+        var int i;
+        var Enemy enemy;
+        var Bullet bullet;
+
+        // resets the player and the main game values for a new round.
+        do player.reset(240, 220);
+        let score = 0;
+        let spawnTimer = 30;
+        let shootTimer = 0;
+        let playerMoveTimer = 0;
+        let bulletMoveTimer = 0;
+        let enemyMoveTimer = 0;
+        let playerDx = 0;
+        let playerDy = 0;
+        let currentKey = 0;
+        let controlKeyDown = false;
+        let gameOver = false;
+        let paused = false;
+        let randomSeed = 17;
+        let wavesUntilBoss = 4;
+        let waveNumber = 0;
+        let bossesKilled = 0;
+        let newRecord = false;
+
+        // turns off all old enemies so they can be reused.
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            do enemy.deactivate();
+            let i = i + 1;
+        }
+
+        // turns off all old bullets so they can be reused.
+        let i = 0;
+        while (i < MAX_BULLETS) {
+            let bullet = bullets[i];
+            do bullet.deactivate();
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void showGameOverScreen() {
+        // end screen
+        //  draws the game-over text, score, and restart button once.
+        do Screen.clearScreen();
+        do Output.moveCursor(7, 27);
+        do Output.printString(gameOverText);
+        do Output.moveCursor(9, 27);
+        do Output.printString(scoreText);
+        do Output.printInt(score);
+        do Output.moveCursor(11, 24);
+        do Output.printString(highestScoreText);
+        do Output.printInt(highScore);
+        if (newRecord) {
+            do Output.moveCursor(13, 27);
+            do Output.printString(newRecordText);
+        }
+        do Output.moveCursor(15, 22);
+        do Output.printString(restartText);
+        return;
+    }
+
+    method void waitForRestart() {
+        // wait for R
+        var int key;
+
+        // waits until the player presses r to restart.
+        let key = 0;
+        while (~((key = 82) | (key = 114))) {
+            let key = Keyboard.keyPressed();
+            do Sys.wait(10);
+        }
+        return;
+    }
+
+    method void showStartScreen() {
+        // start screen
+        do Screen.clearScreen();
+        do Output.moveCursor(8, 24);
+        do Output.printString(titleText);
+        do Output.moveCursor(10, 11);
+        do Output.printString(rulesText);
+        do Output.moveCursor(12, 24);
+        do Output.printString(startText);
+        do Output.moveCursor(14, 21);
+        do Output.printString(pauseHelpText);
+        return;
+    }
+
+    method void waitForStart() {
+        // wait for S
+        var int key;
+
+        let key = 0;
+        while (~((key = 83) | (key = 115))) {
+            let key = Keyboard.keyPressed();
+            do Sys.wait(10);
+        }
+        do waitForKeyRelease();
+        return;
+    }
+
+    method boolean handleControlKeys() {
+        // pause or restart
+        var boolean controlPressed;
+
+        let controlPressed = false;
+
+        if ((currentKey = 82) | (currentKey = 114)) {
+            let controlPressed = true;
+        }
+        if (currentKey = 32) {
+            let controlPressed = true;
+        }
+
+        if (controlPressed) {
+            if (~controlKeyDown) {
+                let controlKeyDown = true;
+                if ((currentKey = 82) | (currentKey = 114)) {
+                    do updateHighScore();
+                    do resetGameState();
+                    let controlKeyDown = true;
+                    return true;
+                }
+                if (currentKey = 32) {
+                    if (paused) {
+                        let paused = false;
+                    }
+                    else {
+                        let paused = true;
+                    }
+                    return true;
+                }
+            }
+        }
+        else {
+            let controlKeyDown = false;
+        }
+
+        if (paused) {
+            return true;
+        }
+        return false;
+    }
+
+    method void waitForKeyRelease() {
+        // debounce key
+        while (~(Keyboard.keyPressed() = 0)) {
+            do Sys.wait(10);
+        }
+        return;
+    }
+
+    method boolean doLaneOccupied(int laneX) {
+        // lane collision
+        var int i;
+        var Enemy enemy;
+
+        //  checks if one active enemy is already using this lane.
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (enemy.isActive()) {
+                if (enemy.getX() = laneX) {
+                    return true;
+                }
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    method void countEnemyKill(Enemy enemy) {
+        // add rewards
+        if (enemy.isBoss()) {
+            let score = score + getNextBossHp();
+            let bossesKilled = bossesKilled + 1;
+            do player.heal();
+        }
+        else {
+            let score = score + 10;
+        }
+        return;
+    }
+
+    method void updateHighScore() {
+        // save record
+        if (score > highScore) {
+            let highScore = score;
+            let newRecord = true;
+        }
+        return;
+    }
+
+    method boolean anyEnemyActive() {
+        // any enemy alive
+        var int i;
+        var Enemy enemy;
+
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (enemy.isActive()) {
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    method boolean bossActive() {
+        // boss alive
+        var int i;
+        var Enemy enemy;
+
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (enemy.isActive()) {
+                if (enemy.isBoss()) {
+                    return true;
+                }
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    method int getBossHp() {
+        // current boss hp
+        var int i;
+        var Enemy enemy;
+
+        let i = 0;
+        while (i < MAX_ENEMIES) {
+            let enemy = enemies[i];
+            if (enemy.isActive()) {
+                if (enemy.isBoss()) {
+                    return enemy.getHp();
+                }
+            }
+            let i = i + 1;
+        }
+        return 0;
+    }
+
+    method int getNextBossHp() {
+        // boss hp scaling
+        return 50 + Math.multiply(bossesKilled, 20);
+    }
+
+    method int getEnemyShootInterval() {
+        // shot interval scaling
+        var int interval;
+
+        let interval = 60 - Math.divide(Math.multiply(60, Math.multiply(bossesKilled, 8)), 100);
+        if (interval < 15) {
+            return 15;
+        }
+        return interval;
+    }
+
+    method int getEnemyBulletBonusGap() {
+        // bullet speed scaling
+        var int bonus;
+
+        let bonus = 20 + Math.multiply(bossesKilled, 8);
+        if (bonus < 1) {
+            return 0;
+        }
+        return Math.divide(100, bonus);
+    }
+
+    method int getLaneCount() {
+        // spawn column count
+        var int count;
+
+        let count = 10 + Math.multiply(bossesKilled, 2);
+        if (count > 16) {
+            return 16;
+        }
+        return count;
+    }
+
+    method int nextRandomLane() {
+        // random lane
+        // Keeps the seed small and mixes in player movement so the lane order changes during play.
+        let randomSeed = randomSeed + player.getX() + player.getY() + 17;
+        while (randomSeed > 159) {
+            let randomSeed = randomSeed - 160;
+        }
+        return Math.divide(Math.multiply(randomSeed, getLaneCount()), 160);
+    }
+
+    method int getLaneX(int lane) {
+        // lane to x
+        var int laneCount;
+        var int wordColumn;
+
+        let laneCount = getLaneCount();
+        if (laneCount < 2) {
+            return 16;
+        }
+        let wordColumn = Math.divide(Math.multiply(lane, 29), laneCount - 1);
+        return 16 + Math.multiply(wordColumn, 16);
+    }
+
+    method boolean isEvenWave() {
+        // even wave check
+        return (Math.multiply(Math.divide(waveNumber, 2), 2) = waveNumber);
+    }
+
+    method boolean isWideAngleWave() {
+        // third wave check
+        return (Math.multiply(Math.divide(waveNumber, 3), 3) = waveNumber);
+    }
+
+    method boolean isGameOver() {
+        return gameOver;
+    }
+}

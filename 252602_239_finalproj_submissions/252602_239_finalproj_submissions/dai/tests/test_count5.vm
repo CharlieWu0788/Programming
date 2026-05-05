@@ -1,0 +1,22 @@
+// test: while loop counting to 5
+// while (x < 5) x = x + 1
+// same pattern as count3 but different target
+// x ends at 5 = 0101
+// LED: 0101
+function Main.main 1
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 5
+lt
+not
+if-goto WHILE_END0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

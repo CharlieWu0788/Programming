@@ -1,0 +1,65 @@
+class Game {
+    field Board board;
+    field boolean active;
+    field String titleString;
+
+    constructor Game new() {
+        let board = Board.new();
+        let active = true;
+        let titleString = "Power Game";
+        return this;
+    }
+
+    //take input from keyboard and move
+    method void handleInput() {
+        var char key;
+        let key = Keyboard.keyPressed();
+        if (key = 0) {
+            return;
+        }
+        if (key = 140) {
+            let active = false;
+            return;
+        }
+        if (key = 130) {
+            do board.moveLeft();
+            do board.update();
+            do board.display();
+            return;
+        }
+        if (key = 131) {
+            do board.moveUp();
+            do board.update();
+            do board.display();
+            return;
+        }
+        if (key = 132) {
+            do board.moveRight();
+            do board.update();
+            do board.display();
+            return;
+        }
+        if (key = 133) {
+            do board.moveDown();
+            do board.update();
+            do board.display();
+            return;
+        }
+        return;
+    }
+
+    method void run() {
+        do board.display();
+        while (active) {
+            do handleInput();
+            do Sys.wait(100);
+        }
+        return;
+    }
+
+    method void dispose() {
+        do board.dispose();
+        do titleString.dispose();
+        return;
+    }
+}

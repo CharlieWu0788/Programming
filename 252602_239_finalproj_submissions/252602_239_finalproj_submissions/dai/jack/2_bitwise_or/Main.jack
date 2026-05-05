@@ -1,0 +1,11 @@
+// program 2: bitwise OR
+// 5 | 10 = 15, all LEDs on
+// 0101 | 1010 = 1111
+// LED: 1111
+class Main {
+    function void main() {
+        var int x;
+        let x = 5 | 10;
+        return;
+    }
+}

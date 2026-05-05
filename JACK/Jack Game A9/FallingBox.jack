@@ -1,0 +1,85 @@
+class FallingBox {
+    field int x, y;
+    field int size;
+    field int speed;
+
+    constructor FallingBox new(int startX, int startY, int s, int spd) {
+        let x = startX;
+        let y = startY;
+        let size = s;
+        let speed = spd;
+        return this;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    method void fall() {
+        do erase();
+        let y = y + speed;
+        do draw();
+        return;
+    }
+
+    method void reset(int newX, int newY) {
+        do erase();
+        let x = newX;
+        let y = newY;
+        do draw();
+        return;
+    }
+
+    method boolean hitsPaddle(int px, int py, int pw, int ph) {
+        if ((y + size) < py) {
+            return false;
+        }
+        if (y > (py + ph)) {
+            return false;
+        }
+        if ((x + size) < px) {
+            return false;
+        }
+        if (x > (px + pw)) {
+            return false;
+        }
+        return true;
+    }
+
+    method boolean outOfBounds() {
+        if (y > 255) {
+            return true;
+        }
+        return false;
+    }
+
+    method void setSpeed(int spd) {
+        let speed = spd;
+        return;
+    }
+
+    method int getX() {
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+
+    method int getSize() {
+        return size;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

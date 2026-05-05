@@ -1,0 +1,89 @@
+// Whack-a-Mole. random slot lights, press 1..4 to score.
+// playfield 0..127 x 0..31 (fits the 1024B framebuffer without wrap).
+// y=0..15 yellow = score bar, y=18..31 blue = 4 mole slots.
+// no timeout: Sys.wait runs at very different rates on Hack vs AVR.
+
+class Main {
+    static int seed;
+
+    function void main() {
+        var int score, mole, pressed;
+        let seed = 12345;
+        let score = 0;
+        do Screen.clearScreen();
+        while (true) {
+            // 16-bit LCG. Math.multiply is what makes it expensive but its
+            // only called once per round so noticeable lag isnt a problem.
+            // use bits 8-9 (high byte) instead of 0-1: LCG low bits have
+            // period 4 so (seed & 3) cycles 1..4 deterministically.
+            let seed = Math.multiply(seed, 25173) + 13849;
+            let mole = (Math.divide(seed, 256) & 3) + 1;
+
+            do Main.drawMole(mole, true);
+            let pressed = Main.readButton();
+            do Main.drawMole(mole, false);
+
+            if (pressed = mole) {
+                let score = score + 1;
+                if (score > 16) { let score = 16; }
+                do Main.drawScore(score);
+            } else {
+                do Main.gameOver();
+                let score = 0;
+                do Screen.clearScreen();
+            }
+        }
+        return;
+    }
+
+    // light or clear one of the 4 mole slots in the blue area.
+    function void drawMole(int m, boolean on) {
+        var int x1, x2;
+        let x1 = 0;
+        let x2 = 31;
+        if (m = 2) { let x1 = 32;  let x2 = 63;  }
+        if (m = 3) { let x1 = 64;  let x2 = 95;  }
+        if (m = 4) { let x1 = 96;  let x2 = 127; }
+        do Screen.setColor(on);
+        do Screen.drawRectangle(x1, 18, x2, 31);
+        return;
+    }
+
+    // score bar in the yellow strip. fills left-to-right, 8px per hit.
+    function void drawScore(int s) {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(0, 0, Math.multiply(s, 8) - 1, 14);
+        return;
+    }
+
+    // block until a button is pressed-and-released. normalizes ASCII '1'..'4'
+    // (Hack keyboard) to raw 1..4 (AVR Timer0 ISR). returns 1..4.
+    function int readButton() {
+        var int c;
+        while (Keyboard.keyPressed() = 0) { }
+        let c = Keyboard.keyPressed();
+        while (~(Keyboard.keyPressed() = 0)) { }
+        if (c > 47) {
+            if (c < 58) {
+                return c - 48;
+            }
+        }
+        return c;
+    }
+
+    // flash the whole playfield three times to signal game over.
+    function void gameOver() {
+        var int i;
+        let i = 0;
+        while (i < 3) {
+            do Screen.setColor(true);
+            do Screen.drawRectangle(0, 0, 127, 31);
+            do Sys.wait(80);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(0, 0, 127, 31);
+            do Sys.wait(80);
+            let i = i + 1;
+        }
+        return;
+    }
+}

@@ -1,0 +1,50 @@
+class Enemy {
+    field int x, y, hp, destY, xDir;
+
+    constructor Enemy new(int ax, int ay) {
+        let x = ax;
+        let destY = ay;
+
+        // start position is above the top of the screen. This facilitates entrance animation
+        let y = destY - 1000;
+
+        let hp = 8;
+        let xDir = 1;
+        return this;
+    }
+
+    method void draw() {
+        var int screenCoord;
+        let screenCoord = (32 * y) + x;
+        do Sprites.drawZeke(screenCoord);
+        return;
+    }
+
+    // animates the enemy dropping down from above the screen
+    method void updateEntrance() {
+        var int velocity;
+        if (~(y < destY)) {
+            let y = destY;
+            return;
+        }
+        let y = y + ((destY - y) / 2);
+        return;
+    }
+
+    // animates the enemy shakily falling off the screen
+    method void updateExit() {
+        let y = y * 2;
+        let x = x + xDir;
+        let xDir = -(xDir);
+        return;
+    }
+
+    method int getHP() {
+        return hp;
+    }
+
+    method void damage(int damageAmount) {
+        let hp = Math.max((hp - damageAmount), 0);
+        return;
+    }
+}

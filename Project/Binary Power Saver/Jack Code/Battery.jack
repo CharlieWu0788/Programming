@@ -1,0 +1,32 @@
+class Battery
+{
+    field int power;
+    field int duration;
+    field int baseEnergy;
+
+    constructor Battery new(int p, int d)
+    {
+        let power = p;
+        let duration = d;
+        let baseEnergy = power * duration;
+
+        return this;
+    }
+
+    method int getEnergyAtBit(int index)
+    {
+        var int divider;
+        var int i;
+
+        let divider = 1;
+        let i = 0;
+
+        while (i < index)
+        {
+            let divider = divider * 2;
+            let i = i + 1;
+        }
+
+        return baseEnergy / divider;
+    }
+}

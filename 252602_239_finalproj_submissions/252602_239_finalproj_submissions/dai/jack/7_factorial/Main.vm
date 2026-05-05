@@ -1,0 +1,45 @@
+// compiled from 7_factorial/Main.jack
+// 3! = 6, LED: 0110
+// locals: result(0) i(1) j(2) sum(3)
+// nested while loops for repeated-addition multiplication
+function Main.main 4
+push constant 1
+pop local 0
+push constant 1
+pop local 1
+label WHILE_EXP0
+push local 1
+push constant 4
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 3
+push constant 0
+pop local 2
+label WHILE_EXP1
+push local 2
+push local 1
+lt
+not
+if-goto WHILE_END1
+push local 3
+push local 0
+add
+pop local 3
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP1
+label WHILE_END1
+push local 3
+pop local 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

@@ -1,0 +1,85 @@
+TO RUN THE CODE:
+    1. Unzip folder
+    2. Go to the Nand2Tetris Online IDE
+    3. Navigate to the Jack Compiler
+    4. Select open a folder
+    5. Open the folder in the Jack Compiler
+    6. Press "compile" and "run"
+    7. After being automatically brought to the VM Emulator, set the run speed to the fastest setting
+    8. Press enable keyboard, and run
+
+
+CONTROLS: 
+    W/A/S/D - player movement
+    ESC - exit the program
+
+
+CLASS OVERVIEW:
+    Main:
+        - main class, runs and closes the program.
+
+    Game:
+        - Game object, creates, updates, and facilitates data transfers between all other classes.
+        - Creates a doubly linked list of Room nodes, then draws the root room.
+         -If all Gift objects are delivered to all NPCs (tracked by int counter), update root and bedroom Room layouts.
+        - Recieves inputs from keyboard. (recieveInput())
+        - Moves player character in the direction input (runInput()).
+        - If movement is not possible, checks sprite collisions, room loading, and NPC/Gift interactions.
+
+    Player:
+        - Player character object.
+        - Contains coordinates (top_left corner), hasGift and drawBlack booleans, and sprite drawing instructions.
+        - Movement methods return a "move code" (-1=teleport, 1-collided, 0=move normally).
+        - If teleport is returned, Game class loades next/previous room in the list.
+        - if collided, player doesn't move, and Game checks for NPC/Gift interactions.
+
+    Room:
+        - Doubly linked list node object class.
+        - contains references to the previous and next element in the list, as well as number coded room layouts, array of Prop objects,
+          and NPC and Gift objects.
+        - contains NPC and Gift boundary coordinates. Contained here instead of NPC and Gift classes respectively for faster completion
+          time.
+
+    NPC:
+        - NPC object class.
+        - Contains coordinates (top left), a single boolean recievedGift, and draw instructions.
+        - recievedGift is updated to be true when the Player's hasGift boolean is also true, and collides (or interacts) with it.
+
+    Gift:
+        - Gift object class.
+        - Contains coordinates (top left), a single boolean collected, and draw instructions.
+        - collected is updated to be true when the Player's hasGift boolean is false, and collides (or interacts) with it.
+        - when collected, the sprite is erased permanently.
+
+    Prop:
+        - Simple object class that contains number coded prop types, coordinates, and draw instructions for each prop type.
+
+WARNING WHEN LOOKING AT CODE:
+        While the code is commented to be as clear as it can be, it is still somewhat messy and confusing. This is primarily
+    an issue with the methods handling movement. Since this program was built on top of the Square demo program provided by Nand2Tetris,
+    the movement logic is a heavily expanded version of the movement system in the demo, and may not be the most optimal system for
+    a program with this much complexity (each and every movement checks for next/previous room loading, then collisions, and then
+    for normal movement instead of attempting to move normally first, then checking for the other scenarios if normal movement is not
+    possible). There are also magic numbers, which are especially prevalent in Gift, NPC, Room, and Prop drawing instructions. This
+    was done for quicker development time, but does lead to more confusing code.
+
+KNOWN ISSUES:
+    1. When exiting the program, the program does not dispose every class. 
+        For the ones it does dispose, it does not dispose them correctly.
+    2. The player's eyes can still be seen in the secret ending screen, as the player is still drawn in their inverted colors.
+    3. Interactions with NPCs when approached from the left do not work. Gift states are not updated when the player has a gift.
+    4. The player may clip into and erase portions of the room walls when loading a new room when holding towards the wall.
+
+
+FUTURE PLANS:
+    Highest priority:
+        1. Fix all known bugs.
+        2. Clarify magic numbers
+        3. Restructure movement code to be more efficent, and less messily connected.
+    
+    Lower priority:
+        1. Player idle and walking animations.
+        2. Secret monster and NPC idle animations.
+        3. More detailed sprites, as well as more efficient drawing instructions for many of the props.
+        4. NPC dialogue. 
+    

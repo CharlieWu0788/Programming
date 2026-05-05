@@ -1,0 +1,391 @@
+class Board {
+    field Array grid;
+    field int size;
+    field int seed;
+
+    constructor Board new() {
+        let grid = Array.new(16);
+        let size = 16;
+        let seed = 1;
+        do init();
+        return this;
+    }
+
+    method void init() {
+        var int i;
+        let i = 0;
+        while (i < size) {
+            let grid[i] = 0;
+            let i = i + 1;
+        }
+        do spawnTile();
+        return;
+    }
+//PSUEDO-RANDOM NUMBER GENERATOR
+    method int random(int max) {
+        var int q;
+        let seed = seed * 73;
+        let seed = seed + 41;
+        if (seed < 0) {
+            let seed = 0 - seed;
+        }
+        let q = seed / max;
+        return seed - (q * max);
+    }
+
+    method int pickValue() {
+        var int r;
+        let r = random(10);
+        if (r < 9) {
+            return 2;
+        }
+        return 4;
+    }
+//SPAWN A NEW TILE IN A RANDOM EMPTY SPACE
+    method void spawnTile() {
+        var int i, count, choice;
+        let count = 0;
+        let i = 0;
+        while (i < size) {
+            if (grid[i] = 0) {
+                let count = count + 1;
+            }
+            let i = i + 1;
+        }
+        if (count = 0) {
+            return;
+        }
+        let choice = random(count);
+        let i = 0;
+        while (i < size) {
+            if (grid[i] = 0) {
+                if (choice = 0) {
+                    let grid[i] = pickValue();
+                    return;
+                }
+                let choice = choice - 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void update() {
+        do spawnTile();
+        return;
+    }
+    //move right logic
+    method void moveRight() {
+        var int row, i, j, idx;
+        var Array line;
+        var Array final;
+
+        let line = Array.new(4);
+        let final = Array.new(4);
+
+        let row = 0;
+        while (row < 4) {
+            let line[0] = 0;
+            let line[1] = 0;
+            let line[2] = 0;
+            let line[3] = 0;
+            let final[0] = 0;
+            let final[1] = 0;
+            let final[2] = 0;
+            let final[3] = 0;
+
+            let j = 0;
+            let i = 3;
+            while (i > -1) {
+                let idx = row * 4 + i;
+                if (grid[idx] > 0) {
+                    let line[j] = grid[idx];
+                    let j = j + 1;
+                }
+                let i = i - 1;
+            }
+
+            let i = 0;
+            while (i < 3) {
+                if (line[i] > 0) {
+                    if (line[i] = line[i + 1]) {
+                        let line[i] = line[i] * 2;
+                        let line[i + 1] = 0;
+                        let i = i + 2;
+                    } else {
+                        let i = i + 1;
+                    }
+                } else {
+                    let i = i + 1;
+                }
+            }
+
+            let j = 0;
+            let i = 0;
+            while (i < 4) {
+                if (line[i] > 0) {
+                    let final[j] = line[i];
+                    let j = j + 1;
+                }
+                let i = i + 1;
+            }
+
+            let i = 0;
+            while (i < 4) {
+                let idx = row * 4 + (3 - i);
+                let grid[idx] = final[i];
+                let i = i + 1;
+            }
+
+            let row = row + 1;
+            
+        }
+
+        do Memory.deAlloc(final);
+        do Memory.deAlloc(line);
+        return;
+    }
+
+    //move left logic
+    method void moveLeft() {
+        var int row, i, j, idx;
+         var Array line;
+        var Array final;
+
+        let line = Array.new(4);
+        let final = Array.new(4);
+
+        let row = 0;
+        while (row < 4) {
+            let line[0] = 0;
+            let line[1] = 0;
+            let line[2] = 0;
+            let line[3] = 0;
+            let final[0] = 0;
+            let final[1] = 0;
+            let final[2] = 0;
+            let final[3] = 0;
+
+            let j = 0;
+            let i = 0;
+            while (i < 4) {
+                let idx = row * 4 + i;
+                if (grid[idx] > 0) {
+                    let line[j] = grid[idx];
+                    let j = j + 1;
+                }
+                let i = i + 1;
+            }
+
+            let i = 0;
+            while (i < 3) {
+                if (line[i] > 0) {
+                    if (line[i] = line[i + 1]) {
+                        let line[i] = line[i] * 2;
+                        let line[i + 1] = 0;
+                        let i = i + 2;
+                    } else {
+                        let i = i + 1;
+                    }
+                } else {
+                    let i = i + 1;
+                }
+            }
+
+            let j = 0;
+            let i = 0;
+            while (i < 4) {
+                if (line[i] > 0) {
+                    let final[j] = line[i];
+                    let j = j + 1;
+                }
+                let i = i + 1;
+            }
+
+            let i = 0;
+            while (i < 4) {
+                let idx = row * 4 + i;
+                let grid[idx] = final[i];
+                let i = i + 1;
+            }
+
+            let row = row + 1;
+        }
+        do Memory.deAlloc(final);
+        do Memory.deAlloc(line);
+        return;
+    }
+
+    //move up logic
+    method void moveUp() {
+        var int col, i, j, idx;
+        var Array line;
+        var Array final;
+
+        let line = Array.new(4);
+        let final = Array.new(4);
+
+        let col = 0;
+        while (col < 4) {
+            let line[0] = 0;
+            let line[1] = 0;
+            let line[2] = 0;
+            let line[3] = 0;
+            let final[0] = 0;
+            let final[1] = 0;
+            let final[2] = 0;
+            let final[3] = 0;
+
+            let j = 0;
+            let i = 0;
+            while (i < 4) {
+                let idx = i * 4 + col;
+                if (grid[idx] > 0) {
+                    let line[j] = grid[idx];
+                    let j = j + 1;
+                }
+                let i = i + 1;
+            }
+
+            let i = 0;
+            while (i < 3) {
+                if (line[i] > 0) {
+                    if (line[i] = line[i + 1]) {
+                        let line[i] = line[i] * 2;
+                        let line[i + 1] = 0;
+                        let i = i + 2;
+                    } else {
+                        let i = i + 1;
+                    }
+                } else {
+                    let i = i + 1;
+                }
+            }
+
+            let j = 0;
+            let i = 0;
+            while (i < 4) {
+                if (line[i] > 0) {
+                    let final[j] = line[i];
+                    let j = j + 1;
+                }
+                let i = i + 1;
+            }
+
+            let i = 0;
+            while (i < 4) {
+                let idx = i * 4 + col;
+                let grid[idx] = final[i];
+                let i = i + 1;
+            }
+
+            let col = col + 1;
+        }
+
+        do Memory.deAlloc(final);
+        do Memory.deAlloc(line);
+        return;
+    }
+
+    //move down logic
+    method void moveDown() {
+        var int col, i, j, idx;
+        var Array line;
+        var Array final;
+
+        let line = Array.new(4);
+        let final = Array.new(4);
+
+        let col = 0;
+        while (col < 4) {
+            let line[0] = 0;
+            let line[1] = 0;
+            let line[2] = 0;
+            let line[3] = 0;
+            let final[0] = 0;
+            let final[1] = 0;
+            let final[2] = 0;
+            let final[3] = 0;
+
+            let j = 0;
+            let i = 3;
+            while (i > -1) {
+                let idx = i * 4 + col;
+                if (grid[idx] > 0) {
+                    let line[j] = grid[idx];
+                    let j = j + 1;
+                }
+                let i = i - 1;
+            }
+
+            let i = 0;
+            while (i < 3) {
+                if (line[i] > 0) {
+                    if (line[i] = line[i + 1]) {
+                        let line[i] = line[i] * 2;
+                        let line[i + 1] = 0;
+                        let i = i + 2;
+                    } else {
+                        let i = i + 1;
+                    }
+                } else {
+                    let i = i + 1;
+                }
+            }
+
+            let j = 0;
+            let i = 0;
+            while (i < 4) {
+                if (line[i] > 0) {
+                    let final[j] = line[i];
+                    let j = j + 1;
+                }
+                let i = i + 1;
+            }
+
+            let i = 0;
+            while (i < 4) {
+                let idx = (3 - i) * 4 + col;
+                let grid[idx] = final[i];
+                let i = i + 1;
+            }
+
+            let col = col + 1;
+        }
+        do Memory.deAlloc(final);
+        do Memory.deAlloc(line);
+        return;
+    }
+
+    method void display() {
+        var int i, row, col, val;
+        do Screen.clearScreen();
+        do Output.moveCursor(0, 0);
+        do Output.printString("2048 GRID:");
+        do Output.println();
+        let i = 0;
+        while (i < size) {
+            let row = i / 4;
+            let col = i - (row * 4);
+            let val = grid[i];
+            if (val = 0) {
+                do Output.printInt(0);
+                do Output.printString(" ");
+            } else {
+                do Output.printInt(val);
+                do Output.printString(" ");
+            }
+            if (col = 3) {
+                do Output.println();
+            }
+            let i = i + 1;
+        }
+        do Output.println();
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(grid);
+        return;
+    }
+}

@@ -1,0 +1,21 @@
+// program 6: fibonacci
+// fib(7) = 13
+// iterative with a temp variable to swap
+// needs 4 locals which exercises the local segment more
+// LED: 1101
+class Main {
+    function void main() {
+        var int a, b, temp, i;
+        let a = 0;
+        let b = 1;
+        let i = 0;
+        while (i < 7) {
+            let temp = b;
+            let b = a + b;
+            let a = temp;
+            let i = i + 1;
+        }
+        // a = fib(7) = 13
+        return;
+    }
+}

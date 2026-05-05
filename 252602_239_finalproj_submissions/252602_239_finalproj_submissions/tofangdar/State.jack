@@ -1,0 +1,1925 @@
+class State {
+    field int id;
+    field String name, founded, population, capital, largestCity;
+
+    constructor State new(int stateId){
+        let id = stateId;
+        do load();
+        return this;
+    }
+
+    method void load(){
+        // west
+        if (id = 1)  { do drawCalifornia(); }
+        if (id = 2)  { do drawOregon(); }
+        if (id = 3)  { do drawWashington(); }
+        if (id = 4)  { do drawNevada(); }
+        if (id = 5)  { do drawUtah(); }
+        if (id = 6)  { do drawMontana(); }
+        if (id = 7)  { do drawWyoming(); }
+        if (id = 8)  { do drawColorado(); }
+        if (id = 9)  { do drawArizona(); }
+        if (id = 10) { do drawNewMexico(); }
+        if (id = 11) { do drawIdaho(); }
+        if (id = 12) { do drawNorthDakota(); }
+        if (id = 13) { do drawSouthDakota(); }
+        if (id = 14) { do drawNebraska(); }
+        if (id = 15) { do drawKansas(); }
+        if (id = 16) { do drawMissouri(); }
+        if (id = 17) { do drawIowa(); }
+        if (id = 18) { do drawMinnesota(); }
+        if (id = 19) { do drawWisconsin(); }
+        if (id = 20) { do drawIllinois(); }
+        if (id = 21) { do drawIndiana(); }
+        if (id = 22) { do drawOhio(); }
+        if (id = 23) { do drawMichigan(); }
+        if (id = 24) { do drawTexas(); }
+        if (id = 25) { do drawOklahoma(); }
+        if (id = 26) { do drawLouisiana(); }
+        if (id = 27) { do drawMississippi(); }
+        if (id = 28) { do drawAlabama(); }
+        if (id = 29) { do drawGeorgia(); }
+        if (id = 30) { do drawFlorida(); }
+        if (id = 31) { do drawArkansas(); }
+        if (id = 32) { do drawTennessee(); }
+        if (id = 33) { do drawSouthCarolina(); }
+        if (id = 34) { do drawNorthCarolina(); }
+        if (id = 35) { do drawKentucky(); }
+        if (id = 36) { do drawVirginia(); }
+        if (id = 37) { do drawWestVirginia(); }
+        if (id = 38) { do drawMaryland(); }
+        if (id = 39) { do drawDelaware(); }
+        if (id = 40) { do drawPennsylvania(); }
+        if (id = 41) { do drawNewJersey(); }
+        if (id = 42) { do drawNewYork(); }
+        if (id = 43) { do drawVermont(); }
+        if (id = 44) { do drawNewHampshire(); }
+        if (id = 45) { do drawMaine(); }
+        if (id = 46) { do drawMassachusetts(); }
+        if (id = 47) { do drawConnecticut(); }
+        if (id = 48) { do drawRhodeIsland(); }
+        do printInfo();
+        return;
+    }
+
+    method void printInfo(){
+        // prints all state info on the right side of the screen
+        do Output.moveCursor(2, 33);
+        do Output.printString(name);
+        do Output.moveCursor(5, 33);
+        do Output.printString("Founded: ");
+        do Output.printString(founded);
+        do Output.moveCursor(7, 33);
+        do Output.printString("Pop: ");
+        do Output.printString(population);
+        do Output.moveCursor(9, 33);
+        do Output.printString("Capital: ");
+        do Output.printString(capital);
+        do Output.moveCursor(11, 33);
+        do Output.printString("Largest: ");
+        do Output.printString(largestCity);
+        do Output.moveCursor(11, 33);
+        return;
+    }
+
+    method void drawCalifornia(){
+        // draw
+        do Screen.drawLine(117, 243, 116, 233);
+        do Screen.drawLine(116, 233, 109, 219);
+        do Screen.drawLine(109, 219, 99, 213);
+        do Screen.drawLine(99, 213, 83, 206);
+        do Screen.drawLine(83, 206, 69, 199);
+        do Screen.drawLine(69, 199, 47, 193);
+        do Screen.drawLine(47, 193, 43, 183);
+        do Screen.drawLine(43, 183, 43, 171);
+        do Screen.drawLine(43, 171, 34, 150);
+        do Screen.drawLine(34, 150, 28, 130);
+        do Screen.drawLine(28, 130, 30, 122);
+        do Screen.drawLine(30, 122, 24, 109);
+        do Screen.drawLine(24, 109, 22, 95);
+        do Screen.drawLine(22, 95, 30, 102);
+        do Screen.drawLine(30, 102, 30, 95);
+        do Screen.drawLine(30, 95, 27, 90);
+        do Screen.drawLine(27, 90, 33, 83);
+        do Screen.drawLine(33, 83, 40, 88);
+        do Screen.drawLine(40, 88, 35, 80);
+        do Screen.drawLine(35, 80, 28, 80);
+        do Screen.drawLine(28, 80, 24, 87);
+        do Screen.drawLine(24, 87, 14, 69);
+        do Screen.drawLine(13, 68, 17, 53);
+        do Screen.drawLine(17, 53, 12, 37);
+        do Screen.drawLine(12, 37, 14, 32);
+        do Screen.drawLine(14, 32, 22, 23);
+        do Screen.drawLine(22, 23, 24, 3);
+        do Screen.drawLine(116, 243, 176, 246);
+        do Screen.drawLine(176, 246, 172, 233);
+        do Screen.drawLine(172, 233, 170, 219);
+        do Screen.drawLine(170, 219, 180, 211);
+        do Screen.drawLine(180, 211, 178, 203);
+        do Screen.drawLine(178, 203, 168, 200);
+        do Screen.drawLine(168, 200, 79, 83);
+        do Screen.drawLine(79, 83, 92, 6);
+        do Screen.drawLine(92, 6, 25, 2);
+        let name        = "California";
+        let founded     = "1850";
+        let population  = "39 million";
+        let capital     = "Sacramento";
+        let largestCity = "Los Angeles";
+        return;
+    }
+
+    method void drawOregon(){
+        // draw
+        do Screen.drawLine(22, 32, 22, 55);
+        do Screen.drawLine(22, 55, 20, 124);
+        do Screen.drawLine(20, 124, 11, 174);
+        do Screen.drawLine(11, 174, 17, 202);
+        do Screen.drawLine(17, 202, 233, 203);
+        do Screen.drawLine(233, 203, 235, 129);
+        do Screen.drawLine(235, 129, 242, 110);
+        do Screen.drawLine(242, 110, 227, 106);
+        do Screen.drawLine(227, 106, 236, 80);
+        do Screen.drawLine(236, 80, 239, 68);
+        do Screen.drawLine(239, 68, 244, 56);
+        do Screen.drawLine(244, 56, 244, 49);
+        do Screen.drawLine(244, 49, 234, 37);
+        do Screen.drawLine(234, 37, 165, 36);
+        do Screen.drawLine(165, 36, 148, 40);
+        do Screen.drawLine(148, 40, 127, 45);
+        do Screen.drawLine(127, 45, 116, 43);
+        do Screen.drawLine(116, 43, 106, 46);
+        do Screen.drawLine(106, 46, 92, 47);
+        do Screen.drawLine(92, 47, 81, 44);
+        do Screen.drawLine(81, 44, 70, 46);
+        do Screen.drawLine(70, 46, 61, 50);
+        do Screen.drawLine(61, 50, 50, 48);
+        do Screen.drawLine(50, 48, 46, 42);
+        do Screen.drawLine(46, 42, 41, 35);
+        do Screen.drawLine(41, 35, 21, 32);
+        let name        = "Oregon";
+        let founded     = "1859";
+        let population  = "4.2 million";
+        let capital     = "Salem";
+        let largestCity = "Portland";
+
+        return;
+    }
+
+    method void drawWashington(){
+        // draw
+        do Screen.drawLine(25, 77, 18, 93);
+        do Screen.drawLine(18, 93, 24, 108);
+        do Screen.drawLine(24, 108, 29, 134);
+        do Screen.drawLine(29, 134, 33, 165);
+        do Screen.drawLine(33, 165, 33, 180);
+        do Screen.drawLine(33, 180, 47, 183);
+        do Screen.drawLine(47, 183, 61, 183);
+        do Screen.drawLine(61, 183, 69, 186);
+        do Screen.drawLine(69, 186, 69, 204);
+        do Screen.drawLine(69, 204, 81, 210);
+        do Screen.drawLine(81, 210, 103, 210);
+        do Screen.drawLine(103, 210, 119, 205);
+        do Screen.drawLine(119, 205, 147, 202);
+        do Screen.drawLine(147, 202, 180, 194);
+        do Screen.drawLine(180, 194, 194, 192);
+        do Screen.drawLine(194, 192, 256, 192);
+        do Screen.drawLine(256, 192, 255, 179);
+        do Screen.drawLine(255, 179, 252, 175);
+        do Screen.drawLine(252, 175, 251, 34);
+        do Screen.drawLine(251, 34, 75, 33);
+        do Screen.drawLine(75, 33, 76, 47);
+        do Screen.drawLine(76, 47, 83, 56);
+        do Screen.drawLine(83, 56, 85, 70);
+        do Screen.drawLine(85, 70, 85, 87);
+        do Screen.drawLine(85, 87, 75, 98);
+        do Screen.drawLine(75, 98, 67, 100);
+        do Screen.drawLine(67, 100, 75, 89);
+        do Screen.drawLine(75, 89, 77, 81);
+        do Screen.drawLine(77, 81, 73, 69);
+        do Screen.drawLine(73, 69, 61, 75);
+        do Screen.drawLine(61, 75, 50, 77);
+        do Screen.drawLine(50, 77, 39, 78);
+        do Screen.drawLine(39, 78, 25, 77);
+        let name        = "Washington";
+        let founded     = "1889";
+        let population  = "7.8 million";
+        let capital     = "Olympia";
+        let largestCity = "Seattle";
+
+        return;
+    }
+
+    method void drawNevada(){
+        // draw
+        do Screen.drawLine(31, 17, 30, 115);
+        do Screen.drawLine(30, 115, 128, 224);
+        do Screen.drawLine(128, 224, 129, 199);
+        do Screen.drawLine(129, 199, 134, 197);
+        do Screen.drawLine(134, 197, 145, 207);
+        do Screen.drawLine(145, 207, 150, 208);
+        do Screen.drawLine(150, 208, 154, 201);
+        do Screen.drawLine(154, 201, 157, 19);
+        do Screen.drawLine(157, 19, 30, 17);
+        let name        = "Nevada";
+        let founded     = "1864";
+        let population  = "3.1 million";
+        let capital     = "Carson City";
+        let largestCity = "Las Vegas";
+
+        return;
+    }
+
+    method void drawUtah(){
+        // draw
+        do Screen.drawLine(32, 32, 32, 191);
+        do Screen.drawLine(32, 191, 159, 192);
+        do Screen.drawLine(159, 192, 159, 63);
+        do Screen.drawLine(159, 63, 102, 63);
+        do Screen.drawLine(102, 63, 102, 31);
+        do Screen.drawLine(102, 31, 31, 32);
+        let name        = "Utah";
+        let founded     = "1896";
+        let population  = "3.3 million";
+        let capital     = "Salt Lake City";
+        let largestCity = "Salt Lake City";
+ 
+        return;
+    }
+
+    method void drawMontana(){
+        // draw
+        do Screen.drawLine(33, 32, 30, 60);
+        do Screen.drawLine(30, 60, 33, 73);
+        do Screen.drawLine(33, 73, 41, 90);
+        do Screen.drawLine(41, 90, 50, 104);
+        do Screen.drawLine(50, 104, 56, 114);
+        do Screen.drawLine(56, 114, 65, 117);
+        do Screen.drawLine(65, 117, 62, 126);
+        do Screen.drawLine(62, 126, 54, 151);
+        do Screen.drawLine(54, 151, 56, 157);
+        do Screen.drawLine(56, 157, 67, 158);
+        do Screen.drawLine(67, 158, 73, 150);
+        do Screen.drawLine(73, 150, 78, 161);
+        do Screen.drawLine(78, 161, 81, 175);
+        do Screen.drawLine(81, 175, 81, 181);
+        do Screen.drawLine(81, 181, 89, 182);
+        do Screen.drawLine(89, 182, 92, 191);
+        do Screen.drawLine(92, 191, 94, 201);
+        do Screen.drawLine(94, 201, 106, 200);
+        do Screen.drawLine(106, 200, 121, 193);
+        do Screen.drawLine(121, 193, 140, 191);
+        do Screen.drawLine(140, 191, 148, 191);
+        do Screen.drawLine(148, 191, 155, 196);
+        do Screen.drawLine(155, 196, 154, 175);
+        do Screen.drawLine(154, 175, 292, 175);
+        do Screen.drawLine(292, 175, 289, 33);
+        do Screen.drawLine(289, 33, 33, 31);
+        let name        = "Montana";
+        let founded     = "1889";
+        let population  = "1.1 million";
+        let capital     = "Helena";
+        let largestCity = "Billings";
+
+        return;
+    }
+
+    method void drawWyoming(){
+        // draw
+        do Screen.drawLine(32, 32, 32, 189);
+        do Screen.drawLine(32, 189, 256, 193);
+        do Screen.drawLine(256, 193, 256, 33);
+        do Screen.drawLine(256, 33, 31, 32);
+        let name        = "Wyoming";
+        let founded     = "1890";
+        let population  = "578 thousand";
+        let capital     = "Cheyenne";
+        let largestCity = "Cheyenne";
+
+        return;
+    }
+
+    method void drawColorado(){
+        // draw
+        do Screen.drawLine(32, 32, 32, 189);
+        do Screen.drawLine(32, 189, 256, 193);
+        do Screen.drawLine(256, 193, 256, 33);
+        do Screen.drawLine(256, 33, 31, 32);
+        let name        = "Colorado";
+        let founded     = "1876";
+        let population  = "5.8 million";
+        let capital     = "Denver";
+        let largestCity = "Denver";
+
+        return;
+    }
+
+    method void drawArizona(){
+        // draw
+        do Screen.drawLine(32, 175, 146, 201);
+        do Screen.drawLine(146, 201, 207, 202);
+        do Screen.drawLine(207, 202, 207, 8);
+        do Screen.drawLine(207, 8, 50, 7);
+        do Screen.drawLine(50, 7, 48, 27);
+        do Screen.drawLine(48, 27, 41, 23);
+        do Screen.drawLine(41, 23, 29, 23);
+        do Screen.drawLine(29, 23, 27, 32);
+        do Screen.drawLine(27, 32, 31, 53);
+        do Screen.drawLine(31, 53, 32, 74);
+        do Screen.drawLine(32, 74, 40, 89);
+        do Screen.drawLine(40, 89, 31, 101);
+        do Screen.drawLine(31, 101, 27, 118);
+        do Screen.drawLine(27, 118, 27, 131);
+        do Screen.drawLine(27, 131, 36, 151);
+        do Screen.drawLine(36, 151, 20, 159);
+        do Screen.drawLine(20, 159, 20, 166);
+        do Screen.drawLine(20, 166, 33, 175);
+        let name        = "Arizona";
+        let founded     = "1912";
+        let population  = "7.4 million";
+        let capital     = "Phoenix";
+        let largestCity = "Phoenix";
+ 
+        return;
+    }
+
+    method void drawNewMexico(){
+        // draw
+        do Screen.drawLine(31, 20, 30, 193);
+        do Screen.drawLine(30, 193, 59, 193);
+        do Screen.drawLine(59, 193, 60, 180);
+        do Screen.drawLine(60, 180, 106, 181);
+        do Screen.drawLine(106, 181, 107, 168);
+        do Screen.drawLine(107, 168, 191, 169);
+        do Screen.drawLine(191, 169, 191, 16);
+        do Screen.drawLine(191, 16, 31, 17);
+        let name        = "New Mexico";
+        let founded     = "1912";
+        let population  = "2.1 million";
+        let capital     = "Santa Fe";
+        let largestCity = "Albuquerque";
+
+        return;
+    }
+
+    method void drawIdaho(){
+        // draw
+        do Screen.drawLine(31, 14, 32, 85);
+        do Screen.drawLine(32, 85, 38, 95);
+        do Screen.drawLine(38, 95, 42, 110);
+        do Screen.drawLine(42, 110, 43, 124);
+        do Screen.drawLine(43, 124, 30, 148);
+        do Screen.drawLine(30, 148, 30, 157);
+        do Screen.drawLine(30, 157, 39, 156);
+        do Screen.drawLine(39, 156, 37, 172);
+        do Screen.drawLine(37, 172, 38, 224);
+        do Screen.drawLine(38, 224, 176, 224);
+        do Screen.drawLine(176, 224, 175, 148);
+        do Screen.drawLine(175, 148, 167, 147);
+        do Screen.drawLine(167, 147, 159, 157);
+        do Screen.drawLine(159, 157, 145, 159);
+        do Screen.drawLine(145, 159, 134, 151);
+        do Screen.drawLine(134, 151, 125, 140);
+        do Screen.drawLine(125, 140, 119, 120);
+        do Screen.drawLine(119, 120, 115, 132);
+        do Screen.drawLine(115, 132, 108, 131);
+        do Screen.drawLine(108, 131, 102, 90);
+        do Screen.drawLine(102, 90, 91, 100);
+        do Screen.drawLine(91, 100, 79, 85);
+        do Screen.drawLine(79, 85, 68, 77);
+        do Screen.drawLine(68, 77, 60, 65);
+        do Screen.drawLine(60, 65, 53, 54);
+        do Screen.drawLine(53, 54, 51, 15);
+        do Screen.drawLine(51, 15, 32, 15);
+        let name        = "Idaho";
+        let founded     = "1890";
+        let population  = "1.9 million";
+        let capital     = "Boise";
+        let largestCity = "Boise";
+ 
+        return;
+    }
+
+    method void drawNorthDakota(){
+        // draw
+        do Screen.drawLine(32, 31, 31, 189);
+        do Screen.drawLine(31, 189, 266, 192);
+        do Screen.drawLine(266, 192, 266, 172);
+        do Screen.drawLine(266, 172, 257, 109);
+        do Screen.drawLine(257, 109, 247, 85);
+        do Screen.drawLine(247, 85, 241, 57);
+        do Screen.drawLine(241, 57, 240, 32);
+        do Screen.drawLine(240, 32, 31, 30);
+        let name        = "North Dakota";
+        let founded     = "1889";
+        let population  = "779 thousand";
+        let capital     = "Bismarck";
+        let largestCity = "Fargo";
+
+        return;
+    }
+
+    method void drawSouthDakota(){
+        // draw
+        do Screen.drawLine(32, 30, 31, 191);
+        do Screen.drawLine(31, 191, 227, 191);
+        do Screen.drawLine(227, 191, 245, 198);
+        do Screen.drawLine(245, 198, 257, 197);
+        do Screen.drawLine(257, 197, 289, 206);
+        do Screen.drawLine(289, 206, 291, 190);
+        do Screen.drawLine(291, 190, 286, 171);
+        do Screen.drawLine(286, 171, 292, 154);
+        do Screen.drawLine(292, 154, 289, 147);
+        do Screen.drawLine(289, 147, 287, 59);
+        do Screen.drawLine(287, 59, 276, 51);
+        do Screen.drawLine(276, 51, 281, 33);
+        do Screen.drawLine(281, 33, 31, 31);
+        let name        = "South Dakota";
+        let founded     = "1889";
+        let population  = "909 thousand";
+        let capital     = "Pierre";
+        let largestCity = "Sioux Falls";
+   
+        return;
+    }
+
+    method void drawNebraska(){
+        // draw
+        do Screen.drawLine(16, 33, 15, 127);
+        do Screen.drawLine(15, 127, 79, 127);
+        do Screen.drawLine(79, 127, 79, 175);
+        do Screen.drawLine(79, 175, 291, 175);
+        do Screen.drawLine(291, 175, 288, 160);
+        do Screen.drawLine(288, 160, 283, 135);
+        do Screen.drawLine(283, 135, 278, 123);
+        do Screen.drawLine(278, 123, 275, 99);
+        do Screen.drawLine(275, 99, 266, 71);
+        do Screen.drawLine(266, 71, 252, 52);
+        do Screen.drawLine(252, 52, 233, 32);
+        do Screen.drawLine(233, 32, 211, 32);
+        do Screen.drawLine(211, 32, 198, 42);
+        do Screen.drawLine(198, 42, 176, 29);
+        do Screen.drawLine(176, 29, 16, 32);
+        let name        = "Nebraska";
+        let founded     = "1867";
+        let population  = "2 million";
+        let capital     = "Lincoln";
+        let largestCity = "Omaha";
+    
+        return;
+    }
+
+    method void drawKansas(){
+        // draw
+        do Screen.drawLine(31, 33, 31, 168);
+        do Screen.drawLine(31, 168, 275, 169);
+        do Screen.drawLine(275, 169, 275, 68);
+        do Screen.drawLine(275, 68, 263, 62);
+        do Screen.drawLine(263, 62, 250, 56);
+        do Screen.drawLine(250, 56, 258, 43);
+        do Screen.drawLine(258, 43, 253, 35);
+        do Screen.drawLine(253, 35, 32, 32);
+        let name        = "Kansas";
+        let founded     = "1861";
+        let population  = "2.9 million";
+        let capital     = "Topeka";
+        let largestCity = "Wichita";
+
+        return;
+    }
+
+    method void drawMissouri(){
+        // draw
+        do Screen.drawLine(18, 14, 181, 14);
+        do Screen.drawLine(181, 14, 197, 30);
+        do Screen.drawLine(197, 30, 197, 57);
+        do Screen.drawLine(197, 57, 208, 73);
+        do Screen.drawLine(208, 73, 212, 88);
+        do Screen.drawLine(212, 88, 224, 83);
+        do Screen.drawLine(224, 83, 237, 87);
+        do Screen.drawLine(237, 87, 234, 102);
+        do Screen.drawLine(234, 102, 229, 117);
+        do Screen.drawLine(229, 117, 232, 128);
+        do Screen.drawLine(232, 128, 247, 138);
+        do Screen.drawLine(247, 138, 259, 155);
+        do Screen.drawLine(259, 155, 260, 174);
+        do Screen.drawLine(260, 174, 267, 187);
+        do Screen.drawLine(267, 187, 269, 197);
+        do Screen.drawLine(269, 197, 246, 230);
+        do Screen.drawLine(245, 229, 224, 229);
+        do Screen.drawLine(224, 229, 235, 213);
+        do Screen.drawLine(235, 213, 233, 203);
+        do Screen.drawLine(233, 203, 62, 202);
+        do Screen.drawLine(62, 202, 61, 86);
+        do Screen.drawLine(61, 86, 51, 88);
+        do Screen.drawLine(51, 88, 35, 71);
+        do Screen.drawLine(35, 71, 44, 57);
+        do Screen.drawLine(44, 57, 38, 49);
+        do Screen.drawLine(38, 49, 28, 45);
+        do Screen.drawLine(28, 45, 19, 15);
+        let name        = "Missouri";
+        let founded     = "1821";
+        let population  = "6.2 million";
+        let capital     = "Jefferson City";
+        let largestCity = "Kansas City";
+
+        return;
+    }
+
+    method void drawIowa(){
+        // draw
+        do Screen.drawLine(36, 32, 29, 62);
+        do Screen.drawLine(29, 62, 34, 101);
+        do Screen.drawLine(34, 101, 52, 156);
+        do Screen.drawLine(52, 156, 59, 192);
+        do Screen.drawLine(59, 192, 238, 192);
+        do Screen.drawLine(238, 192, 254, 205);
+        do Screen.drawLine(254, 205, 255, 191);
+        do Screen.drawLine(255, 191, 265, 182);
+        do Screen.drawLine(265, 182, 272, 172);
+        do Screen.drawLine(272, 172, 275, 158);
+        do Screen.drawLine(275, 158, 269, 146);
+        do Screen.drawLine(269, 146, 263, 139);
+        do Screen.drawLine(263, 139, 268, 129);
+        do Screen.drawLine(268, 129, 281, 129);
+        do Screen.drawLine(281, 129, 299, 116);
+        do Screen.drawLine(299, 116, 305, 106);
+        do Screen.drawLine(305, 106, 311, 87);
+        do Screen.drawLine(311, 87, 306, 79);
+        do Screen.drawLine(306, 79, 291, 70);
+        do Screen.drawLine(291, 70, 282, 58);
+        do Screen.drawLine(282, 58, 264, 49);
+        do Screen.drawLine(264, 49, 259, 20);
+        do Screen.drawLine(259, 20, 38, 20);
+        do Screen.drawLine(38, 20, 35, 31);
+        let name        = "Iowa";
+        let founded     = "1846";
+        let population  = "3.2 million";
+        let capital     = "Des Moines";
+        let largestCity = "Des Moines";
+
+        return;
+    }
+
+    method void drawMinnesota(){
+        // draw
+        do Screen.drawLine(97, 41, 30, 40);
+        do Screen.drawLine(30, 40, 31, 57);
+        do Screen.drawLine(31, 57, 37, 97);
+        do Screen.drawLine(37, 97, 44, 155);
+        do Screen.drawLine(44, 155, 37, 164);
+        do Screen.drawLine(37, 164, 48, 174);
+        do Screen.drawLine(48, 174, 45, 221);
+        do Screen.drawLine(45, 221, 209, 223);
+        do Screen.drawLine(209, 223, 209, 210);
+        do Screen.drawLine(209, 210, 171, 184);
+        do Screen.drawLine(171, 184, 171, 161);
+        do Screen.drawLine(171, 161, 159, 154);
+        do Screen.drawLine(159, 154, 159, 149);
+        do Screen.drawLine(159, 149, 171, 138);
+        do Screen.drawLine(171, 138, 172, 116);
+        do Screen.drawLine(172, 116, 214, 91);
+        do Screen.drawLine(214, 91, 240, 59);
+        do Screen.drawLine(240, 59, 227, 54);
+        do Screen.drawLine(227, 54, 203, 58);
+        do Screen.drawLine(203, 58, 201, 52);
+        do Screen.drawLine(201, 52, 181, 59);
+        do Screen.drawLine(181, 59, 162, 51);
+        do Screen.drawLine(162, 51, 153, 52);
+        do Screen.drawLine(153, 52, 143, 45);
+        do Screen.drawLine(143, 45, 121, 48);
+        do Screen.drawLine(121, 48, 115, 43);
+        do Screen.drawLine(115, 43, 105, 5);
+        do Screen.drawLine(105, 5, 97, 6);
+        do Screen.drawLine(97, 6, 97, 40);
+        let name        = "Minnesota";
+        let founded     = "1858";
+        let population  = "5.7 million";
+        let capital     = "Saint Paul";
+        let largestCity = "Minneapolis";
+
+        return;
+    }
+
+    method void drawWisconsin(){
+        // draw
+        do Screen.drawLine(47, 44, 50, 61);
+        do Screen.drawLine(50, 61, 39, 70);
+        do Screen.drawLine(39, 70, 36, 82);
+        do Screen.drawLine(36, 82, 49, 94);
+        do Screen.drawLine(49, 94, 43, 122);
+        do Screen.drawLine(43, 122, 54, 142);
+        do Screen.drawLine(54, 142, 86, 158);
+        do Screen.drawLine(86, 158, 90, 175);
+        do Screen.drawLine(90, 175, 93, 209);
+        do Screen.drawLine(93, 209, 105, 223);
+        do Screen.drawLine(105, 223, 199, 224);
+        do Screen.drawLine(199, 224, 200, 206);
+        do Screen.drawLine(200, 206, 200, 187);
+        do Screen.drawLine(200, 187, 210, 140);
+        do Screen.drawLine(210, 140, 228, 91);
+        do Screen.drawLine(228, 91, 220, 93);
+        do Screen.drawLine(220, 93, 198, 130);
+        do Screen.drawLine(198, 130, 195, 121);
+        do Screen.drawLine(195, 121, 204, 100);
+        do Screen.drawLine(204, 100, 194, 91);
+        do Screen.drawLine(194, 91, 192, 72);
+        do Screen.drawLine(192, 72, 175, 58);
+        do Screen.drawLine(175, 58, 103, 52);
+        do Screen.drawLine(103, 52, 98, 45);
+        do Screen.drawLine(98, 45, 84, 43);
+        do Screen.drawLine(84, 43, 95, 30);
+        do Screen.drawLine(95, 30, 89, 25);
+        do Screen.drawLine(89, 25, 71, 36);
+        do Screen.drawLine(71, 36, 47, 44);
+        let name        = "Wisconsin";
+        let founded     = "1848";
+        let population  = "5.9 million";
+        let capital     = "Madison";
+        let largestCity = "Milwaukee";
+
+        return;
+    }
+
+    method void drawIllinois(){
+        // draw
+        do Screen.drawLine(30, 23, 39, 33);
+        do Screen.drawLine(39, 33, 46, 49);
+        do Screen.drawLine(46, 49, 32, 64);
+        do Screen.drawLine(32, 64, 38, 74);
+        do Screen.drawLine(38, 74, 24, 115);
+        do Screen.drawLine(24, 115, 23, 133);
+        do Screen.drawLine(23, 133, 53, 189);
+        do Screen.drawLine(53, 189, 59, 184);
+        do Screen.drawLine(59, 184, 69, 184);
+        do Screen.drawLine(69, 184, 63, 206);
+        do Screen.drawLine(63, 206, 94, 232);
+        do Screen.drawLine(94, 232, 97, 246);
+        do Screen.drawLine(97, 246, 106, 228);
+        do Screen.drawLine(106, 228, 128, 232);
+        do Screen.drawLine(128, 232, 137, 227);
+        do Screen.drawLine(137, 227, 134, 209);
+        do Screen.drawLine(134, 209, 146, 203);
+        do Screen.drawLine(146, 203, 161, 148);
+        do Screen.drawLine(161, 148, 158, 138);
+        do Screen.drawLine(158, 138, 157, 42);
+        do Screen.drawLine(157, 42, 138, 26);
+        do Screen.drawLine(138, 26, 137, 18);
+        do Screen.drawLine(137, 18, 30, 21);
+        let name        = "Illinois";
+        let founded     = "1818";
+        let population  = "12.6 million";
+        let capital     = "Springfield";
+        let largestCity = "Chicago";
+    
+        return;
+    }
+
+    method void drawIndiana(){
+        // draw
+        do Screen.drawLine(36, 17, 63, 27);
+        do Screen.drawLine(63, 27, 96, 17);
+        do Screen.drawLine(96, 17, 187, 16);
+        do Screen.drawLine(187, 16, 189, 190);
+        do Screen.drawLine(189, 190, 171, 195);
+        do Screen.drawLine(171, 195, 159, 193);
+        do Screen.drawLine(159, 193, 148, 206);
+        do Screen.drawLine(148, 206, 135, 210);
+        do Screen.drawLine(135, 210, 127, 225);
+        do Screen.drawLine(127, 225, 126, 238);
+        do Screen.drawLine(126, 238, 114, 239);
+        do Screen.drawLine(114, 239, 102, 226);
+        do Screen.drawLine(102, 226, 84, 243);
+        do Screen.drawLine(84, 243, 64, 246);
+        do Screen.drawLine(64, 246, 11, 249);
+        do Screen.drawLine(11, 249, 19, 230);
+        do Screen.drawLine(19, 230, 39, 202);
+        do Screen.drawLine(39, 202, 29, 181);
+        do Screen.drawLine(29, 181, 38, 164);
+        do Screen.drawLine(38, 164, 37, 19);
+        let name        = "Indiana";
+        let founded     = "1816";
+        let population  = "6.8 million";
+        let capital     = "Indianapolis";
+        let largestCity = "Indianapolis";
+
+        return;
+    }
+
+    method void drawOhio(){
+        // draw
+        do Screen.drawLine(32, 35, 90, 33);
+        do Screen.drawLine(90, 33, 110, 43);
+        do Screen.drawLine(110, 43, 138, 50);
+        do Screen.drawLine(138, 50, 158, 48);
+        do Screen.drawLine(158, 48, 227, 27);
+        do Screen.drawLine(227, 27, 229, 123);
+        do Screen.drawLine(229, 123, 223, 141);
+        do Screen.drawLine(223, 141, 212, 169);
+        do Screen.drawLine(212, 169, 198, 188);
+        do Screen.drawLine(198, 188, 178, 196);
+        do Screen.drawLine(178, 196, 165, 210);
+        do Screen.drawLine(165, 210, 158, 227);
+        do Screen.drawLine(158, 227, 150, 233);
+        do Screen.drawLine(150, 233, 132, 211);
+        do Screen.drawLine(132, 211, 124, 217);
+        do Screen.drawLine(124, 217, 99, 222);
+        do Screen.drawLine(99, 222, 80, 214);
+        do Screen.drawLine(80, 214, 71, 202);
+        do Screen.drawLine(71, 202, 57, 202);
+        do Screen.drawLine(57, 202, 47, 206);
+        do Screen.drawLine(47, 206, 34, 196);
+        do Screen.drawLine(34, 196, 32, 34);
+        let name        = "Ohio";
+        let founded     = "1803";
+        let population  = "11.8 million";
+        let capital     = "Columbus";
+        let largestCity = "Columbus";
+
+        return;
+    }
+
+    method void drawMichigan(){
+        // draw
+        do Screen.drawLine(11, 59, 25, 52);
+        do Screen.drawLine(25, 52, 36, 53);
+        do Screen.drawLine(36, 53, 48, 48);
+        do Screen.drawLine(48, 48, 57, 40);
+        do Screen.drawLine(57, 40, 66, 34);
+        do Screen.drawLine(66, 34, 82, 27);
+        do Screen.drawLine(82, 27, 83, 35);
+        do Screen.drawLine(83, 35, 75, 40);
+        do Screen.drawLine(75, 40, 70, 49);
+        do Screen.drawLine(70, 49, 69, 55);
+        do Screen.drawLine(69, 55, 77, 52);
+        do Screen.drawLine(77, 52, 86, 51);
+        do Screen.drawLine(86, 51, 97, 53);
+        do Screen.drawLine(97, 53, 103, 57);
+        do Screen.drawLine(103, 57, 106, 63);
+        do Screen.drawLine(106, 63, 115, 66);
+        do Screen.drawLine(115, 66, 124, 66);
+        do Screen.drawLine(124, 66, 134, 64);
+        do Screen.drawLine(134, 64, 141, 57);
+        do Screen.drawLine(141, 57, 151, 61);
+        do Screen.drawLine(151, 61, 163, 62);
+        do Screen.drawLine(163, 62, 169, 68);
+        do Screen.drawLine(169, 68, 177, 76);
+        do Screen.drawLine(177, 76, 183, 74);
+        do Screen.drawLine(183, 74, 183, 82);
+        do Screen.drawLine(183, 82, 175, 83);
+        do Screen.drawLine(175, 83, 168, 80);
+        do Screen.drawLine(168, 80, 167, 89);
+        do Screen.drawLine(167, 89, 158, 81);
+        do Screen.drawLine(158, 81, 149, 80);
+        do Screen.drawLine(149, 80, 137, 83);
+        do Screen.drawLine(137, 83, 124, 87);
+        do Screen.drawLine(124, 87, 114, 91);
+        do Screen.drawLine(114, 91, 107, 93);
+        do Screen.drawLine(107, 93, 107, 84);
+        do Screen.drawLine(107, 84, 99, 83);
+        do Screen.drawLine(99, 83, 90, 84);
+        do Screen.drawLine(90, 84, 85, 88);
+        do Screen.drawLine(85, 88, 79, 95);
+        do Screen.drawLine(79, 95, 77, 100);
+        do Screen.drawLine(77, 100, 71, 94);
+        do Screen.drawLine(71, 94, 66, 84);
+        do Screen.drawLine(66, 84, 61, 74);
+        do Screen.drawLine(61, 74, 51, 74);
+        do Screen.drawLine(51, 74, 44, 74);
+        do Screen.drawLine(44, 74, 35, 69);
+        do Screen.drawLine(35, 69, 25, 66);
+        do Screen.drawLine(25, 66, 11, 61);
+        // Lower michigan
+        do Screen.drawLine(170, 102, 192, 108);
+        do Screen.drawLine(192, 108, 203, 113);
+        do Screen.drawLine(203, 113, 208, 122);
+        do Screen.drawLine(208, 122, 214, 132);
+        do Screen.drawLine(214, 132, 216, 140);
+        do Screen.drawLine(216, 140, 213, 148);
+        do Screen.drawLine(213, 148, 207, 155);
+        do Screen.drawLine(207, 155, 201, 160);
+        do Screen.drawLine(201, 160, 191, 163);
+        do Screen.drawLine(191, 163, 188, 170);
+        do Screen.drawLine(188, 170, 192, 176);
+        do Screen.drawLine(192, 176, 200, 176);
+        do Screen.drawLine(200, 176, 206, 171);
+        do Screen.drawLine(206, 171, 216, 167);
+        do Screen.drawLine(216, 167, 224, 173);
+        do Screen.drawLine(224, 173, 227, 181);
+        do Screen.drawLine(227, 181, 227, 191);
+        do Screen.drawLine(227, 191, 222, 200);
+        do Screen.drawLine(222, 200, 215, 209);
+        do Screen.drawLine(215, 209, 209, 215);
+        do Screen.drawLine(209, 215, 204, 225);
+        do Screen.drawLine(204, 225, 202, 236);
+        do Screen.drawLine(202, 236, 131, 233);
+        do Screen.drawLine(131, 233, 137, 216);
+        do Screen.drawLine(137, 216, 141, 205);
+        do Screen.drawLine(141, 205, 143, 193);
+        do Screen.drawLine(143, 193, 143, 184);
+        do Screen.drawLine(143, 184, 141, 176);
+        do Screen.drawLine(141, 176, 134, 165);
+        do Screen.drawLine(134, 165, 130, 150);
+        do Screen.drawLine(130, 150, 137, 136);
+        do Screen.drawLine(137, 136, 143, 122);
+        do Screen.drawLine(143, 122, 150, 111);
+        do Screen.drawLine(150, 111, 153, 127);
+        do Screen.drawLine(153, 127, 156, 112);
+        do Screen.drawLine(156, 112, 167, 104);
+        let name        = "Michigan";
+        let founded     = "1837";
+        let population  = "10 million";
+        let capital     = "Lansing";
+        let largestCity = "Detroit";
+
+        return;
+    }
+
+    method void drawTexas(){
+        // draw
+        do Screen.drawLine(13, 93, 62, 92);
+        do Screen.drawLine(62, 92, 60, 22);
+        do Screen.drawLine(60, 22, 114, 22);
+        do Screen.drawLine(114, 22, 117, 51);
+        do Screen.drawLine(117, 51, 119, 61);
+        do Screen.drawLine(119, 61, 127, 63);
+        do Screen.drawLine(127, 63, 148, 70);
+        do Screen.drawLine(148, 70, 160, 73);
+        do Screen.drawLine(160, 73, 173, 79);
+        do Screen.drawLine(173, 79, 179, 78);
+        do Screen.drawLine(179, 78, 190, 84);
+        do Screen.drawLine(190, 84, 206, 82);
+        do Screen.drawLine(206, 82, 208, 98);
+        do Screen.drawLine(208, 98, 211, 107);
+        do Screen.drawLine(211, 107, 213, 123);
+        do Screen.drawLine(213, 123, 210, 134);
+        do Screen.drawLine(210, 134, 213, 141);
+        do Screen.drawLine(213, 141, 196, 148);
+        do Screen.drawLine(196, 148, 180, 151);
+        do Screen.drawLine(180, 151, 166, 157);
+        do Screen.drawLine(166, 157, 158, 168);
+        do Screen.drawLine(158, 168, 154, 179);
+        do Screen.drawLine(154, 179, 149, 191);
+        do Screen.drawLine(149, 191, 152, 206);
+        do Screen.drawLine(152, 206, 127, 199);
+        do Screen.drawLine(127, 199, 114, 184);
+        do Screen.drawLine(114, 184, 109, 173);
+        do Screen.drawLine(109, 173, 98, 158);
+        do Screen.drawLine(98, 158, 83, 141);
+        do Screen.drawLine(83, 141, 70, 137);
+        do Screen.drawLine(70, 137, 66, 153);
+        do Screen.drawLine(66, 153, 62, 158);
+        do Screen.drawLine(62, 158, 48, 150);
+        do Screen.drawLine(48, 150, 39, 132);
+        do Screen.drawLine(39, 132, 37, 122);
+        do Screen.drawLine(37, 122, 26, 106);
+        do Screen.drawLine(26, 106, 14, 95);
+        let name        = "Texas";
+        let founded     = "1845";
+        let population  = "30 million";
+        let capital     = "Austin";
+        let largestCity = "Houston";
+
+        return;
+    }
+
+    method void drawOklahoma(){
+        // draw
+        do Screen.drawLine(14, 52, 247, 53);
+        do Screen.drawLine(247, 53, 249, 140);
+        do Screen.drawLine(249, 140, 250, 153);
+        do Screen.drawLine(250, 153, 229, 146);
+        do Screen.drawLine(229, 146, 221, 148);
+        do Screen.drawLine(221, 148, 208, 146);
+        do Screen.drawLine(208, 146, 195, 147);
+        do Screen.drawLine(195, 147, 184, 144);
+        do Screen.drawLine(184, 144, 175, 146);
+        do Screen.drawLine(175, 146, 165, 148);
+        do Screen.drawLine(165, 148, 155, 142);
+        do Screen.drawLine(155, 142, 143, 146);
+        do Screen.drawLine(143, 146, 125, 143);
+        do Screen.drawLine(125, 143, 116, 140);
+        do Screen.drawLine(116, 140, 109, 134);
+        do Screen.drawLine(109, 134, 98, 135);
+        do Screen.drawLine(98, 135, 92, 129);
+        do Screen.drawLine(92, 129, 89, 66);
+        do Screen.drawLine(89, 66, 14, 64);
+        do Screen.drawLine(14, 64, 14, 54);
+        let name        = "Oklahoma";
+        let founded     = "1907";
+        let population  = "4 million";
+        let capital     = "Oklahoma City";
+        let largestCity = "Oklahoma City";
+
+        return;
+    }
+
+    method void drawLouisiana(){
+        // draw
+        do Screen.drawLine(13, 49, 13, 82);
+        do Screen.drawLine(13, 82, 29, 108);
+        do Screen.drawLine(29, 108, 31, 123);
+        do Screen.drawLine(31, 123, 31, 138);
+        do Screen.drawLine(31, 138, 25, 153);
+        do Screen.drawLine(25, 153, 27, 172);
+        do Screen.drawLine(27, 172, 21, 181);
+        do Screen.drawLine(21, 181, 26, 187);
+        do Screen.drawLine(26, 187, 69, 187);
+        do Screen.drawLine(69, 187, 97, 196);
+        do Screen.drawLine(97, 196, 114, 197);
+        do Screen.drawLine(114, 197, 112, 191);
+        do Screen.drawLine(112, 191, 105, 189);
+        do Screen.drawLine(105, 189, 107, 186);
+        do Screen.drawLine(107, 186, 126, 192);
+        do Screen.drawLine(126, 192, 133, 200);
+        do Screen.drawLine(133, 200, 146, 205);
+        do Screen.drawLine(146, 205, 163, 205);
+        do Screen.drawLine(163, 205, 177, 205);
+        do Screen.drawLine(177, 205, 181, 199);
+        do Screen.drawLine(181, 199, 186, 203);
+        do Screen.drawLine(186, 203, 196, 209);
+        do Screen.drawLine(196, 209, 214, 212);
+        do Screen.drawLine(214, 212, 221, 213);
+        do Screen.drawLine(221, 213, 222, 206);
+        do Screen.drawLine(222, 206, 217, 199);
+        do Screen.drawLine(217, 199, 192, 191);
+        do Screen.drawLine(192, 191, 194, 185);
+        do Screen.drawLine(194, 185, 202, 184);
+        do Screen.drawLine(202, 184, 210, 178);
+        do Screen.drawLine(210, 178, 211, 165);
+        do Screen.drawLine(211, 165, 204, 160);
+        do Screen.drawLine(204, 160, 198, 166);
+        do Screen.drawLine(198, 166, 193, 171);
+        do Screen.drawLine(193, 171, 190, 166);
+        do Screen.drawLine(190, 166, 195, 154);
+        do Screen.drawLine(195, 154, 189, 153);
+        do Screen.drawLine(189, 153, 180, 162);
+        do Screen.drawLine(180, 162, 172, 165);
+        do Screen.drawLine(172, 165, 156, 161);
+        do Screen.drawLine(156, 161, 160, 150);
+        do Screen.drawLine(160, 150, 189, 152);
+        do Screen.drawLine(189, 152, 199, 152);
+        do Screen.drawLine(199, 152, 187, 136);
+        do Screen.drawLine(187, 136, 191, 124);
+        do Screen.drawLine(191, 124, 107, 121);
+        do Screen.drawLine(107, 121, 107, 102);
+        do Screen.drawLine(107, 102, 115, 89);
+        do Screen.drawLine(115, 89, 123, 73);
+        do Screen.drawLine(123, 73, 117, 63);
+        do Screen.drawLine(117, 63, 116, 47);
+        do Screen.drawLine(116, 47, 14, 50);
+        let name        = "Louisiana";
+        let founded     = "1812";
+        let population  = "4.6 million";
+        let capital     = "Baton Rouge";
+        let largestCity = "New Orleans";
+
+        return;
+    }
+
+    method void drawMississippi(){
+        // draw
+        do Screen.drawLine(68, 23, 58, 36);
+        do Screen.drawLine(58, 36, 57, 45);
+        do Screen.drawLine(57, 45, 48, 58);
+        do Screen.drawLine(48, 58, 41, 70);
+        do Screen.drawLine(41, 70, 35, 88);
+        do Screen.drawLine(35, 88, 32, 103);
+        do Screen.drawLine(32, 103, 29, 117);
+        do Screen.drawLine(29, 117, 30, 136);
+        do Screen.drawLine(30, 136, 34, 147);
+        do Screen.drawLine(34, 147, 37, 155);
+        do Screen.drawLine(37, 155, 30, 171);
+        do Screen.drawLine(30, 171, 21, 188);
+        do Screen.drawLine(21, 188, 18, 203);
+        do Screen.drawLine(18, 203, 14, 214);
+        do Screen.drawLine(14, 214, 94, 212);
+        do Screen.drawLine(94, 212, 94, 228);
+        do Screen.drawLine(94, 228, 101, 237);
+        do Screen.drawLine(101, 237, 128, 235);
+        do Screen.drawLine(128, 235, 145, 236);
+        do Screen.drawLine(145, 236, 155, 237);
+        do Screen.drawLine(155, 237, 152, 25);
+        do Screen.drawLine(152, 25, 69, 25);
+        let name        = "Mississippi";
+        let founded     = "1817";
+        let population  = "2.9 million";
+        let capital     = "Jackson";
+        let largestCity = "Jackson";
+
+        return;
+    }
+
+    method void drawAlabama(){
+        // draw
+        do Screen.drawLine(31, 28, 128, 29);
+        do Screen.drawLine(128, 29, 151, 133);
+        do Screen.drawLine(151, 133, 155, 138);
+        do Screen.drawLine(155, 138, 156, 147);
+        do Screen.drawLine(156, 147, 161, 150);
+        do Screen.drawLine(161, 150, 151, 155);
+        do Screen.drawLine(151, 155, 152, 164);
+        do Screen.drawLine(152, 164, 153, 170);
+        do Screen.drawLine(153, 170, 151, 178);
+        do Screen.drawLine(151, 178, 156, 184);
+        do Screen.drawLine(156, 184, 161, 186);
+        do Screen.drawLine(161, 186, 162, 196);
+        do Screen.drawLine(162, 196, 160, 202);
+        do Screen.drawLine(160, 202, 161, 211);
+        do Screen.drawLine(161, 211, 57, 210);
+        do Screen.drawLine(57, 210, 59, 223);
+        do Screen.drawLine(59, 223, 64, 228);
+        do Screen.drawLine(64, 228, 65, 236);
+        do Screen.drawLine(65, 236, 62, 242);
+        do Screen.drawLine(62, 242, 49, 242);
+        do Screen.drawLine(49, 242, 49, 230);
+        do Screen.drawLine(49, 230, 46, 230);
+        do Screen.drawLine(46, 230, 44, 239);
+        do Screen.drawLine(44, 239, 29, 239);
+        do Screen.drawLine(29, 239, 19, 141);
+        do Screen.drawLine(19, 141, 32, 30);
+        let name        = "Alabama";
+        let founded     = "1819";
+        let population  = "5 million";
+        let capital     = "Montgomery";
+        let largestCity = "Huntsville";
+  
+        return;
+    }
+
+    method void drawGeorgia(){
+        // draw
+        do Screen.drawLine(13, 19, 37, 111);
+        do Screen.drawLine(37, 111, 34, 121);
+        do Screen.drawLine(34, 121, 39, 127);
+        do Screen.drawLine(39, 127, 34, 138);
+        do Screen.drawLine(34, 138, 32, 149);
+        do Screen.drawLine(32, 149, 32, 164);
+        do Screen.drawLine(32, 164, 36, 170);
+        do Screen.drawLine(36, 170, 36, 177);
+        do Screen.drawLine(36, 177, 32, 188);
+        do Screen.drawLine(32, 188, 33, 200);
+        do Screen.drawLine(33, 200, 47, 211);
+        do Screen.drawLine(47, 211, 171, 206);
+        do Screen.drawLine(171, 206, 173, 217);
+        do Screen.drawLine(173, 217, 184, 218);
+        do Screen.drawLine(184, 218, 185, 194);
+        do Screen.drawLine(185, 194, 190, 192);
+        do Screen.drawLine(190, 192, 208, 198);
+        do Screen.drawLine(208, 198, 212, 175);
+        do Screen.drawLine(212, 175, 216, 165);
+        do Screen.drawLine(216, 165, 224, 150);
+        do Screen.drawLine(224, 150, 225, 137);
+        do Screen.drawLine(225, 137, 219, 117);
+        do Screen.drawLine(219, 117, 185, 92);
+        do Screen.drawLine(185, 92, 174, 84);
+        do Screen.drawLine(174, 84, 171, 76);
+        do Screen.drawLine(171, 76, 157, 66);
+        do Screen.drawLine(157, 66, 142, 57);
+        do Screen.drawLine(142, 57, 138, 44);
+        do Screen.drawLine(138, 44, 132, 31);
+        do Screen.drawLine(132, 31, 119, 20);
+        do Screen.drawLine(119, 20, 123, 11);
+        do Screen.drawLine(123, 11, 11, 18);
+        let name        = "Georgia";
+        let founded     = "1788";
+        let population  = "10.9 million";
+        let capital     = "Atlanta";
+        let largestCity = "Atlanta";
+ 
+        return;
+    }
+
+    method void drawFlorida(){
+        // draw
+        do Screen.drawLine(13, 24, 73, 24);
+        do Screen.drawLine(73, 24, 79, 33);
+        do Screen.drawLine(79, 33, 154, 33);
+        do Screen.drawLine(154, 33, 159, 38);
+        do Screen.drawLine(159, 38, 164, 26);
+        do Screen.drawLine(164, 26, 171, 28);
+        do Screen.drawLine(171, 28, 181, 30);
+        do Screen.drawLine(181, 30, 192, 48);
+        do Screen.drawLine(192, 48, 214, 98);
+        do Screen.drawLine(214, 98, 221, 111);
+        do Screen.drawLine(221, 111, 240, 154);
+        do Screen.drawLine(240, 154, 247, 170);
+        do Screen.drawLine(247, 170, 250, 192);
+        do Screen.drawLine(250, 192, 249, 208);
+        do Screen.drawLine(249, 208, 243, 223);
+        do Screen.drawLine(243, 223, 229, 229);
+        do Screen.drawLine(229, 229, 210, 227);
+        do Screen.drawLine(210, 227, 200, 223);
+        do Screen.drawLine(200, 223, 191, 201);
+        do Screen.drawLine(191, 201, 181, 194);
+        do Screen.drawLine(181, 194, 167, 167);
+        do Screen.drawLine(167, 167, 154, 151);
+        do Screen.drawLine(154, 151, 148, 138);
+        do Screen.drawLine(148, 138, 151, 116);
+        do Screen.drawLine(151, 116, 151, 100);
+        do Screen.drawLine(151, 100, 148, 92);
+        do Screen.drawLine(148, 92, 142, 79);
+        do Screen.drawLine(142, 79, 130, 64);
+        do Screen.drawLine(130, 64, 112, 56);
+        do Screen.drawLine(112, 56, 101, 61);
+        do Screen.drawLine(101, 61, 89, 72);
+        do Screen.drawLine(89, 72, 75, 77);
+        do Screen.drawLine(75, 77, 64, 78);
+        do Screen.drawLine(64, 78, 59, 65);
+        do Screen.drawLine(59, 65, 56, 50);
+        do Screen.drawLine(56, 50, 50, 43);
+        do Screen.drawLine(50, 43, 36, 42);
+        do Screen.drawLine(36, 42, 23, 42);
+        do Screen.drawLine(23, 42, 13, 46);
+        do Screen.drawLine(13, 46, 13, 26);
+        let name        = "Florida";
+        let founded     = "1845";
+        let population  = "22.6 million";
+        let capital     = "Tallahassee";
+        let largestCity = "Jacksonville";
+     
+        return;
+    }
+
+    method void drawArkansas(){
+        // draw
+        do Screen.drawLine(18, 27, 172, 28);
+        do Screen.drawLine(172, 28, 175, 37);
+        do Screen.drawLine(175, 37, 167, 51);
+        do Screen.drawLine(167, 51, 204, 55);
+        do Screen.drawLine(204, 55, 200, 66);
+        do Screen.drawLine(200, 66, 193, 75);
+        do Screen.drawLine(193, 75, 188, 84);
+        do Screen.drawLine(188, 84, 187, 92);
+        do Screen.drawLine(187, 92, 187, 100);
+        do Screen.drawLine(187, 100, 185, 104);
+        do Screen.drawLine(185, 104, 181, 111);
+        do Screen.drawLine(181, 111, 181, 120);
+        do Screen.drawLine(181, 120, 176, 126);
+        do Screen.drawLine(176, 126, 170, 135);
+        do Screen.drawLine(170, 135, 170, 145);
+        do Screen.drawLine(170, 145, 170, 153);
+        do Screen.drawLine(170, 153, 166, 162);
+        do Screen.drawLine(166, 162, 156, 174);
+        do Screen.drawLine(156, 174, 157, 190);
+        do Screen.drawLine(157, 190, 162, 201);
+        do Screen.drawLine(162, 201, 35, 200);
+        do Screen.drawLine(35, 200, 36, 180);
+        do Screen.drawLine(36, 180, 16, 178);
+        do Screen.drawLine(16, 178, 24, 64);
+        do Screen.drawLine(24, 64, 19, 28);
+        let name        = "Arkansas";
+        let founded     = "1836";
+        let population  = "3 million";
+        let capital     = "Little Rock";
+        let largestCity = "Little Rock";
+     
+        return;
+    }
+
+    method void drawTennessee(){
+        // draw
+        do Screen.drawLine(13, 144, 17, 129);
+        do Screen.drawLine(17, 129, 20, 125);
+        do Screen.drawLine(20, 125, 20, 120);
+        do Screen.drawLine(20, 120, 24, 114);
+        do Screen.drawLine(24, 114, 25, 107);
+        do Screen.drawLine(25, 107, 28, 91);
+        do Screen.drawLine(28, 91, 85, 92);
+        do Screen.drawLine(85, 92, 85, 86);
+        do Screen.drawLine(85, 86, 170, 87);
+        do Screen.drawLine(170, 87, 191, 86);
+        do Screen.drawLine(191, 86, 235, 77);
+        do Screen.drawLine(235, 77, 251, 75);
+        do Screen.drawLine(251, 75, 252, 85);
+        do Screen.drawLine(252, 85, 246, 91);
+        do Screen.drawLine(246, 91, 240, 98);
+        do Screen.drawLine(240, 98, 234, 97);
+        do Screen.drawLine(234, 97, 231, 102);
+        do Screen.drawLine(231, 102, 225, 109);
+        do Screen.drawLine(225, 109, 216, 117);
+        do Screen.drawLine(216, 117, 207, 122);
+        do Screen.drawLine(207, 122, 200, 124);
+        do Screen.drawLine(200, 124, 191, 129);
+        do Screen.drawLine(191, 129, 188, 136);
+        do Screen.drawLine(188, 136, 182, 139);
+        do Screen.drawLine(182, 139, 182, 146);
+        do Screen.drawLine(182, 146, 13, 147);
+        let name        = "Tennessee";
+        let founded     = "1796";
+        let population  = "7 million";
+        let capital     = "Nashville";
+        let largestCity = "Memphis";
+    
+        return;
+    }
+
+    method void drawSouthCarolina(){
+        // draw
+        do Screen.drawLine(18, 48, 31, 41);
+        do Screen.drawLine(31, 41, 57, 35);
+        do Screen.drawLine(57, 35, 140, 36);
+        do Screen.drawLine(140, 36, 151, 42);
+        do Screen.drawLine(151, 42, 153, 53);
+        do Screen.drawLine(153, 53, 208, 54);
+        do Screen.drawLine(208, 54, 267, 109);
+        do Screen.drawLine(267, 109, 256, 119);
+        do Screen.drawLine(256, 119, 246, 127);
+        do Screen.drawLine(246, 127, 241, 137);
+        do Screen.drawLine(241, 137, 240, 145);
+        do Screen.drawLine(240, 145, 230, 149);
+        do Screen.drawLine(230, 149, 221, 155);
+        do Screen.drawLine(221, 155, 211, 162);
+        do Screen.drawLine(211, 162, 201, 174);
+        do Screen.drawLine(201, 174, 195, 183);
+        do Screen.drawLine(195, 183, 186, 194);
+        do Screen.drawLine(186, 194, 177, 200);
+        do Screen.drawLine(177, 200, 163, 208);
+        do Screen.drawLine(163, 208, 155, 213);
+        do Screen.drawLine(155, 213, 150, 217);
+        do Screen.drawLine(150, 217, 146, 220);
+        do Screen.drawLine(146, 220, 128, 196);
+        do Screen.drawLine(128, 196, 115, 189);
+        do Screen.drawLine(115, 189, 112, 176);
+        do Screen.drawLine(112, 176, 92, 154);
+        do Screen.drawLine(92, 154, 76, 146);
+        do Screen.drawLine(76, 146, 62, 130);
+        do Screen.drawLine(62, 130, 50, 114);
+        do Screen.drawLine(50, 114, 45, 95);
+        do Screen.drawLine(45, 95, 37, 79);
+        do Screen.drawLine(37, 79, 31, 69);
+        do Screen.drawLine(31, 69, 23, 62);
+        do Screen.drawLine(23, 62, 18, 57);
+        do Screen.drawLine(18, 57, 18, 50);
+        let name        = "South Carolina";
+        let founded     = "1788";
+        let population  = "5.3 million";
+        let capital     = "Columbia";
+        let largestCity = "Columbia";
+
+        return;
+    }
+
+    method void drawNorthCarolina(){
+        // draw
+        do Screen.drawLine(11, 112, 10, 103);
+        do Screen.drawLine(10, 103, 19, 103);
+        do Screen.drawLine(19, 103, 24, 97);
+        do Screen.drawLine(24, 97, 43, 92);
+        do Screen.drawLine(43, 92, 55, 91);
+        do Screen.drawLine(55, 91, 61, 83);
+        do Screen.drawLine(61, 83, 68, 89);
+        do Screen.drawLine(68, 89, 73, 86);
+        do Screen.drawLine(73, 86, 75, 85);
+        do Screen.drawLine(75, 85, 82, 85);
+        do Screen.drawLine(82, 85, 91, 79);
+        do Screen.drawLine(91, 79, 95, 66);
+        do Screen.drawLine(95, 66, 240, 69);
+        do Screen.drawLine(240, 69, 254, 88);
+        do Screen.drawLine(254, 88, 259, 103);
+        do Screen.drawLine(259, 103, 264, 113);
+        do Screen.drawLine(264, 113, 260, 126);
+        do Screen.drawLine(260, 126, 244, 127);
+        do Screen.drawLine(244, 127, 229, 131);
+        do Screen.drawLine(229, 131, 224, 141);
+        do Screen.drawLine(224, 141, 211, 147);
+        do Screen.drawLine(211, 147, 199, 151);
+        do Screen.drawLine(199, 151, 192, 157);
+        do Screen.drawLine(192, 157, 186, 166);
+        do Screen.drawLine(186, 166, 181, 173);
+        do Screen.drawLine(181, 173, 158, 172);
+        do Screen.drawLine(158, 172, 130, 140);
+        do Screen.drawLine(130, 140, 69, 135);
+        do Screen.drawLine(69, 135, 68, 123);
+        do Screen.drawLine(68, 123, 67, 119);
+        do Screen.drawLine(67, 119, 38, 117);
+        do Screen.drawLine(38, 117, 24, 120);
+        do Screen.drawLine(24, 120, 12, 120);
+        do Screen.drawLine(12, 120, 11, 113);
+        let name        = "North Carolina";
+        let founded     = "1789";
+        let population  = "10.7 million";
+        let capital     = "Raleigh";
+        let largestCity = "Charlotte";
+     
+        return;
+    }
+
+    method void drawKentucky(){
+        // draw
+        do Screen.drawLine(18, 172, 60, 172);
+        do Screen.drawLine(60, 172, 60, 166);
+        do Screen.drawLine(60, 166, 159, 168);
+        do Screen.drawLine(159, 168, 174, 165);
+        do Screen.drawLine(174, 165, 190, 160);
+        do Screen.drawLine(190, 160, 198, 152);
+        do Screen.drawLine(198, 152, 202, 142);
+        do Screen.drawLine(202, 142, 218, 139);
+        do Screen.drawLine(218, 139, 221, 133);
+        do Screen.drawLine(221, 133, 232, 131);
+        do Screen.drawLine(232, 131, 210, 119);
+        do Screen.drawLine(210, 119, 208, 111);
+        do Screen.drawLine(208, 111, 205, 102);
+        do Screen.drawLine(205, 102, 199, 99);
+        do Screen.drawLine(199, 99, 193, 89);
+        do Screen.drawLine(193, 89, 183, 88);
+        do Screen.drawLine(183, 88, 176, 93);
+        do Screen.drawLine(176, 93, 165, 93);
+        do Screen.drawLine(165, 93, 157, 89);
+        do Screen.drawLine(157, 89, 149, 83);
+        do Screen.drawLine(149, 83, 136, 78);
+        do Screen.drawLine(136, 78, 124, 72);
+        do Screen.drawLine(124, 72, 120, 75);
+        do Screen.drawLine(120, 75, 120, 86);
+        do Screen.drawLine(120, 86, 111, 91);
+        do Screen.drawLine(111, 91, 100, 91);
+        do Screen.drawLine(100, 91, 91, 99);
+        do Screen.drawLine(91, 99, 87, 108);
+        do Screen.drawLine(87, 108, 78, 118);
+        do Screen.drawLine(78, 118, 70, 120);
+        do Screen.drawLine(70, 120, 68, 112);
+        do Screen.drawLine(68, 112, 63, 115);
+        do Screen.drawLine(63, 115, 58, 126);
+        do Screen.drawLine(58, 126, 55, 131);
+        do Screen.drawLine(55, 131, 45, 133);
+        do Screen.drawLine(45, 133, 33, 132);
+        do Screen.drawLine(33, 132, 30, 139);
+        do Screen.drawLine(30, 139, 27, 148);
+        do Screen.drawLine(27, 148, 20, 152);
+        do Screen.drawLine(20, 152, 11, 152);
+        do Screen.drawLine(11, 152, 8, 162);
+        do Screen.drawLine(8, 162, 17, 171);
+        let name        = "Kentucky";
+        let founded     = "1792";
+        let population  = "4.5 million";
+        let capital     = "Frankfort";
+        let largestCity = "Louisville";
+      
+        return;
+    }
+
+    method void drawVirginia(){
+        // draw
+        do Screen.drawLine(15, 163, 222, 162);
+        do Screen.drawLine(222, 162, 221, 151);
+        do Screen.drawLine(221, 151, 211, 150);
+        do Screen.drawLine(211, 150, 213, 142);
+        do Screen.drawLine(213, 142, 215, 124);
+        do Screen.drawLine(215, 124, 206, 118);
+        do Screen.drawLine(206, 118, 215, 106);
+        do Screen.drawLine(215, 106, 202, 97);
+        do Screen.drawLine(202, 97, 194, 91);
+        do Screen.drawLine(194, 91, 185, 94);
+        do Screen.drawLine(185, 94, 178, 92);
+        do Screen.drawLine(178, 92, 179, 85);
+        do Screen.drawLine(179, 85, 180, 72);
+        do Screen.drawLine(180, 72, 160, 68);
+        do Screen.drawLine(160, 68, 160, 63);
+        do Screen.drawLine(160, 63, 155, 63);
+        do Screen.drawLine(155, 63, 151, 71);
+        do Screen.drawLine(151, 71, 136, 51);
+        do Screen.drawLine(136, 51, 121, 77);
+        do Screen.drawLine(121, 77, 117, 74);
+        do Screen.drawLine(117, 74, 107, 91);
+        do Screen.drawLine(107, 91, 103, 94);
+        do Screen.drawLine(103, 94, 98, 94);
+        do Screen.drawLine(98, 94, 98, 86);
+        do Screen.drawLine(98, 86, 92, 88);
+        do Screen.drawLine(92, 88, 85, 118);
+        do Screen.drawLine(85, 118, 80, 128);
+        do Screen.drawLine(80, 128, 73, 135);
+        do Screen.drawLine(73, 135, 61, 137);
+        do Screen.drawLine(61, 137, 49, 139);
+        do Screen.drawLine(49, 139, 52, 130);
+        do Screen.drawLine(52, 130, 34, 138);
+        do Screen.drawLine(34, 138, 28, 148);
+        do Screen.drawLine(28, 148, 21, 151);
+        do Screen.drawLine(21, 151, 14, 164);
+        let name        = "Virginia";
+        let founded     = "1788";
+        let population  = "8.7 million";
+        let capital     = "Richmond";
+        let largestCity = "Virginia Beach";
+  
+        return;
+    }
+
+    method void drawWestVirginia(){
+        // draw
+        do Screen.drawLine(97, 33, 100, 77);
+        do Screen.drawLine(100, 77, 150, 77);
+        do Screen.drawLine(150, 77, 150, 91);
+        do Screen.drawLine(150, 91, 176, 85);
+        do Screen.drawLine(176, 85, 188, 82);
+        do Screen.drawLine(188, 82, 201, 85);
+        do Screen.drawLine(201, 85, 212, 97);
+        do Screen.drawLine(212, 97, 208, 103);
+        do Screen.drawLine(208, 103, 192, 95);
+        do Screen.drawLine(192, 95, 189, 105);
+        do Screen.drawLine(189, 105, 187, 113);
+        do Screen.drawLine(187, 113, 177, 116);
+        do Screen.drawLine(177, 116, 167, 122);
+        do Screen.drawLine(167, 122, 162, 129);
+        do Screen.drawLine(162, 129, 153, 131);
+        do Screen.drawLine(153, 131, 147, 126);
+        do Screen.drawLine(147, 126, 142, 138);
+        do Screen.drawLine(142, 138, 136, 148);
+        do Screen.drawLine(136, 148, 128, 159);
+        do Screen.drawLine(128, 159, 126, 167);
+        do Screen.drawLine(126, 167, 122, 172);
+        do Screen.drawLine(122, 172, 118, 187);
+        do Screen.drawLine(118, 187, 106, 189);
+        do Screen.drawLine(106, 189, 96, 194);
+        do Screen.drawLine(96, 194, 77, 194);
+        do Screen.drawLine(77, 194, 57, 188);
+        do Screen.drawLine(57, 188, 46, 176);
+        do Screen.drawLine(46, 176, 38, 158);
+        do Screen.drawLine(38, 158, 35, 140);
+        do Screen.drawLine(35, 140, 29, 130);
+        do Screen.drawLine(29, 130, 35, 126);
+        do Screen.drawLine(35, 126, 42, 126);
+        do Screen.drawLine(42, 126, 42, 107);
+        do Screen.drawLine(42, 107, 48, 109);
+        do Screen.drawLine(48, 109, 54, 99);
+        do Screen.drawLine(54, 99, 58, 85);
+        do Screen.drawLine(58, 85, 67, 81);
+        do Screen.drawLine(67, 81, 81, 73);
+        do Screen.drawLine(81, 73, 85, 71);
+        do Screen.drawLine(85, 71, 93, 50);
+        do Screen.drawLine(93, 50, 93, 42);
+        do Screen.drawLine(93, 42, 97, 37);
+
+        let name        = "West Virginia";
+        let founded     = "1863";
+        let population  = "1.7 million";
+        let capital     = "Charleston";
+        let largestCity = "Charleston";
+  
+        return;
+    }
+
+    method void drawMaryland(){
+        // draw
+        do Screen.drawLine(19, 47, 189, 48);
+        do Screen.drawLine(189, 48, 195, 132);
+        do Screen.drawLine(195, 132, 224, 132);
+        do Screen.drawLine(224, 132, 221, 146);
+        do Screen.drawLine(221, 146, 215, 156);
+        do Screen.drawLine(215, 156, 214, 164);
+        do Screen.drawLine(214, 164, 196, 166);
+        do Screen.drawLine(196, 166, 174, 170);
+        do Screen.drawLine(174, 170, 175, 136);
+        do Screen.drawLine(175, 136, 170, 142);
+        do Screen.drawLine(170, 142, 157, 118);
+        do Screen.drawLine(157, 118, 167, 107);
+        do Screen.drawLine(167, 107, 159, 110);
+        do Screen.drawLine(159, 110, 163, 88);
+        do Screen.drawLine(163, 88, 166, 80);
+        do Screen.drawLine(166, 80, 171, 68);
+        do Screen.drawLine(171, 68, 176, 60);
+        do Screen.drawLine(176, 60, 170, 62);
+        do Screen.drawLine(170, 62, 158, 69);
+        do Screen.drawLine(158, 69, 151, 82);
+        do Screen.drawLine(151, 82, 140, 76);
+        do Screen.drawLine(140, 76, 146, 85);
+        do Screen.drawLine(146, 85, 141, 93);
+        do Screen.drawLine(141, 93, 139, 108);
+        do Screen.drawLine(139, 108, 137, 117);
+        do Screen.drawLine(137, 117, 123, 105);
+        do Screen.drawLine(123, 105, 131, 118);
+        do Screen.drawLine(131, 118, 130, 126);
+        do Screen.drawLine(130, 126, 116, 121);
+        do Screen.drawLine(116, 121, 131, 132);
+        do Screen.drawLine(131, 132, 136, 141);
+        do Screen.drawLine(136, 141, 142, 147);
+        do Screen.drawLine(142, 147, 144, 158);
+        do Screen.drawLine(144, 158, 144, 167);
+        do Screen.drawLine(144, 167, 128, 153);
+        do Screen.drawLine(128, 153, 122, 153);
+        do Screen.drawLine(122, 153, 113, 146);
+        do Screen.drawLine(113, 146, 103, 141);
+        do Screen.drawLine(103, 141, 93, 137);
+        do Screen.drawLine(93, 137, 93, 128);
+        do Screen.drawLine(93, 128, 102, 117);
+        do Screen.drawLine(102, 117, 102, 109);
+        do Screen.drawLine(102, 109, 107, 102);
+        do Screen.drawLine(107, 102, 99, 98);
+        do Screen.drawLine(99, 98, 95, 103);
+        do Screen.drawLine(95, 103, 83, 91);
+        do Screen.drawLine(83, 91, 69, 78);
+        do Screen.drawLine(69, 78, 67, 68);
+        do Screen.drawLine(67, 68, 66, 57);
+        do Screen.drawLine(66, 57, 58, 53);
+        do Screen.drawLine(58, 53, 48, 57);
+        do Screen.drawLine(48, 57, 35, 58);
+        do Screen.drawLine(35, 58, 20, 72);
+        do Screen.drawLine(20, 72, 20, 50);
+        let name        = "Maryland";
+        let founded     = "1788";
+        let population  = "6.2 million";
+        let capital     = "Annapolis";
+        let largestCity = "Baltimore";
+
+        return;
+    }
+
+    method void drawDelaware(){
+        // draw
+        do Screen.drawLine(79, 21, 66, 18);
+        do Screen.drawLine(66, 18, 56, 22);
+        do Screen.drawLine(56, 22, 49, 31);
+        do Screen.drawLine(49, 31, 47, 44);
+        do Screen.drawLine(47, 44, 46, 203);
+        do Screen.drawLine(46, 203, 140, 199);
+        do Screen.drawLine(140, 199, 138, 147);
+        do Screen.drawLine(138, 147, 127, 150);
+        do Screen.drawLine(127, 150, 120, 148);
+        do Screen.drawLine(120, 148, 108, 132);
+        do Screen.drawLine(108, 132, 106, 119);
+        do Screen.drawLine(106, 119, 96, 108);
+        do Screen.drawLine(96, 108, 83, 86);
+        do Screen.drawLine(83, 86, 83, 72);
+        do Screen.drawLine(83, 72, 76, 60);
+        do Screen.drawLine(76, 60, 75, 50);
+        do Screen.drawLine(75, 50, 70, 38);
+        do Screen.drawLine(70, 38, 70, 31);
+        do Screen.drawLine(70, 31, 78, 23);
+        let name        = "Delaware";
+        let founded     = "1787";
+        let population  = "1 million";
+        let capital     = "Dover";
+        let largestCity = "Wilmington";
+
+        return;
+    }
+
+    method void drawPennsylvania(){
+        // draw
+        do Screen.drawLine(24, 53, 52, 39);
+        do Screen.drawLine(52, 39, 54, 54);
+        do Screen.drawLine(54, 54, 203, 54);
+        do Screen.drawLine(203, 54, 221, 54);
+        do Screen.drawLine(221, 54, 229, 60);
+        do Screen.drawLine(229, 60, 233, 72);
+        do Screen.drawLine(233, 72, 243, 75);
+        do Screen.drawLine(243, 75, 235, 84);
+        do Screen.drawLine(235, 84, 231, 92);
+        do Screen.drawLine(231, 92, 232, 103);
+        do Screen.drawLine(232, 103, 232, 116);
+        do Screen.drawLine(232, 116, 246, 123);
+        do Screen.drawLine(246, 123, 250, 124);
+        do Screen.drawLine(250, 124, 248, 131);
+        do Screen.drawLine(248, 131, 240, 135);
+        do Screen.drawLine(240, 135, 230, 140);
+        do Screen.drawLine(230, 140, 229, 148);
+        do Screen.drawLine(229, 148, 223, 150);
+        do Screen.drawLine(223, 150, 212, 150);
+        do Screen.drawLine(212, 150, 207, 157);
+        do Screen.drawLine(207, 157, 24, 153);
+        do Screen.drawLine(24, 153, 25, 55);
+        let name        = "Pennsylvania";
+        let founded     = "1787";
+        let population  = "13 million";
+        let capital     = "Harrisburg";
+        let largestCity = "Philadelphia";
+
+        return;
+    }
+
+    method void drawNewJersey(){
+        // draw
+        do Screen.drawLine(76, 30, 51, 53);
+        do Screen.drawLine(51, 53, 53, 64);
+        do Screen.drawLine(53, 64, 36, 81);
+        do Screen.drawLine(36, 81, 36, 91);
+        do Screen.drawLine(36, 91, 58, 103);
+        do Screen.drawLine(58, 103, 58, 111);
+        do Screen.drawLine(58, 111, 81, 126);
+        do Screen.drawLine(81, 126, 63, 139);
+        do Screen.drawLine(63, 139, 51, 147);
+        do Screen.drawLine(51, 147, 42, 155);
+        do Screen.drawLine(42, 155, 30, 166);
+        do Screen.drawLine(30, 166, 29, 178);
+        do Screen.drawLine(29, 178, 45, 192);
+        do Screen.drawLine(45, 192, 90, 201);
+        do Screen.drawLine(90, 201, 101, 207);
+        do Screen.drawLine(101, 207, 101, 218);
+        do Screen.drawLine(101, 218, 125, 197);
+        do Screen.drawLine(125, 197, 138, 171);
+        do Screen.drawLine(138, 171, 143, 155);
+        do Screen.drawLine(143, 155, 149, 137);
+        do Screen.drawLine(149, 137, 153, 114);
+        do Screen.drawLine(153, 114, 157, 104);
+        do Screen.drawLine(157, 104, 131, 93);
+        do Screen.drawLine(131, 93, 130, 77);
+        do Screen.drawLine(130, 77, 134, 81);
+        do Screen.drawLine(134, 81, 141, 67);
+        do Screen.drawLine(141, 67, 152, 48);
+        do Screen.drawLine(152, 48, 156, 40);
+        do Screen.drawLine(156, 40, 84, 6);
+        do Screen.drawLine(84, 6, 78, 15);
+        do Screen.drawLine(78, 15, 74, 32);
+        let name        = "New Jersey";
+        let founded     = "1787";
+        let population  = "9.3 million";
+        let capital     = "Trenton";
+        let largestCity = "Newark";
+
+        return;
+    }
+
+    method void drawNewYork(){
+        // draw
+        do Screen.drawLine(13, 156, 14, 142);
+        do Screen.drawLine(14, 142, 60, 133);
+        do Screen.drawLine(60, 133, 54, 116);
+        do Screen.drawLine(54, 116, 87, 110);
+        do Screen.drawLine(87, 110, 117, 113);
+        do Screen.drawLine(117, 113, 124, 117);
+        do Screen.drawLine(124, 117, 143, 114);
+        do Screen.drawLine(143, 114, 154, 109);
+        do Screen.drawLine(154, 109, 163, 102);
+        do Screen.drawLine(163, 102, 169, 102);
+        do Screen.drawLine(169, 102, 170, 84);
+        do Screen.drawLine(170, 84, 169, 78);
+        do Screen.drawLine(169, 78, 208, 54);
+        do Screen.drawLine(208, 54, 276, 53);
+        do Screen.drawLine(276, 53, 282, 112);
+        do Screen.drawLine(282, 112, 271, 164);
+        do Screen.drawLine(271, 164, 273, 190);
+        do Screen.drawLine(273, 190, 269, 200);
+        do Screen.drawLine(269, 200, 335, 191);
+        do Screen.drawLine(335, 191, 367, 195);
+        do Screen.drawLine(367, 195, 366, 202);
+        do Screen.drawLine(366, 202, 379, 202);
+        do Screen.drawLine(379, 202, 347, 208);
+        do Screen.drawLine(347, 208, 310, 209);
+        do Screen.drawLine(310, 209, 268, 209);
+        do Screen.drawLine(268, 209, 257, 212);
+        do Screen.drawLine(257, 212, 263, 198);
+        do Screen.drawLine(263, 198, 200, 178);
+        do Screen.drawLine(200, 178, 195, 164);
+        do Screen.drawLine(195, 164, 13, 158);
+        let name        = "New York";
+        let founded     = "1788";
+        let population  = "19.6 million";
+        let capital     = "Albany";
+        let largestCity = "New York City";
+
+        return;
+    }
+
+    method void drawVermont(){
+        // draw
+        do Screen.drawLine(34, 31, 145, 31);
+        do Screen.drawLine(145, 31, 140, 50);
+        do Screen.drawLine(140, 50, 147, 66);
+        do Screen.drawLine(147, 66, 147, 73);
+        do Screen.drawLine(147, 73, 132, 85);
+        do Screen.drawLine(132, 85, 124, 87);
+        do Screen.drawLine(124, 87, 123, 104);
+        do Screen.drawLine(123, 104, 119, 116);
+        do Screen.drawLine(119, 116, 115, 138);
+        do Screen.drawLine(115, 138, 111, 158);
+        do Screen.drawLine(111, 158, 107, 174);
+        do Screen.drawLine(107, 174, 106, 203);
+        do Screen.drawLine(106, 203, 110, 210);
+        do Screen.drawLine(110, 210, 50, 207);
+        do Screen.drawLine(50, 207, 51, 145);
+        do Screen.drawLine(51, 145, 45, 145);
+        do Screen.drawLine(45, 145, 41, 151);
+        do Screen.drawLine(41, 151, 39, 143);
+        do Screen.drawLine(39, 143, 42, 125);
+        do Screen.drawLine(42, 125, 41, 102);
+        do Screen.drawLine(41, 102, 43, 82);
+        do Screen.drawLine(43, 82, 45, 65);
+        do Screen.drawLine(45, 65, 42, 55);
+        do Screen.drawLine(42, 55, 38, 48);
+        do Screen.drawLine(38, 48, 34, 33);
+        let name        = "Vermont";
+        let founded     = "1791";
+        let population  = "647 thousand";
+        let capital     = "Montpelier";
+        let largestCity = "Burlington";
+
+        return;
+    }
+
+    method void drawNewHampshire(){
+        // draw
+        do Screen.drawLine(145, 16, 145, 155);
+        do Screen.drawLine(145, 155, 155, 168);
+        do Screen.drawLine(155, 168, 158, 180);
+        do Screen.drawLine(158, 180, 165, 187);
+        do Screen.drawLine(165, 187, 161, 200);
+        do Screen.drawLine(161, 200, 152, 203);
+        do Screen.drawLine(152, 203, 141, 203);
+        do Screen.drawLine(141, 203, 133, 212);
+        do Screen.drawLine(133, 212, 40, 210);
+        do Screen.drawLine(40, 210, 37, 192);
+        do Screen.drawLine(37, 192, 45, 176);
+        do Screen.drawLine(45, 176, 50, 142);
+        do Screen.drawLine(50, 142, 59, 116);
+        do Screen.drawLine(59, 116, 70, 102);
+        do Screen.drawLine(70, 102, 67, 93);
+        do Screen.drawLine(67, 93, 69, 85);
+        do Screen.drawLine(69, 85, 94, 82);
+        do Screen.drawLine(94, 82, 107, 74);
+        do Screen.drawLine(107, 74, 107, 64);
+        do Screen.drawLine(107, 64, 110, 50);
+        do Screen.drawLine(110, 50, 117, 40);
+        do Screen.drawLine(117, 40, 119, 19);
+        do Screen.drawLine(119, 19, 129, 15);
+        do Screen.drawLine(129, 15, 143, 17);
+        let name        = "New Hampshire";
+        let founded     = "1788";
+        let population  = "1.4 million";
+        let capital     = "Concord";
+        let largestCity = "Manchester";
+
+        return;
+    }
+
+    method void drawMaine(){
+        // draw
+        do Screen.drawLine(132, 10, 122, 10);
+        do Screen.drawLine(122, 10, 79, 63);
+        do Screen.drawLine(79, 63, 77, 81);
+        do Screen.drawLine(77, 81, 63, 90);
+        do Screen.drawLine(63, 90, 57, 115);
+        do Screen.drawLine(57, 115, 50, 126);
+        do Screen.drawLine(50, 126, 32, 131);
+        do Screen.drawLine(32, 131, 23, 230);
+        do Screen.drawLine(23, 230, 39, 217);
+        do Screen.drawLine(39, 217, 54, 204);
+        do Screen.drawLine(54, 204, 75, 204);
+        do Screen.drawLine(75, 204, 91, 195);
+        do Screen.drawLine(91, 195, 107, 183);
+        do Screen.drawLine(107, 183, 117, 181);
+        do Screen.drawLine(117, 181, 125, 159);
+        do Screen.drawLine(125, 159, 131, 170);
+        do Screen.drawLine(131, 170, 146, 162);
+        do Screen.drawLine(146, 162, 168, 158);
+        do Screen.drawLine(168, 158, 182, 161);
+        do Screen.drawLine(182, 161, 191, 155);
+        do Screen.drawLine(191, 155, 214, 148);
+        do Screen.drawLine(214, 148, 221, 136);
+        do Screen.drawLine(221, 136, 217, 115);
+        do Screen.drawLine(217, 115, 197, 101);
+        do Screen.drawLine(197, 101, 190, 88);
+        do Screen.drawLine(190, 88, 184, 18);
+        do Screen.drawLine(184, 18, 173, 12);
+        do Screen.drawLine(173, 12, 164, 17);
+        do Screen.drawLine(164, 17, 155, 19);
+        do Screen.drawLine(155, 19, 142, 20);
+        do Screen.drawLine(142, 20, 133, 13);
+
+        let name        = "Maine";
+        let founded     = "1820";
+        let population  = "1.4 million";
+        let capital     = "Augusta";
+        let largestCity = "Portland";
+
+        return;
+    }
+
+    method void drawMassachusetts(){
+        // draw
+        do Screen.drawLine(34, 42, 16, 116);
+        do Screen.drawLine(16, 116, 74, 116);
+        do Screen.drawLine(74, 116, 77, 122);
+        do Screen.drawLine(77, 122, 84, 118);
+        do Screen.drawLine(84, 118, 160, 118);
+        do Screen.drawLine(160, 118, 164, 128);
+        do Screen.drawLine(164, 128, 177, 152);
+        do Screen.drawLine(177, 152, 197, 167);
+        do Screen.drawLine(197, 167, 219, 151);
+        do Screen.drawLine(219, 151, 226, 151);
+        do Screen.drawLine(226, 151, 225, 161);
+        do Screen.drawLine(225, 161, 239, 160);
+        do Screen.drawLine(239, 160, 263, 157);
+        do Screen.drawLine(263, 157, 270, 150);
+        do Screen.drawLine(270, 150, 269, 114);
+        do Screen.drawLine(269, 114, 250, 100);
+        do Screen.drawLine(250, 100, 242, 100);
+        do Screen.drawLine(242, 100, 239, 106);
+        do Screen.drawLine(239, 106, 246, 106);
+        do Screen.drawLine(246, 106, 253, 114);
+        do Screen.drawLine(253, 114, 254, 125);
+        do Screen.drawLine(254, 125, 252, 132);
+        do Screen.drawLine(252, 132, 231, 133);
+        do Screen.drawLine(231, 133, 219, 118);
+        do Screen.drawLine(219, 118, 211, 104);
+        do Screen.drawLine(211, 104, 208, 89);
+        do Screen.drawLine(208, 89, 192, 79);
+        do Screen.drawLine(192, 79, 192, 65);
+        do Screen.drawLine(192, 65, 201, 56);
+        do Screen.drawLine(201, 56, 206, 58);
+        do Screen.drawLine(206, 58, 212, 47);
+        do Screen.drawLine(212, 47, 219, 41);
+        do Screen.drawLine(219, 41, 212, 36);
+        do Screen.drawLine(212, 36, 200, 38);
+        do Screen.drawLine(200, 38, 196, 25);
+        do Screen.drawLine(196, 25, 198, 18);
+        do Screen.drawLine(198, 18, 184, 17);
+        do Screen.drawLine(184, 17, 175, 24);
+        do Screen.drawLine(175, 24, 150, 41);
+        do Screen.drawLine(150, 41, 35, 44);
+        let name        = "Massachusetts";
+        let founded     = "1788";
+        let population  = "7 million";
+        let capital     = "Boston";
+        let largestCity = "Boston";
+
+        return;
+    }
+
+    method void drawConnecticut(){
+        // draw
+        do Screen.drawLine(31, 35, 124, 36);
+        do Screen.drawLine(124, 36, 128, 43);
+        do Screen.drawLine(128, 43, 134, 43);
+        do Screen.drawLine(134, 43, 135, 36);
+        do Screen.drawLine(135, 36, 240, 37);
+        do Screen.drawLine(240, 37, 242, 124);
+        do Screen.drawLine(242, 124, 236, 126);
+        do Screen.drawLine(236, 126, 236, 138);
+        do Screen.drawLine(236, 138, 212, 142);
+        do Screen.drawLine(212, 142, 198, 144);
+        do Screen.drawLine(198, 144, 165, 147);
+        do Screen.drawLine(165, 147, 139, 151);
+        do Screen.drawLine(139, 151, 116, 154);
+        do Screen.drawLine(116, 154, 89, 159);
+        do Screen.drawLine(89, 159, 70, 160);
+        do Screen.drawLine(70, 160, 34, 178);
+        do Screen.drawLine(34, 178, 20, 154);
+        do Screen.drawLine(20, 154, 45, 139);
+        do Screen.drawLine(45, 139, 30, 123);
+        do Screen.drawLine(30, 123, 30, 38);
+        let name        = "Connecticut";
+        let founded     = "1788";
+        let population  = "3.6 million";
+        let capital     = "Hartford";
+        let largestCity = "Bridgeport";
+
+        return;
+    }
+
+    method void drawRhodeIsland(){
+        // draw
+        do Screen.drawLine(33, 179, 29, 158);
+        do Screen.drawLine(29, 158, 38, 155);
+        do Screen.drawLine(38, 155, 38, 19);
+        do Screen.drawLine(38, 19, 141, 18);
+        do Screen.drawLine(141, 18, 141, 56);
+        do Screen.drawLine(141, 56, 153, 56);
+        do Screen.drawLine(153, 56, 158, 87);
+        do Screen.drawLine(158, 87, 186, 103);
+        do Screen.drawLine(186, 103, 199, 116);
+        do Screen.drawLine(199, 116, 209, 119);
+        do Screen.drawLine(209, 119, 212, 164);
+        do Screen.drawLine(212, 164, 196, 169);
+        do Screen.drawLine(196, 169, 187, 129);
+        do Screen.drawLine(187, 129, 179, 160);
+        do Screen.drawLine(179, 160, 154, 167);
+        do Screen.drawLine(154, 167, 153, 160);
+        do Screen.drawLine(153, 160, 166, 153);
+        do Screen.drawLine(166, 153, 173, 122);
+        do Screen.drawLine(173, 122, 160, 108);
+        do Screen.drawLine(160, 108, 148, 98);
+        do Screen.drawLine(148, 98, 144, 70);
+        do Screen.drawLine(144, 70, 142, 100);
+        do Screen.drawLine(142, 100, 148, 117);
+        do Screen.drawLine(148, 117, 142, 127);
+        do Screen.drawLine(142, 127, 131, 124);
+        do Screen.drawLine(131, 124, 131, 131);
+        do Screen.drawLine(131, 131, 147, 135);
+        do Screen.drawLine(147, 135, 145, 153);
+        do Screen.drawLine(145, 153, 134, 156);
+        do Screen.drawLine(134, 156, 136, 168);
+        do Screen.drawLine(136, 168, 131, 178);
+        do Screen.drawLine(131, 178, 125, 172);
+        do Screen.drawLine(125, 172, 83, 182);
+        do Screen.drawLine(83, 182, 25, 195);
+        do Screen.drawLine(25, 195, 32, 186);
+        do Screen.drawLine(32, 186, 31, 182);
+        let name        = "Rhode Island";
+        let founded     = "1790";
+        let population  = "1.1 million";
+        let capital     = "Providence";
+        let largestCity = "Providence";
+
+        return;
+    }
+
+    method void dispose(){
+        // gets rid of the all of the strings
+        // resets their definitions
+        do name.dispose();
+        do founded.dispose();
+        do population.dispose();
+        do capital.dispose();
+        do largestCity.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

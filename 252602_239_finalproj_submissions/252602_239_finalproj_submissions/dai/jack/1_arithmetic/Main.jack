@@ -1,0 +1,11 @@
+// program 1: basic arithmetic
+// same computation as test1 but written in Jack
+// 3 + 4 - 2 = 5
+// LED: 0101
+class Main {
+    function void main() {
+        var int x;
+        let x = 3 + 4 - 2;
+        return;
+    }
+}

@@ -1,0 +1,80 @@
+class BitCode
+{
+    function int calculateSupply(String code, Battery battery)
+    {
+        var int total;
+        var int i;
+        var int length;
+
+        let total = 0;
+        let i = 0;
+        let length = code.length();
+
+        while ((i < length) & (i < 8))
+        {
+            if (code.charAt(i) = 49)
+            {
+                let total = total + battery.getEnergyAtBit(i);
+            }
+
+            let i = i + 1;
+        }
+
+        return total;
+    }
+
+    function int calculateSupplyFromInt(int code, Battery battery)
+    {
+        var int total;
+        var int i;
+        var int place;
+        var int bit;
+
+        let total = 0;
+        let i = 0;
+        let place = 128;
+
+        while (i < 8)
+        {
+            let bit = code / place;
+
+            if (bit = 1)
+            {
+                let total = total + battery.getEnergyAtBit(i);
+                let code = code - place;
+            }
+
+            let place = place / 2;
+            let i = i + 1;
+        }
+
+        return total;
+    }
+
+    function boolean isValidCode(String code)
+    {
+        var int i;
+        var int c;
+
+        if (~(code.length() = 8))
+        {
+            return false;
+        }
+
+        let i = 0;
+
+        while (i < 8)
+        {
+            let c = code.charAt(i);
+
+            if ((~(c = 48)) & (~(c = 49)))
+            {
+                return false;
+            }
+
+            let i = i + 1;
+        }
+
+        return true;
+    }
+}

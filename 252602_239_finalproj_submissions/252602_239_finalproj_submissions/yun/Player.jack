@@ -1,0 +1,365 @@
+class Player {
+    //Player object. Contains positional data, sprite drawing methods, hasGift boolean, and movement methods
+
+    //Player positional information
+    field int pos_x, pos_y;                                                 //player positional coordinates
+    field int width_x, height_y;                                            //player character height and width, and their collision "box"
+    field int x_inc, y_inc;                                                 //spaces that player character moves 
+    field int head_height, indent, torso_height, leg_height, eye_height;    //references for player body proportions
+
+
+    field boolean hasGift;                                                  //status for when the player is currently carrying a gift
+    field boolean drawBlack;                                                //determines the color the character is drawn in
+                                                                            //(black for normal gameplay, white for spooky rooms)
+
+    constructor Player new() {
+        let pos_x = 250;
+        let pos_y = 115;
+        let height_y = 37;      //38 pixels in practice
+        let width_x = 17;       //18 pixels in practice
+
+
+        let head_height = 9;    //10 pixels
+        let torso_height = 11;  //12 pixels
+        let leg_height = 7;     //8 pixels
+        let eye_height = 5;     //6 pixels
+
+        let indent = 2;
+        let y_inc = 2;
+        let x_inc = 2;
+
+        let hasGift = false;
+        let drawBlack = true;
+
+        do draw();
+        return this;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+
+    //----------------------------------------------------------------------------------------------getter and setter methods
+    method boolean getHasGift() {
+        return hasGift;
+    }
+
+ 
+    method void updateHasGift() {
+        let hasGift = ~hasGift;
+        return;
+    }
+
+ 
+    method void updateDrawBlack() {
+        let drawBlack = ~drawBlack;
+        return;
+    }
+
+    method int getWidth() {
+        return width_x;
+    }
+
+    method int getHeight() {
+        return height_y;
+    }
+    method int getTopY() {
+        return pos_y;
+    }
+
+    method int getBottomY() {
+        return pos_y + height_y;
+    }
+
+    method int getLeftX() {
+        return pos_x;
+    }
+
+    method int getRightX() {
+        return pos_x + width_x;
+    }
+
+    //------------------------------------------------------------------------------------------------Erase player
+
+    method void erase() {
+        // Draws the square using the color white (background color)
+        do Screen.setColor(~drawBlack);
+        do Screen.drawRectangle(pos_x, pos_y, pos_x + width_x, pos_y + height_y);
+        return;
+    }
+
+
+    //---------------------------------------------------------------------------------------Teleport player to opposite side
+    
+    //draws player at upper door
+    method void teleportUpperDoor() {
+        let pos_y = 2;
+        do draw();
+        return;
+    }
+
+
+    //draws player at bottom door
+    method void teleportLowerDoor() {
+        let pos_y = 214;
+        //bottom y of player = 254
+        do draw();
+        return;
+    }
+
+
+    //draws player at left door
+    method void teleportLeftDoor() {
+        let pos_x = 2;
+        do draw();
+        return;
+    }
+
+
+    //draws player at right door
+    method void teleportRightDoor() {
+        let pos_x = 472;
+        //right x = 509
+        do draw();
+        return;
+    }
+
+    //--------------------------------------------------------------------------------------------------Check collision with environment
+
+    //Check the projected player sprite if it overlaps with any black pixels (or white when in black rooms)
+    method boolean collided(int x1, int y1, int x2, int y2, boolean moving_hori) {
+        var boolean pixel;
+
+        if (moving_hori) {
+            //loop for checking collision for moving left or right
+            //check y-axis/side of projected player location
+
+            while (~(y1 > y2)) {
+                //get pixel color as a boolean
+                let pixel = getPixel(x1, y1);
+
+                //if any one projected pixel is the same color as the sprite, return true (dont move)
+                if (pixel = drawBlack) {
+                    return true;
+                }
+                let y1 = y1 + 1;
+            }
+        }
+        else {
+            //loop for checking collision for moving up or down
+            //check x-axis/top/bottom of projected player location
+
+            while (~(x1 > x2)) {
+                let pixel = getPixel(x1, y1);
+
+                if (pixel = drawBlack) {
+                    return true;
+                }
+                let x1 = x1 + 1;
+            }
+        }
+        return false;
+    }
+
+    //Helper method to get the boolean value from Screen register at pixel (x,y)
+    //need this translation since the screen registers contain bitmaps, not proper boolean values
+
+    method boolean getPixel(int x, int y) {
+        var int address, word, mask, i, wordIndex, bit;
+
+        let wordIndex = x / 16;
+
+        //Get addresses of "bounding box" of player for next increment
+        let address = 16384 + (y * 32) + (x / 16);
+        let word = Memory.peek(address);
+
+        let bit = x - (wordIndex * 16);   //remainder without % since Jack doesnt have %
+
+        let mask = 1;
+        let i = 0;
+
+        while (i < bit) {
+            let mask = mask + mask;   //mask *= 2
+            let i = i + 1;
+        }
+
+        if ((word & mask) = 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------player movement
+
+    /** Moves player up by y_inc*/
+    method int moveUp() {
+        var int projected_y;
+
+        //calculate incremented position
+        let projected_y = pos_y - y_inc;
+        
+        
+        if (~((projected_y) > 1)) { //No proper <= operator, but not(>) is the same as <=
+            //if projected movement goes out of bounds, return -1 to tell Game.jack to load the next room and teleport
+            do erase();
+            return -1;
+        }
+        else {
+            if (collided(pos_x, projected_y, pos_x + width_x, projected_y, false)) {
+                //if projected movement collides with a wall or prop, don't move, return projected_y
+                return 1;
+            }
+            else {
+                //Erase the player
+                do Screen.setColor(~drawBlack);
+                do erase();
+                let pos_y = projected_y;
+
+                //Redraw the player
+                do draw();
+            }
+        }
+        return 0;
+    }
+
+
+    /** Moves the player down by y_inc*/
+    method int moveDown() {
+        var int projected_y;
+        //calculate incremented position
+        let projected_y = pos_y + height_y + y_inc;
+
+
+        //"Teleports" player to top of screen if they reach the bottom edge
+        if (~((projected_y) < 254)) { //same thing as >=. >= isnt its own operator, but it is still the same as not(<)
+            do erase();
+            return -1;
+        }
+        else {
+            //if projected movement collides with a wall or prop, don't move, return 'c' (collided)
+            if (collided(pos_x, projected_y, pos_x + width_x, projected_y, false)) {
+                return 1;
+            }
+            else {
+                //Erase the player
+                do Screen.setColor(~drawBlack);
+                do erase();
+                let pos_y = pos_y + y_inc;
+
+                //Redraw the player
+                do draw();
+            }
+        }
+        return 0;
+    }
+
+
+    /** Moves the player left by x_inc. */
+    method char moveLeft() {
+        var int projected_x;
+        //calculate incremented position
+        let projected_x = pos_x - x_inc;
+
+
+        //"Teleports" player to right of screen if they reach the left edge
+        if (~((projected_x) > 1)) {
+            do erase();
+            return -1;
+        }
+        else {
+            //if projected movement collides with a wall or prop, don't move, return 'c' (collided)
+            if (collided(projected_x, pos_y, projected_x, pos_y + height_y, true)) {
+                return 1;
+            }
+            else {
+                //Erase the player
+                do Screen.setColor(~drawBlack);
+                do erase();
+                let pos_x = pos_x - x_inc;
+
+                //Redraw the player
+                do draw();
+            }
+        }
+        return 0;
+    }
+
+
+    /** Moves the player right by x_inc*/
+    method int moveRight() {
+        var int projected_x;
+        //calculate incremented position
+        let projected_x = pos_x + width_x + x_inc;
+
+        //"Teleports" player to left of screen if they reach the right edge
+        if (~((pos_x + width_x + x_inc) < 510)) {
+            do erase();
+            return -1;
+        }
+        else {
+            //if projected movement collides with a wall or prop, don't move, return 'c' (collided)
+            if (collided(projected_x, pos_y, projected_x, pos_y + height_y, true)) {
+                return 1;
+            }
+            else {
+                //Erase the player
+                do Screen.setColor(~drawBlack);
+                do erase();
+                let pos_x = pos_x + x_inc;
+
+                //Redraw the player
+                do draw();
+            }
+        }
+        return 0;
+    }
+
+    //------------------------------------------------------------------------------------------------Draw Player
+    
+    /** Draws this player in its current (x,y) location */
+    method void draw() {
+        var int h;
+        let h = pos_y;
+
+        do Screen.setColor(drawBlack);
+
+        //Draw the top of head
+        do Screen.drawRectangle(pos_x + (indent * 2), h, pos_x + width_x - (indent * 2), h + 1);
+        let h = h + 2;
+
+        //Draw the head
+        do Screen.drawRectangle(pos_x + indent, h, pos_x + width_x - indent, h + head_height);
+        let h = h + head_height + 1;
+
+        //Draw the neck
+        do Screen.drawRectangle(pos_x + (indent * 2), h, pos_x + width_x - (indent * 2), h + 1);
+        let h = h + 2;
+
+        //Draw the shoulders
+        do Screen.drawRectangle(pos_x + indent, h, pos_x + width_x - indent, h + 1);
+        let h = h + 2;
+
+        //Draw the torso
+        do Screen.drawRectangle(pos_x, h, pos_x + width_x, h + torso_height);
+        let h = h + torso_height + 1;
+
+        //Draw the hip
+        do Screen.drawRectangle(pos_x + indent, h, pos_x + width_x - indent, h + 1);
+        let h = h + 2;
+
+        //Draw the legs
+        do Screen.drawRectangle(pos_x + (indent * 2), h, pos_x + (indent * 3) + 1, h + leg_height);
+        do Screen.drawRectangle(pos_x + (indent * 5), h, pos_x + (indent * 6) + 1, h + leg_height);
+
+        //Draw the eyes
+        do Screen.setColor(~drawBlack);
+        do Screen.drawRectangle(pos_x + (indent * 3), pos_y + (indent * 2), pos_x + (indent * 3) + 1, pos_y + (indent * 2) + eye_height);
+        do Screen.drawRectangle(pos_x + (indent * 5), pos_y + (indent * 2), pos_x + (indent * 5) + 1, pos_y + (indent * 2) + eye_height);
+
+        return;
+    }
+}

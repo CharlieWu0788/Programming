@@ -1,0 +1,385 @@
+class Tetris {
+    field int gridWidth, gridHeight, dropRate, healthBarCoord;
+    field DisplayGrid dg;
+    field Enemy zeke;
+
+    constructor Tetris new() {
+        let gridWidth = 20;
+        let gridHeight = 25;
+        let dropRate = 10;
+        let dg = DisplayGrid.new(4, 4, gridWidth, gridHeight, 8);
+        //let zeke = Enemy.new(2, -87);
+        let zeke = Enemy.new(3, 4);
+        let healthBarCoord = 6784;
+        return this;
+    }
+
+    method void dispose() {
+        do dg.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    // draws hollow rectangle with rounded corners
+    method void drawBorder(int ax, int ay, int bx, int by, int inset) {
+        var int i, j;
+
+        do Screen.setColor(false);
+        do Screen.drawRectangle((ax + 1), (ay + 1), (bx - 1), (by - 1));
+        do Screen.setColor(true);
+
+        // top and bottom lines
+        let i = ax + 3;
+        while (i < (bx - 3)) {
+            do Screen.drawPixel(i, ay);
+            do Screen.drawPixel(i, by);
+            if ((i > (ax + (inset + 2))) & (i < (bx - (inset + 2)))) {
+                do Screen.drawPixel(i, (ay + inset));
+                do Screen.drawPixel(i, (by - inset));
+            }
+            let i = i + 1;
+        }
+        // left and right lines
+        let i = ay + 3;
+        while (i < (by - 3)) {
+            do Screen.drawPixel(ax, i);
+            do Screen.drawPixel(bx, i);
+            if ((i > (ay + (inset + 2))) & (i < (by - (inset + 2)))) {
+                do Screen.drawPixel((ax + inset), i);
+                do Screen.drawPixel((bx - inset), i);
+            }
+            let i = i + 1;
+        }
+
+        // outer corners
+        do Screen.drawPixel((ax + 1), (ay + 1));
+        do Screen.drawPixel((ax + 2), (ay + 1));
+        do Screen.drawPixel((ax + 1), (ay + 2));
+
+        do Screen.drawPixel((bx - 1), (ay + 1));
+        do Screen.drawPixel((bx - 2), (ay + 1));
+        do Screen.drawPixel((bx - 1), (ay + 2));
+
+        do Screen.drawPixel((ax + 1), (by - 1));
+        do Screen.drawPixel((ax + 2), (by - 1));
+        do Screen.drawPixel((ax + 1), (by - 2));
+
+        do Screen.drawPixel((bx - 1), (by - 1));
+        do Screen.drawPixel((bx - 2), (by - 1));
+        do Screen.drawPixel((bx - 1), (by - 2));
+
+        // inner corners
+        do Screen.drawPixel((ax + 1) + inset, (ay + 1) + inset);
+        do Screen.drawPixel((ax + 2) + inset, (ay + 1) + inset);
+        do Screen.drawPixel((ax + 1) + inset, (ay + 2) + inset);
+
+        do Screen.drawPixel((bx - 1) - inset, (ay + 1) + inset);
+        do Screen.drawPixel((bx - 2) - inset, (ay + 1) + inset);
+        do Screen.drawPixel((bx - 1) - inset, (ay + 2) + inset);
+
+        do Screen.drawPixel((ax + 1) + inset, (by - 1) - inset);
+        do Screen.drawPixel((ax + 2) + inset, (by - 1) - inset);
+        do Screen.drawPixel((ax + 1) + inset, (by - 2) - inset);
+
+        do Screen.drawPixel((bx - 1) - inset, (by - 1) - inset);
+        do Screen.drawPixel((bx - 2) - inset, (by - 1) - inset);
+        do Screen.drawPixel((bx - 1) - inset, (by - 2) - inset);
+
+        return;
+    }
+
+    // draws a miniature version of the next tetromino in the "NEXT" box
+    method void drawNextTetro(int nextTetroType) {
+        var int baseX, baseY, i, j, x, y, spriteCoord;
+        var Tetromino t;
+        var Array sprite;
+
+        let baseX = 275;
+        let baseY = 30;
+
+        // draws white rectangle to ensure that the inside of the "NEXT" box is empty
+        do Screen.setColor(false);
+        do Screen.drawRectangle((baseX - 6), baseY, (baseX + 30), (baseY + 24));
+        do Screen.setColor(true);
+
+        // scoots the mini tetromino to the left if the next tetromino is a line piece
+        // (otherwise, this piece would be off-center since it's wider than the others)
+        if (nextTetroType = 0) {
+            let baseX = 270;
+        }
+
+        let t = Tetromino.new(nextTetroType, 10);
+        let sprite = t.getSprite();
+
+        let i = 0;
+        while (i < t.getHeight()) {
+            let j = 0;
+            while (j < t.getWidth()) {
+                let spriteCoord = (i * t.getWidth()) + j;
+                if (sprite[spriteCoord] = 1) {
+                    let x = ((6 + 2) * j) + baseX;
+                    let y = ((6 + 2) * i) + baseY;
+                    do Screen.drawRectangle(x, y, (x + 6), (y + 6));
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    // animates Zeke (the enemy) moving onto or off of the screen
+    method void animateZeke(int nextTetroType, boolean isEntrance) {
+        var int i, animationLength;
+
+        if (isEntrance) {
+            let animationLength = 15; // length of entrance animation
+        } else {
+            let animationLength = 10; // length of exit animation
+        }
+        
+        let i = 0;
+        while (i < animationLength) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle(0, 0, 300, 255);
+            do Screen.setColor(true);
+            do Sprites.drawBackground(0);
+
+            if (isEntrance) {
+                do zeke.updateEntrance();
+            } else {
+                do zeke.updateExit();
+            }
+
+            do zeke.draw();
+            do Sprites.drawHealthBar(healthBarCoord, zeke.getHP());
+            do drawBorder(315, 8, 505, 248, 2); // move this to dg and let its dimensions be det. by dg.width and dg.height?
+            do drawBorder(262, 8, 310, 58, 2); //draw "NEXT" box (maybe move this to its own method too...)
+            do Output.moveCursor(1, 34);
+            do Output.printString("NEXT");
+            do drawNextTetro(nextTetroType);
+            do Sys.wait(70);
+            let i = i + 1;
+        }
+
+        return;
+    }
+
+    // moves tetromino to new coordinates if the move is judged legal
+    method boolean moveTetromino(Tetromino tetro, int destX, int destY) {
+        var int endX, endY;
+        var boolean moveSuccessful;
+
+        // paints old location of tetromino white
+        do dg.paintTetromino(tetro, 0);
+        
+        // only goes through with move if it is legal
+        let moveSuccessful = dg.moveIsLegal(tetro, destX, destY);
+        if (moveSuccessful) {
+            do tetro.setX(destX);
+            do tetro.setY(destY);
+        }
+
+        // paint tetromino at new location
+        do dg.paintTetromino(tetro, 1);
+        return moveSuccessful;
+    }
+
+    // rotates tetromino clockwise if possible, moving the piece if
+    // the rotation places it out of bounds
+    method void rotateAndKick(Tetromino tetro) {
+        var int i;
+        var boolean displaced;
+
+        do dg.paintTetromino(tetro, 0);
+        do tetro.rotateRight();
+
+        // exits if no displacement is necessary
+        // (that is, if the tetromino's current position is already legal)
+        if (dg.moveIsLegal(tetro, tetro.getX(), tetro.getY())) { return; }
+
+        let displaced = false;
+
+        if (dg.moveIsLegal(tetro, (tetro.getX() - 1), tetro.getY())) {
+            do tetro.setX(tetro.getX() - 1);
+            let displaced = true;
+        } else {
+            if (dg.moveIsLegal(tetro, tetro.getX(), (tetro.getY() - 1))) {
+                do tetro.setY(tetro.getY() - 1);
+                let displaced = true;
+            } else {
+                if (dg.moveIsLegal(tetro, (tetro.getX() + 1), tetro.getY())) {
+                    do tetro.setX(tetro.getX() + 1);
+                    let displaced = true;
+                }
+            }
+        }
+
+        // tests several additional displacements if the tetromino is an I piece
+        // (only this piece's sprite has enough empty space for a double displacement to be necessary)
+        if (~(displaced) & (tetro.getWidth() = 4)) {
+            if (dg.moveIsLegal(tetro, (tetro.getX() - 2), tetro.getY())) {
+                do tetro.setX(tetro.getX() - 2);
+                let displaced = true;
+            } else {
+                if (dg.moveIsLegal(tetro, tetro.getX(), (tetro.getY() - 2))) {
+                    do tetro.setY(tetro.getY() - 2);
+                    let displaced = true;
+                } else {
+                    if (dg.moveIsLegal(tetro, (tetro.getX() + 2), tetro.getY())) {
+                        do tetro.setX(tetro.getX() + 2);
+                        let displaced = true;
+                    }
+                }
+            }
+        }
+
+        if (~displaced) {
+            // neither a wall kick nor a floor kick was possible,
+            // so the rotation is cancelled out
+            do tetro.rotateLeft();
+        } else {
+            do dg.paintTetromino(tetro, 1);
+        }
+
+        return;
+    }
+
+    // draws a box in the middle of the screen a message in its center
+    method void printGameOverMessage(String message) {
+        do drawBorder(176, 112, 336, 138, 2);
+        do Output.moveCursor(11, 28);
+        do Output.printString(message);
+        return;
+    }
+
+    method void run() {
+        var char key;
+        var boolean exit, moveSuccessful, rotationAllowed, quickDropAllowed;
+        var Tetromino tetro;
+        var int dropTimer, tetroType, nextTetroType, linesCleared, rand, counter;
+
+        // initializes various helper variables
+        let exit = false;
+        let rotationAllowed = true;
+        let quickDropAllowed = true;
+        let rand = 2053;
+        let counter = 0;
+        let dropTimer = 0;
+
+        // sets first and next tetro types (unfortunately invariable)
+        let tetroType = 0;
+        let nextTetroType = 6;
+        let tetro = Tetromino.new(tetroType, gridWidth);
+        
+        // draws all the visual components
+        do Sprites.drawBackground(0);
+        do Sprites.drawHealthBar(healthBarCoord, zeke.getHP());
+        do drawBorder(315, 8, 505, 248, 2);
+        do drawBorder(262, 8, 310, 58, 2);
+        do Output.moveCursor(1, 34);
+        do Output.printString("NEXT");
+        do drawNextTetro(nextTetroType);
+
+        // animates Zeke entering from above
+        do animateZeke(nextTetroType, true);
+
+        // places first tetromino on the display grid
+        do dg.paintTetromino(tetro, 1);
+        do dg.draw();
+
+        // main game loop
+        while (~exit) {
+            // increments counter
+            if (counter > 50) {
+                let counter = 0;
+            } else {
+                let counter = counter + 1;
+            }
+
+            // sets rand to counter, thereby causing the timing of player actions to influence pseudorandom number generation
+            if (rand > 30000) {
+                let rand = counter;
+            }
+
+            let key = Keyboard.keyPressed();
+
+            if (key = 133) { do moveTetromino(tetro, tetro.getX(), (tetro.getY() + 1)); }   // down arrow
+            if (key = 130) { do moveTetromino(tetro, (tetro.getX() - 1), tetro.getY()); }   // left arrow
+            if (key = 132) { do moveTetromino(tetro, (tetro.getX() + 1), tetro.getY()); }   // right arrow
+
+            if ((key = 131) & rotationAllowed) { // up arrow
+                do rotateAndKick(tetro);
+                do moveTetromino(tetro, tetro.getX(), tetro.getY());
+                let rotationAllowed = false;
+            }
+            if (~(key = 131)) { let rotationAllowed = true; } // this prevents accidental rotation sprees
+
+            if ((key = 32) & quickDropAllowed) { // space bar
+                do moveTetromino(tetro, tetro.getX(), dg.getDropY(tetro));
+                do Sys.wait(50);
+                let dropTimer = dropRate + 1;
+                let quickDropAllowed = false;
+            }
+            if (~(key = 32)) { let quickDropAllowed = true; } // this prevents accidental quick dropping sprees
+
+            // moves tetromino down or locks it if it has struck the floor
+            if (dropTimer > dropRate) {
+                let dropTimer = 0; // resets drop timer
+
+                // moves tetromino down and uses the return value to check if the move was sucessful
+                let moveSuccessful = moveTetromino(tetro, tetro.getX(), (tetro.getY() + 1));
+
+                if (~moveSuccessful) { // the move was not successful, indicating that the piece hit the floor
+                    do dg.paintTetromino(tetro, 2); // lock piece by painting it with 2s (representing static blocks)
+
+                    // sets tetroType to nextTetroType and gets a new pseudorandom value to refill nextTetroType
+                    let tetroType = nextTetroType;
+                    let rand = (rand * 2053) + 13849;
+                    if (rand < 0) { let rand = -(rand); }
+                    let nextTetroType = rand - ((rand / 7) * 7);
+                    do drawNextTetro(nextTetroType);
+
+                    // counts filled lines and clears them
+                    let linesCleared = dg.clearFilledLines();
+
+                    // subtracts the number of cleared lines from Zeke's health
+                    do zeke.damage(linesCleared);
+                    do Sprites.drawHealthBar(healthBarCoord, zeke.getHP());
+
+                    // if Zeke is out of health, the player wins!
+                    if (zeke.getHP() = 0) {
+                        let exit = true;
+                        do animateZeke(nextTetroType, false);
+                        do printGameOverMessage("YOU WIN!");
+                    }
+
+                    // increases speed a little bit for each line cleared
+                    let dropRate = dropRate - linesCleared;
+
+                    // allows user to control new tetromino
+                    let tetro = Tetromino.new(tetroType, gridWidth);
+
+                    // ends the game if the new tetromino cannot be placed at starting position
+                    if (~dg.moveIsLegal(tetro, tetro.getX(), tetro.getY())) {
+                        do printGameOverMessage("YOU LOSE");
+                        let exit = true;
+                    } else {
+                        do dg.paintTetromino(tetro, 1);
+                    }
+                }
+            } else {
+                let dropTimer = dropTimer + 1;
+            }
+
+            if (~exit) {
+                do dg.draw();
+            }
+
+            do Sys.wait(50);
+        }
+
+        return;
+    }
+}

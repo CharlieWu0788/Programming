@@ -1,0 +1,117 @@
+// Platform.jack
+// Draws the pseudo-3D road and city skyline each frame.
+// The road converges at vanishing point (256, 50).
+// The skyline fills the sky band (y=0..49) above the horizon with
+// pixel-art buildings drawn as filled rectangles, with white windows
+// punched out using setColor(false).
+
+class Platform {
+    field int dummy;  // needed: Memory.alloc(0) is illegal in nand2tetris
+
+    constructor Platform new() {
+        let dummy = 0;
+        return this;
+    }
+
+    method void update() {
+        return;
+    }
+
+    method void draw() {
+        var int vx, vy;
+        let vx = 256;
+        let vy = 50;
+
+        do Screen.setColor(true);
+
+        // ── City skyline ──────────────────────────────────────────────────
+        // 15 buildings scaled to fill the 512px-wide sky above the horizon.
+        // All buildings terminate at y=49, sitting flush on the horizon line.
+        do Screen.drawRectangle(34,  26, 51,  49);
+        do Screen.drawRectangle(58,  21, 81,  49);
+        do Screen.drawRectangle(88,  24, 105, 49);
+        do Screen.drawRectangle(112, 17, 143, 49);
+        do Screen.drawRectangle(150, 20, 170, 49);
+        do Screen.drawRectangle(177, 13, 211, 49);
+        do Screen.drawRectangle(218, 19, 245, 49);
+        do Screen.drawRectangle(252, 12, 290, 49);   // tallest building
+        do Screen.drawRectangle(296, 18, 320, 49);
+        do Screen.drawRectangle(327, 15, 358, 49);
+        do Screen.drawRectangle(365, 23, 385, 49);
+        do Screen.drawRectangle(392, 16, 426, 49);
+        do Screen.drawRectangle(433, 22, 450, 49);
+        do Screen.drawRectangle(457, 19, 484, 49);
+        do Screen.drawRectangle(491, 25, 511, 49);
+
+        // Antenna on tallest building
+        do Screen.drawRectangle(252, 10, 254, 12);
+
+        // ── Windows (white cutouts punched into buildings) ─────────────────
+        do Screen.setColor(false);
+        do Screen.drawRectangle(119, 21, 120, 22);
+        do Screen.drawRectangle(119, 28, 120, 29);
+        do Screen.drawRectangle(119, 35, 120, 36);
+        do Screen.drawRectangle(134, 21, 135, 22);
+        do Screen.drawRectangle(134, 28, 135, 29);
+        do Screen.drawRectangle(134, 35, 135, 36);
+        do Screen.drawRectangle(185, 17, 186, 18);
+        do Screen.drawRectangle(185, 24, 186, 25);
+        do Screen.drawRectangle(185, 31, 186, 32);
+        do Screen.drawRectangle(201, 17, 202, 18);
+        do Screen.drawRectangle(201, 24, 202, 25);
+        do Screen.drawRectangle(201, 31, 202, 32);
+        do Screen.drawRectangle(261, 16, 262, 17);
+        do Screen.drawRectangle(261, 23, 262, 24);
+        do Screen.drawRectangle(261, 30, 262, 31);
+        do Screen.drawRectangle(279, 16, 280, 17);
+        do Screen.drawRectangle(279, 23, 280, 24);
+        do Screen.drawRectangle(279, 30, 280, 31);
+        do Screen.drawRectangle(334, 19, 335, 20);
+        do Screen.drawRectangle(334, 26, 335, 27);
+        do Screen.drawRectangle(334, 33, 335, 34);
+        do Screen.drawRectangle(349, 19, 350, 20);
+        do Screen.drawRectangle(349, 26, 350, 27);
+        do Screen.drawRectangle(349, 33, 350, 34);
+        do Screen.drawRectangle(400, 20, 401, 21);
+        do Screen.drawRectangle(400, 27, 401, 28);
+        do Screen.drawRectangle(400, 34, 401, 35);
+        do Screen.drawRectangle(416, 20, 417, 21);
+        do Screen.drawRectangle(416, 27, 417, 28);
+        do Screen.drawRectangle(416, 34, 417, 35);
+
+        // ── Road ──────────────────────────────────────────────────────────
+        do Screen.setColor(true);
+
+        // Horizon line
+        do Screen.drawLine(0, vy, 511, vy);
+
+        // Road bottom edge
+        do Screen.drawLine(0, 255, 511, 255);
+
+        // Left road edge: vanishing point -> (80, 255)
+        do Screen.drawLine(vx, vy, 80, 255);
+
+        // Right road edge: vanishing point -> (432, 255)
+        do Screen.drawLine(vx, vy, 432, 255);
+
+        // Left lane divider: vanishing point -> (192, 255)
+        do Screen.drawLine(vx, vy, 192, 255);
+
+        // Right lane divider: vanishing point -> (320, 255)
+        do Screen.drawLine(vx, vy, 320, 255);
+
+        // Horizon reference markers
+        do Screen.drawLine(80,  vy - 6, 80,  vy);
+        do Screen.drawLine(160, vy - 4, 160, vy);
+        do Screen.drawLine(256, vy - 2, 256, vy);
+        do Screen.drawLine(352, vy - 4, 352, vy);
+        do Screen.drawLine(432, vy - 6, 432, vy);
+
+        return;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

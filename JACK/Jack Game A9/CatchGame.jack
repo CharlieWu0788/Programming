@@ -1,0 +1,155 @@
+class CatchGame {
+    field Paddle paddle;
+    field FallingBox box;
+
+    field int score;
+    field int lives;
+    field int spawnX;
+    field int tick;
+    field int boxSpeed;
+
+    field boolean running;
+
+    constructor CatchGame new() {
+        do Screen.clearScreen();
+
+        let paddle = Paddle.new(220, 230, 70, 8);
+        let boxSpeed = 4;
+        let spawnX = 40;
+        let box = FallingBox.new(spawnX, 30, 12, boxSpeed);
+
+        let score = 0;
+        let lives = 3;
+        let tick = 0;
+        let running = true;
+
+        return this;
+    }
+
+    method void drawUI() {
+        do Output.moveCursor(0, 0);
+        do Output.printString("Catch Game   Score: ");
+        do Output.printInt(score);
+        do Output.printString("   Lives: ");
+        do Output.printInt(lives);
+        do Output.printString("   Press ESC to quit");
+
+        return;
+    }
+
+    method void drawBorder() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(0, 20, 511, 21);
+        return;
+    }
+
+    method void handleInput() {
+        var int key;
+
+        let key = Keyboard.keyPressed();
+
+        if (key = 130) {
+            do paddle.moveLeft();
+        }
+
+        if (key = 132) {
+            do paddle.moveRight();
+        }
+
+        if (key = 140) {
+            let running = false;
+        }
+
+        return;
+    }
+
+    method void updateSpawnX() {
+        let spawnX = spawnX + 37;
+
+        if (spawnX > 470) {
+            let spawnX = spawnX - 430;
+        }
+
+        if (spawnX < 10) {
+            let spawnX = 10;
+        }
+
+        return;
+    }
+
+    method void updateGame() {
+        do box.fall();
+
+        if (box.hitsPaddle(paddle.getX(), paddle.getY(), paddle.getWidth(), paddle.getHeight())) {
+            let score = score + 1;
+
+            if ((score = 3) | (score = 6) | (score = 10)) {
+                let boxSpeed = boxSpeed + 1;
+            }
+
+            do updateSpawnX();
+            do box.setSpeed(boxSpeed);
+            do box.reset(spawnX, 30);
+        }
+
+        if (box.outOfBounds()) {
+            let lives = lives - 1;
+
+            if (lives = 0) {
+                let running = false;
+            }
+
+            do updateSpawnX();
+            do box.reset(spawnX, 30);
+        }
+
+        return;
+    }
+
+    method void redraw() {
+        do Screen.clearScreen();
+        do drawUI();
+        do drawBorder();
+        do paddle.draw();
+        do box.draw();
+        return;
+    }
+
+    method void gameOverScreen() {
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 20);
+        do Output.printString("GAME OVER");
+        do Output.moveCursor(12, 14);
+        do Output.printString("Final Score: ");
+        do Output.printInt(score);
+        do Output.moveCursor(14, 8);
+        do Output.printString("Press any key to finish");
+
+        while (Keyboard.keyPressed() = 0) {
+            do Sys.wait(5);
+        }
+
+        return;
+    }
+
+    method void run() {
+        do redraw();
+
+        while (running) {
+            do handleInput();
+            do updateGame();
+            do redraw();
+            do Sys.wait(3);
+        }
+
+        do gameOverScreen();
+        return;
+    }
+
+    method void dispose() {
+        do paddle.dispose();
+        do box.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

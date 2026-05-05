@@ -1,0 +1,29 @@
+// compiled from 8_max/Main.jack
+// max(3, 11, 7) = 11, LED: 1011
+// locals: result(0) b(1) c(2)
+// two if statements, each compiled with gt, not, if-goto
+function Main.main 3
+push constant 3
+pop local 0
+push constant 11
+pop local 1
+push constant 7
+pop local 2
+push local 1
+push local 0
+gt
+not
+if-goto IF_FALSE0
+push local 1
+pop local 0
+label IF_FALSE0
+push local 2
+push local 0
+gt
+not
+if-goto IF_FALSE1
+push local 2
+pop local 0
+label IF_FALSE1
+push constant 0
+return

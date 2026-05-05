@@ -1,0 +1,290 @@
+class DisplayGrid {
+    field int baseX, baseY, width, height, blockSize, animationSpeed;
+    field Array grid, lineOffset;
+
+    constructor DisplayGrid new(int bx, int by, int w, int h, int bs) {
+        let baseX = bx;
+        let baseY = by;
+        let width = w;
+        let height = h;
+        let blockSize = bs;
+
+        //this variable determines the speed of the flashing line-clearing animation
+        let animationSpeed = 50;
+
+        let grid = Array.new(width * height);
+        do addWalls();
+
+        // this will be used to quickly remove cleared lines
+        let lineOffset = Array.new(height);
+
+        let baseX = 511 - ((width * (blockSize + 1)) + 20);
+
+        return this;
+    }
+
+    // adds a layer of impermeable blocks around the outside of display grid
+    method void addWalls() {
+        var int i, j;
+        let i = 0;
+        while (i < height) {
+            let j = 0;
+            if ((i = 0) | (i = (height - 1))) {
+                while (j < width) {
+                    let grid[(i * width) + j] = 3;
+                    let j = j + 1;
+                }
+            } else {
+                let grid[i * width] = 3;
+                let grid[(i * width) + (width - 1)] = 3;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void dispose() {
+        do grid.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void reset() {
+        var int i;
+        let i = 0;
+        while (i < (width * height)) {
+            let grid[i] = 0;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // changes the color of a specific block
+    method void paintBlock(int x, int y, int color) {
+        var int gridCoord;
+        let gridCoord = (y * width) + x;
+        
+        if (gridCoord > (width * height)) { return; }
+
+        let grid[gridCoord] = color;
+
+        // if any part of the block is being painted white, a white rectangle must be
+        // drawn manually or else the original black rectangle will persist.
+        if (color = 0) {
+            do Screen.setColor(false);
+            let x = ((blockSize + 2) * x) + baseX;
+            let y = ((blockSize + 2) * y) + baseY;
+            do Screen.drawRectangle(x, y, x + blockSize, y + blockSize);
+        }
+        if (color = - 1) {
+            do Screen.setColor(true);
+            let x = ((blockSize + 2) * x) + baseX;
+            let y = ((blockSize + 2) * y) + baseY;
+            do Screen.drawRectangle(x, y, x + blockSize, y + blockSize);
+            do Screen.setColor(false);
+            do Screen.drawRectangle((x + 1), (y + 1), (x + (blockSize - 1)), (y + (blockSize - 1)));
+        }
+        return;
+    }
+
+    // changes the color of a rectangular area of blocks
+    method void paintArea(int ax, int ay, int bx, int by, int color) {
+        var int i, j;
+        let i = ay;
+        while (i < by) {
+            let j = ax;
+            while (j < bx) {
+                do paintBlock(j, i, color);
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // uses tetromino sprite to paint tetromino on the display grid
+    // (also paints ghost tetromino to indicate where the tetromino would land if it were quick dropped)
+    method void paintTetromino(Tetromino t, int color) {
+        var int i, j, spriteCoord, currPixel, ghostDistance;
+        var Array tetroSprite;
+        let tetroSprite = t.getSprite();
+
+        let ghostDistance = getDropY(t) - t.getY();
+
+        let i = 0;
+        while (i < t.getHeight()) {
+            let j = 0;
+            while (j < t.getWidth()) {
+                let spriteCoord = (i * t.getWidth()) + j;
+                if (tetroSprite[spriteCoord] = 1) {
+                    if (ghostDistance > 0) {
+                        if (color = 1) {
+                            do paintBlock((j + t.getX()), (i + t.getY() + ghostDistance), -1);
+                        }
+                        if (color = 0) {
+                            do paintBlock((j + t.getX()), (i + t.getY() + ghostDistance), 0);
+                        }
+                    }
+                    do paintBlock((j + t.getX()), (i + t.getY()), color);
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // determines whether a move would cause problematic overlap between tetromino and static blocks
+    method boolean moveIsLegal(Tetromino t, int destX, int destY) {
+        var int i, j, spriteCoord, gridCoord, currPixel;
+        var Array tetroSprite;
+        let tetroSprite = t.getSprite();
+
+        let i = 0;
+        while (i < t.getHeight()) {
+            let j = 0;
+            while (j < t.getWidth()) {
+                let spriteCoord = (i * t.getWidth()) + j;
+                if (tetroSprite[spriteCoord] = 1) {
+                    let gridCoord = ((i + destY) * width) + (j + destX);
+                    if (grid[gridCoord] > 1) { return false; }
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+
+        return true;
+    }
+
+    // returns the lowest y coordinate that a tetromino could reach before running into something
+    // (this is used for quick drops and to determine the location of ghost tetrominoes)
+    method int getDropY(Tetromino tetro) {
+        var int dropY;
+
+        let dropY = tetro.getY();
+        while (moveIsLegal(tetro, tetro.getX(), (dropY + 1))) {
+            let dropY = dropY + 1;
+        }
+
+        return dropY;
+    }
+
+    // first detects whether any rows have been filled, then removes those rows, displacing those above
+    method int clearFilledLines() {
+        var int i, j, row, gridCoord, replacementCoord, linesCleared;
+        var boolean lineIsFull;
+
+        do resetLineOffsetArray();
+        let linesCleared = 0;
+
+        let i = height - 2; // initialized at lowest non-wall line. Cleared lines are processed from the bottom up.
+
+        while (i > 0) { // intentionally leaves out line 0 (the top wall)
+            let j = 0;
+            let lineIsFull = true;
+
+            while (j < width) {
+                let gridCoord = (i * width) + j;
+
+                // unflags this row if an empty block is detected
+                if (grid[gridCoord] < 2) {
+                    let lineIsFull = false;
+                }
+
+                let j = j + 1;
+            }
+
+            // if the line is filled, adjusts offset values of the rows around/above it
+            if (lineIsFull) {
+                let row = i + lineOffset[i];
+                while (row > 0) {
+                    let lineOffset[row] = lineOffset[row] + 1;
+                    let row = row - 1;
+                }
+                let linesCleared = linesCleared + 1;
+                do animateLineClearance(i);
+            }
+
+            let i = i - 1;
+        }
+
+        // scoots all blocks downward to fill in cleared lines
+        let i = height - 2;
+        while (i > 0) {
+            if (~(lineOffset[i] = 0)) { // skips rows with no offset
+                let j = 1;
+                while (j < (width - 1)) {
+                    let gridCoord = (i * width) + j;
+                    if ((i - lineOffset[i]) < 1) {
+                        let grid[gridCoord] = 0;
+                    } else {
+                        let replacementCoord = ((i - lineOffset[i]) * width) + j;
+                        let grid[gridCoord] = grid[replacementCoord];
+
+                        if (grid[replacementCoord] = 0) {
+                            do paintBlock(j, i, 0);
+                        }
+                    }
+                    let j = j + 1;
+                }
+            }
+            let i = i - 1;
+        }
+        return linesCleared;
+    }
+
+    // flashes a row on and off to indicate that it is being cleared
+    method void animateLineClearance(int row) {
+        do paintArea(1, row, (width - 1), (row + 1), -1);
+        do draw();
+        do Sys.wait(animationSpeed);
+        do paintArea(1, row, (width - 1), (row + 1), 0);
+        do draw();
+        do Sys.wait(animationSpeed);
+        do paintArea(1, row, (width - 1), (row + 1), -1);
+        do draw();
+        do Sys.wait(animationSpeed);
+        do paintArea(1, row, (width - 1), (row + 1), 0);
+        do draw();
+        do Sys.wait(animationSpeed);
+        return;
+    }
+
+    method void resetLineOffsetArray() {
+        var int i;
+        let i = 0;
+        while (i < height) {
+            let lineOffset[i] = 0;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void draw() {
+        var int i, j, gridCoord, x, y;
+        let i = 0;
+
+        while (i < height) {
+            let j = 0;
+            while (j < width) {
+                do Screen.setColor(true);
+                let gridCoord = (i * width) + j;
+                if ((grid[gridCoord] > 0) & ~(grid[gridCoord] = 3)) {
+                    let x = ((blockSize + 2) * j) + baseX;
+                    let y = ((blockSize + 2) * i) + baseY;
+                    do Screen.drawRectangle(x, y, x + blockSize, y + blockSize);
+                }
+                if (grid[gridCoord] = -1) {
+                    let x = ((blockSize + 2) * j) + baseX + 1;
+                    let y = ((blockSize + 2) * i) + baseY + 1;
+                    do Screen.setColor(false);
+                    do Screen.drawRectangle(x, y, (x + (blockSize - 2)), (y + (blockSize - 2)));
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+}

@@ -1,0 +1,153 @@
+class ArrowEscapeGame {
+
+    field Board board;
+    field int hearts;
+    field int cursorRow, cursorCol;
+    field boolean exit;
+
+    constructor ArrowEscapeGame new() {
+        // Board starts at pixel (50, 20), each cell is 32px
+        let board = Board.new(32, 50, 20, 1);
+        let hearts = 3;
+        let cursorRow = 0;
+        let cursorCol = 0;
+        let exit = false;
+
+        do drawHUD();
+        do board.drawCursor(cursorRow, cursorCol);
+
+        return this;
+    }
+
+    method void dispose() {
+        do board.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    
+    method void drawHUD() {
+        do Output.moveCursor(1, 28);
+        do Output.printString("ARROW ESCAPE");
+        do Output.moveCursor(3, 28);
+        do Output.printString("Hearts: ");
+        do Output.printInt(hearts);
+        do Output.moveCursor(5, 28);
+        do Output.printString("Left: ");
+        do Output.printInt(board.getArrowCount());
+        do Output.moveCursor(8, 28);
+        do Output.printString("Controls:");
+        do Output.moveCursor(9, 28);
+        do Output.printString("Arrows=move");
+        do Output.moveCursor(10, 28);
+        do Output.printString("Space=slide");
+        do Output.moveCursor(11, 28);
+        do Output.printString("Q=quit");
+        return;
+    }
+
+    method void updateHUD() {
+        do Output.moveCursor(3, 28);
+        do Output.printString("Hearts: ");
+        do Output.printInt(hearts);
+        do Output.moveCursor(5, 28);
+        do Output.printString("Left:   ");
+        do Output.moveCursor(5, 34);
+        do Output.printInt(board.getArrowCount());
+        return;
+    }
+
+    method void moveCursorUp() {
+        if (cursorRow > 0) {
+            do board.eraseCursor(cursorRow, cursorCol);
+            let cursorRow = cursorRow - 1;
+            do board.drawCursor(cursorRow, cursorCol);
+        }
+        return;
+    }
+
+    method void moveCursorDown() {
+        if (cursorRow < 5) {
+            do board.eraseCursor(cursorRow, cursorCol);
+            let cursorRow = cursorRow + 1;
+            do board.drawCursor(cursorRow, cursorCol);
+        }
+        return;
+    }
+
+    method void moveCursorLeft() {
+        if (cursorCol > 0) {
+            do board.eraseCursor(cursorRow, cursorCol);
+            let cursorCol = cursorCol - 1;
+            do board.drawCursor(cursorRow, cursorCol);
+        }
+        return;
+    }
+
+    method void moveCursorRight() {
+        if (cursorCol < 5) {
+            do board.eraseCursor(cursorRow, cursorCol);
+            let cursorCol = cursorCol + 1;
+            do board.drawCursor(cursorRow, cursorCol);
+        }
+        return;
+    }
+
+    /**
+     * Attempt to slide the arrow under the cursor.
+     * result 1 = exit → no penalty
+     * result 2 = collision → lose a heart
+     * result 0 = slid off non-exit → no penalty
+     * After sliding, redraw cursor and update HUD.
+     */
+    method void selectArrow() {
+        var int result;
+        let result = board.slide(cursorRow, cursorCol);
+
+        if (result = 2) {
+            let hearts = hearts - 1;
+            do Output.moveCursor(13, 28);
+            do Output.printString("COLLISION! -1");
+        } else {
+            do Output.moveCursor(13, 28);
+            do Output.printString("             ");
+        }
+
+        do board.drawCursor(cursorRow, cursorCol);
+        do updateHUD();
+        return;
+    }
+
+    method void run() {
+        var char key;
+
+        while (~exit) {
+            let key = Keyboard.keyPressed();
+
+            if (key = 81)  { let exit = true; }       // Q = quit
+            if (key = 131) { do moveCursorUp(); }     // up arrow
+            if (key = 133) { do moveCursorDown(); }   // down arrow
+            if (key = 130) { do moveCursorLeft(); }   // left arrow
+            if (key = 132) { do moveCursorRight(); }  // right arrow
+            if (key = 32)  { do selectArrow(); }      // space = slide
+            if (key = 128) { do selectArrow(); }      // enter = slide
+
+            // Check lose condition
+            if (hearts < 1) {
+                do Output.moveCursor(16, 18);
+                do Output.printString("GAME OVER. Press Q.");
+                let exit = true;
+            }
+
+            // Check win condition
+            if (board.getArrowCount() = 0) {
+                do Output.moveCursor(16, 18);
+                do Output.printString("BOARD CLEARED! Press Q.");
+                let exit = true;
+            }
+
+            do Sys.wait(120);  
+        }
+        return;
+    }
+}

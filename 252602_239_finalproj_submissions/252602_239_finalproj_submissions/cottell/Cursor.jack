@@ -1,0 +1,290 @@
+class Cursor {
+
+	field int SCREENWIDTH;
+	field int SCREENHEIGHT;
+
+	field int x, y;
+	field int radius, innerRadius;
+	field boolean blinking, drawing, erasing;
+	field Array mem;
+	
+	// sets up the values and creates the memory segment for the stored screen, then draws the cursor
+	constructor Cursor new(int ax, int ay, int aradius) {
+
+		let SCREENWIDTH = 511;
+		let SCREENHEIGHT = 255;
+
+		let x = ax;
+		let y = ay;
+		let radius = aradius;
+		let innerRadius = radius - 2;
+		let blinking = false;
+		let drawing = false;
+		let erasing = false;
+		let mem = Array.new(784);
+
+		do draw();
+		return this;
+	}
+
+	// draws the cursor if not blinking, and draws the inverse cursor if blinking
+	method void draw() {
+
+		if (~blinking) {
+			do drawCursor();
+		}
+		else {
+			do drawInverseCursor();
+		}
+		return;
+	}
+
+	// does the erasing
+	method void erase() {
+
+		do Screen.setColor(false);
+		do Screen.drawCircle(x, y, radius);
+		if (erasing) {
+			do saveMem();
+		}
+		return;
+	}
+
+	// flips the blinking value and draws the new cursor
+	method void blink() {
+
+		let blinking = ~blinking;
+		do draw();
+		return;
+	}
+
+	// sets drawing and if drawing is on, sets erasing to false
+	method void setDraw(boolean dr) {
+
+		let drawing = dr;
+		if (dr) {
+			let erasing = false;
+		}
+		return;
+	}
+
+	// sets erasing and if erasing is on, sets drawing to false
+	method void setErase(boolean er) {
+
+		let erasing = er;
+		if (er) {
+			let drawing = false;
+		}
+		return;
+	}
+
+	// checks the edges and increases the cursor size if there is room
+	method void incSize() {
+
+		do projectMem();
+		if ((radius < 45) & (checkEdge())) {
+			let radius = radius + 1;
+			let innerRadius = innerRadius + 1;
+		}
+		do draw();
+		return;
+	}
+
+	// projects the screen on and then decreases the cursor size
+	method void decSize() {
+
+		do projectMem();
+		if (radius > 5) {
+			let radius = radius - 1;
+			let innerRadius = innerRadius - 1;
+		}
+		do draw();
+		return;
+	}
+
+	// moves the cursor in the specified direction and takes care of erasing or drawing according to the corresponding boolean values
+	method void move(int dir) { // 1 = left, 2 = up, 3 = right, 4 = down
+
+		if (dir = 1) {
+			if ((x - radius - 2) > 0) {
+				do erase();
+				do projectMem();
+				if (drawing) {
+					do Screen.setColor(true);
+					do Screen.drawCircle(x, y, radius);
+				}
+				do saveMem();
+				let x = x - 2;
+				do draw();
+			}
+		}
+		if (dir = 2) { 
+			if ((y - radius - 2) > 0) {
+				do erase();
+				do projectMem();
+				if (drawing) {
+					do Screen.setColor(true);
+					do Screen.drawCircle(x, y, radius);
+				}
+				do saveMem();
+				let y = y - 2;
+				do draw();
+			}
+		}
+		if (dir = 3) {
+			if ((x + radius + 2) < SCREENWIDTH) {
+				do erase();
+				do projectMem();
+				if (drawing) {
+					do Screen.setColor(true);
+					do Screen.drawCircle(x, y, radius);
+				}
+				do saveMem();
+				let x = x + 2;
+				do draw();
+			}
+		}
+		if ((dir = 4)) {
+			if ((y + radius + 2) < SCREENHEIGHT) {
+				do erase();
+				do projectMem();
+				if (drawing) {
+					do Screen.setColor(true);
+					do Screen.drawCircle(x, y, radius);
+				}
+				do saveMem();
+				let y = y + 2;
+				do draw();
+			}
+		}
+		return;
+	}
+
+	// projects the state of the memory segment onto the screen, taking care to avoid extending beyond the edge of the screen
+	method void projectMem() {
+
+		var int i, j, k, l;
+		let k = (x - radius) / 16;
+		let l = y - radius;
+		let j = 0;
+
+		while ((j < 112) & (j+l < 256)) {
+			let i = 0;
+			while ((i < 7) & ~((j + l = 255) & (i + k = 32))) { 
+				do Memory.poke(16384 + (32 * (j + l)) + (i + k), mem[(32 * (j + l)) + (i + k)]);
+				let i = i + 1;
+			}
+			let j = j + 1;
+		}
+		return;
+	}
+
+	// saves the state of the screen in the memory segment taking care to avoid extending beyond the edge of the screen
+	method void saveMem() {
+
+		var int i, j, k, l;
+		let k = (x - radius) / 16;
+		let l = y - radius;
+		let j = 0;
+
+		while ((j < 112) & (j+l < 256)) {
+			let i = 0;
+			while ((i < 7) & ~((j + l = 255) & (i + k = 32))) { 
+				let mem[(32 * (j + l)) + (i + k)] = Memory.peek(16384 + (32 * (j + l)) + (i + k));
+				let i = i + 1;
+			}
+			let j = j + 1;
+		}
+		return;
+	}
+
+	// draws the see-through cursor by binary or with the stored screen and a blank cursor image
+	method void drawCursor() {
+		
+		var int i, j, k, l;
+		var int x1, y1, x2, y2;
+		let k = (x - radius) / 16;
+		let l = y - radius;
+		let j = 0;
+		let x1 = x - radius;
+		let y1 = l;
+		let x2 = Math.min(x1 + 96, SCREENWIDTH);
+		let y2 = Math.min(y1 + 111, SCREENHEIGHT);
+
+		do Screen.setColor(false);
+		do Screen.drawRectangle(x1, y1, x2, y2);
+		do Screen.setColor(true);
+		do Screen.drawCircle(x, y, radius);
+		do Screen.setColor(false);
+		do Screen.drawCircle(x, y, innerRadius);
+
+		while ((j < 112) & (j+l < 256)) {
+			let i = 0;
+			while ((i < 7) & ~((j + l = 255) & (i + k = 32))) { 
+				do Memory.poke((16384 + (32 * (j + l)) + (i + k)), mem[(32 * (j + l)) + (i + k)] | (Memory.peek(16384 + (32 * (j + l)) + (i + k))));
+				let i = i + 1;
+			}
+			let j = j + 1;
+		}
+		return;
+	}
+
+	// draws the white version of the cursor by binary and with the stored screen and a black cursor image
+	method void drawInverseCursor() {
+		
+		var int i, j, k, l;
+		var int x1, y1, x2, y2, x3, y3;
+		let k = (x - radius) / 16;
+		let l = y - radius;
+		let j = 0;
+		let x1 = k * 16;
+		let y1 = l;
+		let x2 = Math.min(x1 + 111, SCREENWIDTH);
+		let y2 = Math.min(y1 + 111, SCREENHEIGHT);
+
+		if ((x1 + 111) > SCREENWIDTH) {
+			let x3 = x1 + 110 - 511;
+			let y3 = Math.min(y2 + 1, SCREENHEIGHT);
+		}
+
+		do Screen.setColor(false);
+		do Screen.drawRectangle(x1, y1, x2, y2);
+		if ((x1 + 111) > SCREENWIDTH) {
+			do Screen.drawRectangle(0, y1 + 1, x3, y3);
+		}
+		do Screen.setColor(true);
+		do Screen.drawCircle(x, y, radius);
+		do Screen.setColor(false);
+		do Screen.drawCircle(x, y, innerRadius);
+
+		while ((j < 112) & (j+l < 256)) {
+			let i = 0;
+			while ((i < 7) & ~((j + l = 255) & (i + k = 32))) { 
+				do Memory.poke((16384 + (32 * (j + l)) + (i + k)), mem[(32 * (j + l)) + (i + k)] & ~(Memory.peek(16384 + (32 * (j + l)) + (i + k))));
+				let i = i + 1;
+			}
+			let j = j + 1;
+		}
+		return;
+	}
+
+	// returns false if any of the edges will be passed by increasing the cursor size
+	method boolean checkEdge() {
+		if ((x + radius + 1) > SCREENWIDTH) {
+			return false;
+		}
+		if ((x - radius - 1) < 0) {
+			return false;
+		}
+		if ((y + radius + 1) > SCREENHEIGHT) {
+			return false;
+		}
+		if ((y - radius - 1) < 0) {
+			return false;
+		}
+		return true;
+	}
+
+}		
+
+			

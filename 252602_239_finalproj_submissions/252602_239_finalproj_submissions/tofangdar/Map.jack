@@ -1,0 +1,130 @@
+// Map of the United States
+class Map {
+    field int mapLeft, mapTop; // The top-left corner of our campus map
+    constructor Map new(int x, int y) {
+        let mapLeft = x;
+        let mapTop = y;
+        
+        // Draw the initial map layout immediately
+        do drawMap();
+        return this;
+    }
+
+    method void drawMap() {
+        do Screen.drawLine(17, 17, 109, 29);
+        do Screen.drawLine(109, 29, 253, 36);
+        do Screen.drawLine(253, 36, 277, 41);
+        do Screen.drawLine(277, 41, 296, 41);
+        do Screen.drawLine(296, 41, 288, 53);
+        do Screen.drawLine(288, 53, 307, 54);
+        do Screen.drawLine(307, 54, 315, 46);
+        do Screen.drawLine(315, 46, 318, 49);
+        do Screen.drawLine(318, 49, 333, 47);
+        do Screen.drawLine(333, 47, 355, 47);
+        do Screen.drawLine(355, 47, 361, 54);
+        do Screen.drawLine(361, 54, 349, 54);
+        do Screen.drawLine(349, 54, 340, 59);
+        do Screen.drawLine(340, 59, 333, 69);
+        do Screen.drawLine(333, 69, 333, 84);
+        do Screen.drawLine(333, 84, 336, 93);
+        do Screen.drawLine(336, 93, 345, 98);
+        do Screen.drawLine(345, 98, 353, 97);
+        do Screen.drawLine(353, 97, 354, 84);
+        do Screen.drawLine(354, 84, 350, 75);
+        do Screen.drawLine(350, 75, 356, 67);
+        do Screen.drawLine(356, 67, 371, 65);
+        do Screen.drawLine(371, 65, 380, 71);
+        do Screen.drawLine(380, 71, 378, 80);
+        do Screen.drawLine(378, 80, 384, 80);
+        do Screen.drawLine(384, 80, 378, 97);
+        do Screen.drawLine(378, 97, 395, 98);
+        do Screen.drawLine(395, 98, 409, 90);
+        do Screen.drawLine(409, 90, 412, 81);
+        do Screen.drawLine(412, 81, 437, 77);
+        do Screen.drawLine(437, 77, 440, 62);
+        do Screen.drawLine(440, 62, 447, 55);
+        do Screen.drawLine(447, 55, 466, 51);
+        do Screen.drawLine(466, 51, 475, 48);
+        do Screen.drawLine(475, 48, 477, 26);
+        do Screen.drawLine(477, 26, 489, 27);
+        do Screen.drawLine(489, 27, 496, 27);
+        do Screen.drawLine(496, 27, 494, 43);
+        do Screen.drawLine(494, 43, 501, 48);
+        do Screen.drawLine(501, 48, 480, 73);
+        do Screen.drawLine(480, 73, 487, 94);
+        do Screen.drawLine(487, 94, 457, 105);
+        do Screen.drawLine(457, 105, 447, 125);
+        do Screen.drawLine(447, 125, 450, 158);
+        do Screen.drawLine(450, 158, 436, 176);
+        do Screen.drawLine(436, 174, 425, 189);
+        do Screen.drawLine(425, 189, 423, 201);
+        do Screen.drawLine(423, 201, 428, 213);
+        do Screen.drawLine(428, 213, 449, 246);
+        do Screen.drawLine(449, 246, 439, 251);
+        do Screen.drawLine(439, 250, 424, 249);
+        do Screen.drawLine(424, 249, 417, 238);
+        do Screen.drawLine(417, 238, 413, 225);
+        do Screen.drawLine(413, 225, 403, 211);
+        do Screen.drawLine(403, 211, 392, 205);
+        do Screen.drawLine(392, 205, 374, 211);
+        do Screen.drawLine(374, 211, 359, 210);
+        do Screen.drawLine(359, 210, 345, 205);
+        do Screen.drawLine(345, 205, 299, 210);
+        do Screen.drawLine(299, 210, 296, 223);
+        do Screen.drawLine(296, 223, 272, 222);
+        do Screen.drawLine(272, 222, 258, 225);
+        do Screen.drawLine(258, 225, 249, 234);
+        do Screen.drawLine(249, 234, 242, 246);
+        do Screen.drawLine(242, 246, 243, 251);
+        do Screen.drawLine(243, 251, 218, 239);
+        do Screen.drawLine(218, 239, 204, 221);
+        do Screen.drawLine(204, 221, 198, 206);
+        do Screen.drawLine(198, 206, 182, 197);
+        do Screen.drawLine(182, 196, 174, 207);
+        do Screen.drawLine(174, 207, 169, 210);
+        do Screen.drawLine(169, 210, 150, 190);
+        do Screen.drawLine(150, 190, 119, 186);
+        do Screen.drawLine(119, 186, 116, 194);
+        do Screen.drawLine(116, 194, 85, 191);
+        do Screen.drawLine(85, 191, 47, 168);
+        do Screen.drawLine(47, 168, 25, 164);
+        do Screen.drawLine(25, 164, 22, 146);
+        do Screen.drawLine(22, 146, 8, 131);
+        do Screen.drawLine(8, 131, 2, 63);
+        do Screen.drawLine(2, 63, 18, 16);
+        // western border
+        do Screen.drawLine(152, 188, 184, 185);
+        do Screen.drawLine(184, 185, 186, 145);
+        do Screen.drawLine(186, 145, 196, 146);
+        do Screen.drawLine(196, 146, 196, 108);
+        do Screen.drawLine(196, 108, 184, 108);
+        do Screen.drawLine(184, 108, 190, 33);
+        do Screen.drawLine(190, 33, 190, 33);
+        // midwest/south border (above border = midwest, below border = south)
+        do Screen.drawLine(199, 145, 345, 155);
+        do Screen.drawLine(345, 155, 352, 146);
+        do Screen.drawLine(352, 146, 371, 140);
+        do Screen.drawLine(371, 140, 385, 130);
+        do Screen.drawLine(385, 130, 404, 133);
+        do Screen.drawLine(404, 133, 412, 124);
+        do Screen.drawLine(412, 124, 410, 90);
+        do Screen.drawLine(410, 90, 410, 90);
+        // Northeast border (above border = midwest, below border = south)
+        do Screen.drawLine(412, 126, 445, 128);
+        do Screen.drawLine(445, 128, 445, 128);
+        // The names of each region
+        do Output.moveCursor(8, 10);  // West
+        do Output.printString("West (1)");
+        do Output.moveCursor(11, 35); // Midwest
+        do Output.printString("Midwest (2)");
+        do Output.moveCursor(17, 35); // South
+        do Output.printString("South (3)");
+        do Output.moveCursor(5, 48); // Northeast
+        do Output.printString("Northeast (4)");
+        return;
+    }
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
+}

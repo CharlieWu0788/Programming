@@ -1,0 +1,52 @@
+function Collision.intersects 0
+    push argument 0
+    push argument 2
+    add
+    push argument 4
+    lt
+    not
+    if-goto Collision_1
+    push constant 0
+    return
+    goto Collision_0
+label Collision_1
+label Collision_0
+    push argument 4
+    push argument 6
+    add
+    push argument 0
+    lt
+    not
+    if-goto Collision_3
+    push constant 0
+    return
+    goto Collision_2
+label Collision_3
+label Collision_2
+    push argument 1
+    push argument 3
+    add
+    push argument 5
+    lt
+    not
+    if-goto Collision_5
+    push constant 0
+    return
+    goto Collision_4
+label Collision_5
+label Collision_4
+    push argument 5
+    push argument 7
+    add
+    push argument 1
+    lt
+    not
+    if-goto Collision_7
+    push constant 0
+    return
+    goto Collision_6
+label Collision_7
+label Collision_6
+    push constant 1
+    neg
+    return

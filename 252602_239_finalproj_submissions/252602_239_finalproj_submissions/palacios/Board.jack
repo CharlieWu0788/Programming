@@ -1,0 +1,223 @@
+class Board {
+
+    field Array grid;
+    field int rows;
+    field int cols;
+    field int cellSize;
+    field int originX;
+    field int originY;
+    field int arrowCount;
+
+   
+    constructor Board new(int acellSize, int aoriginX, int aoriginY, int alevel) {
+        var int i;
+        let rows = 6;
+        let cols = 6;
+        let cellSize = acellSize;
+        let originX = aoriginX;
+        let originY = aoriginY;
+        let arrowCount = 0;
+
+        // Allocate and zero-fill the flat grid array
+        let grid = Array.new(36);
+        let i = 0;
+        while (i < 36) {
+            let grid[i] = 0;
+            let i = i + 1;
+        }
+
+        if (alevel = 1) {
+            // Level 1 - beginner
+            // Right arrows exit through rows 2-3 on the right side
+            // FIX: removed the col-3 up/down pair that caused forced collision
+            do setCell(0, 0, 1);   // row 0 col 0 - right (exits top, not gap row)
+            do setCell(1, 2, 1);   // row 1 col 2 - right (exits top, not gap row)
+            do setCell(2, 0, 1);   // row 2 col 0 - right (exits through gap - clean!)
+            do setCell(3, 1, 1);   // row 3 col 1 - right (exits through gap - clean!)
+            do setCell(4, 3, 3);   // row 4 col 3 - up (exits top)
+            do setCell(5, 5, 3);   // row 5 col 5 - up (exits top)
+        }
+
+        if (alevel = 2) {
+            // Level 2 - intermediate
+            // Mix of directions, no forced collisions
+            do setCell(0, 1, 4);   // down - exits bottom
+            do setCell(1, 4, 2);   // left - exits left edge
+            do setCell(2, 1, 1);   // right - exits through gap (row 2!)
+            do setCell(3, 0, 1);   // right - exits through gap (row 3!)
+            do setCell(4, 2, 3);   // up - exits top
+            do setCell(5, 4, 3);   // up - exits top
+            do setCell(0, 5, 4);   // down - exits bottom
+        }
+
+        if (alevel = 3) {
+            // Level 3 - harder, more arrows, trickier ordering needed
+            do setCell(0, 0, 4);   // down - exits bottom
+            do setCell(0, 3, 1);   // right - exits right (not gap row)
+            do setCell(1, 5, 4);   // down - exits bottom
+            do setCell(2, 2, 1);   // right - exits through gap (row 2!)
+            do setCell(3, 1, 1);   // right - exits through gap (row 3!)
+            do setCell(3, 4, 3);   // up - exits top
+            do setCell(4, 0, 1);   // right - exits right (not gap row)
+            do setCell(5, 3, 3);   // up - exits top
+        }
+
+        do drawGrid();
+        do drawAllArrows();
+
+        return this;
+    }
+
+    method void dispose() {
+        do grid.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //Convert (row, col) to flat array index. 
+    method int index(int r, int c) {
+        return (r * cols) + c;
+    }
+
+    method void setCell(int r, int c, int val) {
+        let grid[index(r, c)] = val;
+        if (val > 0) {
+            let arrowCount = arrowCount + 1;
+        }
+        return;
+    }
+
+    method int getCell(int r, int c) {
+        return grid[index(r, c)];
+    }
+
+    method int getArrowCount() { return arrowCount; }
+
+
+    method void drawGrid() {
+        var int i, x, y;
+
+        do Screen.setColor(true);
+
+        // Top border
+        do Screen.drawRectangle(
+            originX, originY,
+            originX + (cols * cellSize), originY + 2);
+        // Bottom border
+        do Screen.drawRectangle(
+            originX, originY + (rows * cellSize) - 2,
+            originX + (cols * cellSize), originY + (rows * cellSize));
+        // Left border
+        do Screen.drawRectangle(
+            originX, originY,
+            originX + 2, originY + (rows * cellSize));
+        // Right border top section (rows 0-1, above exit gap)
+        do Screen.drawRectangle(
+            originX + (cols * cellSize) - 2, originY,
+            originX + (cols * cellSize), originY + (2 * cellSize));
+        // Right border bottom section (rows 4-5, below exit gap)
+        do Screen.drawRectangle(
+            originX + (cols * cellSize) - 2, originY + (4 * cellSize),
+            originX + (cols * cellSize), originY + (rows * cellSize));
+
+        // Interior horizontal lines
+        let i = 1;
+        while (i < rows) {
+            let y = originY + (i * cellSize);
+            do Screen.drawRectangle(originX, y,
+                originX + (cols * cellSize), y + 1);
+            let i = i + 1;
+        }
+
+        // Interior vertical lines
+        let i = 1;
+        while (i < cols) {
+            let x = originX + (i * cellSize);
+            do Screen.drawRectangle(x, originY,
+                x + 1, originY + (rows * cellSize));
+            let i = i + 1;
+        }
+
+        do Output.moveCursor(3, 27);
+        do Output.printString("EXIT");
+
+        return;
+    }
+
+    method void drawAllArrows() {
+        var int r, c, dir;
+        var Arrow a;
+        let r = 0;
+        while (r < rows) {
+            let c = 0;
+            while (c < cols) {
+                let dir = getCell(r, c);
+                if (dir > 0) {
+                    let a = Arrow.new(r, c, dir, cellSize, originX, originY);
+                    do a.draw();
+                    do a.dispose();
+                }
+                let c = c + 1;
+            }
+            let r = r + 1;
+        }
+        return;
+    }
+
+    method int slide(int r, int c) {
+        var int dir, dr, dc, nr, nc;
+        var Arrow srcArrow;
+
+        let dir = getCell(r, c);
+        if (dir = 0) { return 0; }
+
+        // Set direction deltas
+        let dr = 0;
+        let dc = 0;
+        if (dir = 1) { let dc = 1; }
+        if (dir = 2) { let dc = -1; }
+        if (dir = 3) { let dr = -1; }
+        if (dir = 4) { let dr = 1; }
+
+        // Erase from screen and clear cell
+        let srcArrow = Arrow.new(r, c, dir, cellSize, originX, originY);
+        do srcArrow.erase();
+        do srcArrow.dispose();
+        let grid[index(r, c)] = 0;
+        let arrowCount = arrowCount - 1;
+
+        // Walk forward
+        let nr = r + dr;
+        let nc = c + dc;
+
+        while ((nr > -1) & (nr < rows) & (nc > -1) & (nc < cols)) {
+            if (getCell(nr, nc) > 0) {
+                return 2;
+            }
+            let nr = nr + dr;
+            let nc = nc + dc;
+        }
+
+        if ((dc = 1) & (nc = cols) & ((nr = 2) | (nr = 3))) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    method void drawCursor(int r, int c) {
+        var Arrow a;
+        let a = Arrow.new(r, c, getCell(r, c), cellSize, originX, originY);
+        do a.drawCursor();
+        do a.dispose();
+        return;
+    }
+
+    method void eraseCursor(int r, int c) {
+        var Arrow a;
+        let a = Arrow.new(r, c, getCell(r, c), cellSize, originX, originY);
+        do a.eraseCursor();
+        do a.dispose();
+        return;
+    }
+}

@@ -1,0 +1,42 @@
+// Sys: init, halt, wait, error.
+// translator looks for `function Sys.init` in the .vm and routes
+// main: through it instead of falling into Main.main.
+
+class Sys {
+    function void init() {
+        do Memory.init();
+        do Math.init();
+        do Screen.init();
+        do Output.init();
+        do Main.main();
+        do Sys.halt();
+        return;
+    }
+
+    function void halt() {
+        while (true) { }
+        return;
+    }
+
+    // rough delay. NOT milliseconds. on Hack emulator 1 tick is whatever the
+    // interpreter does; on AVR each outer iteration is maybe a dozen
+    // microseconds. Simon uses this for flash timing -- as long as the
+    // pattern is visibly slow, exact units dont matter.
+    function void wait(int duration) {
+        var int i, j;
+        let i = 0;
+        while (i < duration) {
+            let j = 0;
+            while (j < 80) {
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    function void error(int errorCode) {
+        do Sys.halt();
+        return;
+    }
+}

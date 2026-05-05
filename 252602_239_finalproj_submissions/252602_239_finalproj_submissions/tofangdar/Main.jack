@@ -1,0 +1,142 @@
+class Main {
+    function void main(){
+        var Map USMap;
+        var Region region;
+        var State state;
+        var char key;
+        var int tier;
+        var int regionId;
+        var int stateId;
+        var String input;
+
+        let tier = 1;
+        let USMap = Map.new(0, 0);
+
+        while (true){
+            let key = Keyboard.keyPressed(); 
+
+            // tier 1 - US map, press 1-4 to zoom into region
+            if (tier = 1) {
+                let key = Keyboard.keyPressed();
+                if (key = 49) { 
+                    do USMap.dispose(); 
+                    do Screen.clearScreen(); 
+                    let region = Region.new(1); 
+                    let regionId = 1; 
+                    let tier = 2;
+                    while (~(Keyboard.keyPressed() = 0)) {} // this loop basically makes sure that the program does not support HOLDING a key
+                }
+                if (key = 50) { 
+                    do USMap.dispose(); 
+                    do Screen.clearScreen(); 
+                    let region = Region.new(2); 
+                    let regionId = 2; 
+                    let tier = 2;
+                    while (~(Keyboard.keyPressed() = 0)) {} // only one single press will be registered, not a prolonged one
+                }
+                if (key = 51) { 
+                    do USMap.dispose(); 
+                    do Screen.clearScreen(); 
+                    let region = Region.new(3); 
+                    let regionId = 3; 
+                    let tier = 2;
+                    while (~(Keyboard.keyPressed() = 0)) {} // this prevents from the memory registering a BUNCH of key pressed
+                }
+                if (key = 52) { 
+                    do USMap.dispose(); 
+                    do Screen.clearScreen(); 
+                    let region = Region.new(4); 
+                    let regionId = 4; 
+                    let tier = 2;
+                    while (~(Keyboard.keyPressed() = 0)) {} // which in theory, would leave allocated memory for all of the strings
+                }
+            }
+
+            // tier 2 - region, type state abbreviation to zoom into state
+            if (tier = 2) {
+                let key = Keyboard.keyPressed();
+                // west
+                if (regionId = 1){ 
+                    if (key = 49) { do region.dispose(); do Screen.clearScreen(); let state = State.new(1); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // CA
+                    if (key = 50) { do region.dispose(); do Screen.clearScreen(); let state = State.new(2); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // OR
+                    if (key = 51) { do region.dispose(); do Screen.clearScreen(); let state = State.new(3); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // WA
+                    if (key = 52) { do region.dispose(); do Screen.clearScreen(); let state = State.new(4); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // NV
+                    if (key = 53) { do region.dispose(); do Screen.clearScreen(); let state = State.new(5); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // UT
+                    if (key = 54) { do region.dispose(); do Screen.clearScreen(); let state = State.new(6); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // MT
+                    if (key = 55) { do region.dispose(); do Screen.clearScreen(); let state = State.new(7); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // WY
+                    if (key = 56) { do region.dispose(); do Screen.clearScreen(); let state = State.new(8); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // CO
+                    if (key = 57) { do region.dispose(); do Screen.clearScreen(); let state = State.new(9); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}}  // AZ
+                    if (key = 33) { do region.dispose(); do Screen.clearScreen(); let state = State.new(10); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // NM  (!)
+                    if (key = 64) { do region.dispose(); do Screen.clearScreen(); let state = State.new(11); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // ID  (@)
+                }
+                // midwest
+                if (regionId = 2){ 
+                    if (key = 49) { do region.dispose(); do Screen.clearScreen(); let state = State.new(12); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // ND
+                    if (key = 50) { do region.dispose(); do Screen.clearScreen(); let state = State.new(13); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // SD
+                    if (key = 51) { do region.dispose(); do Screen.clearScreen(); let state = State.new(14); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // NE
+                    if (key = 52) { do region.dispose(); do Screen.clearScreen(); let state = State.new(15); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // KS
+                    if (key = 53) { do region.dispose(); do Screen.clearScreen(); let state = State.new(16); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // MO
+                    if (key = 54) { do region.dispose(); do Screen.clearScreen(); let state = State.new(17); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // IA
+                    if (key = 55) { do region.dispose(); do Screen.clearScreen(); let state = State.new(18); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // MN
+                    if (key = 56) { do region.dispose(); do Screen.clearScreen(); let state = State.new(19); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // WI
+                    if (key = 57) { do region.dispose(); do Screen.clearScreen(); let state = State.new(20); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // IL
+                    if (key = 33) { do region.dispose(); do Screen.clearScreen(); let state = State.new(21); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // IN (!)
+                    if (key = 64) { do region.dispose(); do Screen.clearScreen(); let state = State.new(22); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // OH (@)
+                    if (key = 35) { do region.dispose(); do Screen.clearScreen(); let state = State.new(23); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // MI (#)
+                }
+                // south
+                if (regionId = 3){ 
+                    if (key = 49) { do region.dispose(); do Screen.clearScreen(); let state = State.new(24); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // TX
+                    if (key = 50) { do region.dispose(); do Screen.clearScreen(); let state = State.new(25); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // OK
+                    if (key = 51) { do region.dispose(); do Screen.clearScreen(); let state = State.new(26); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // LA
+                    if (key = 52) { do region.dispose(); do Screen.clearScreen(); let state = State.new(27); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // MS
+                    if (key = 53) { do region.dispose(); do Screen.clearScreen(); let state = State.new(28); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // AL
+                    if (key = 54) { do region.dispose(); do Screen.clearScreen(); let state = State.new(29); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // GA
+                    if (key = 55) { do region.dispose(); do Screen.clearScreen(); let state = State.new(30); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // FL
+                    if (key = 56) { do region.dispose(); do Screen.clearScreen(); let state = State.new(31); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // AR
+                    if (key = 57) { do region.dispose(); do Screen.clearScreen(); let state = State.new(32); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // TN
+                    if (key = 33) { do region.dispose(); do Screen.clearScreen(); let state = State.new(33); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // SC (!)
+                    if (key = 64) { do region.dispose(); do Screen.clearScreen(); let state = State.new(34); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // NC (@)
+                    if (key = 35) { do region.dispose(); do Screen.clearScreen(); let state = State.new(35); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // KY (#)
+                    if (key = 36) { do region.dispose(); do Screen.clearScreen(); let state = State.new(36); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // VA ($)
+                    if (key = 37) { do region.dispose(); do Screen.clearScreen(); let state = State.new(37); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // WV (%)
+                    if (key = 94) { do region.dispose(); do Screen.clearScreen(); let state = State.new(38); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // MD (^)
+                    if (key = 38) { do region.dispose(); do Screen.clearScreen(); let state = State.new(39); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // DE (&)
+                }
+                // northeast
+                if (regionId = 4){ 
+                    if (key = 49) { do region.dispose(); do Screen.clearScreen(); let state = State.new(40); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // PA
+                    if (key = 50) { do region.dispose(); do Screen.clearScreen(); let state = State.new(41); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // NJ
+                    if (key = 51) { do region.dispose(); do Screen.clearScreen(); let state = State.new(42); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // NY
+                    if (key = 52) { do region.dispose(); do Screen.clearScreen(); let state = State.new(43); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // VT
+                    if (key = 53) { do region.dispose(); do Screen.clearScreen(); let state = State.new(44); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // NH
+                    if (key = 54) { do region.dispose(); do Screen.clearScreen(); let state = State.new(45); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // ME
+                    if (key = 55) { do region.dispose(); do Screen.clearScreen(); let state = State.new(46); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // MA
+                    if (key = 56) { do region.dispose(); do Screen.clearScreen(); let state = State.new(47); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // CT
+                    if (key = 57) { do region.dispose(); do Screen.clearScreen(); let state = State.new(48); let tier = 3; while (~(Keyboard.keyPressed() = 0)) {}} // RI
+                }
+            }
+
+            // shift + r = go back one tier
+            if (key = 82) {
+                if (tier = 2) { 
+                    do region.dispose(); 
+                    do Screen.clearScreen(); 
+                    let USMap = Map.new(0, 0); 
+                    let tier = 1; 
+                    while (~(Keyboard.keyPressed() = 0)) {} 
+                }
+                if (tier = 3) { 
+                    do state.dispose();  // dispose state
+                    do Screen.clearScreen(); 
+                    let region = Region.new(regionId); // create fresh region
+                    let tier = 2; 
+                    while (~(Keyboard.keyPressed() = 0)) {}
+                }
+            }
+
+            do Sys.wait(5);
+        }
+        return;
+    }
+}

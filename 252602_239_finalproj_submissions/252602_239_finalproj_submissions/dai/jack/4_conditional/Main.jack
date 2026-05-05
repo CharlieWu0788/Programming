@@ -1,0 +1,15 @@
+// program 4: if-else
+// if (7 > 3) then x=9 else x=6
+// 7 > 3 is true so x = 9
+// LED: 1001
+class Main {
+    function void main() {
+        var int x;
+        if (7 > 3) {
+            let x = 9;
+        } else {
+            let x = 6;
+        }
+        return;
+    }
+}

@@ -1,0 +1,49 @@
+// Memory: peek/poke + bump alloc.
+// peek/poke compile to push/pop that 0, which is where the AVR
+// translator inserts the MMIO redirect.
+
+class Memory {
+    static Array ram;     // aliases memory[i] since ram = 0
+    static int nextFree;  // bump pointer for alloc
+
+    function void init() {
+        let ram = 0;
+        // Hack heap base is 2048, well above statics/temps on both targets.
+        // on AVR we reserve 0x0220..0x03FF for the heap, but addresses Jack
+        // hands out are Hack-style; Jack code never dereferences an alloc'd
+        // pointer in a way that hits MMIO unless it deliberately aliases to 16384+.
+        // for Simon we dont alloc at all, so this is mostly cosmetic.
+        let nextFree = 2048;
+        return;
+    }
+
+    // trick: set an Array variable to the raw address, then index 0.
+    // compiles to `pop pointer 1; push that 0` (for peek) or similar (for poke),
+    // which is the exact spot the AVR translator intercepts for MMIO.
+    function int peek(int address) {
+        var Array a;
+        let a = address;
+        return a[0];
+    }
+
+    function void poke(int address, int value) {
+        var Array a;
+        let a = address;
+        let a[0] = value;
+        return;
+    }
+
+    // bump allocator. no free list, no deAlloc. Jack programs that lean on
+    // real alloc/free (strings, long-lived arrays) wont work yet -- P12 marks
+    // this as optional and Simon doesnt hit it.
+    function int alloc(int size) {
+        var int addr;
+        let addr = nextFree;
+        let nextFree = nextFree + size;
+        return addr;
+    }
+
+    function void deAlloc(Array o) {
+        return;
+    }
+}

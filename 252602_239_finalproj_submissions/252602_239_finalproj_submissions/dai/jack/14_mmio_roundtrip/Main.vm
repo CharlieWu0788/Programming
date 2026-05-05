@@ -1,0 +1,12 @@
+// test: write 5 to Hack addr 16384, read it back.
+// translator redirects both ops to AVR 0x0400. if MMIO wiring is right, local 0 ends up with 5 and Main.main's P9-hack return shows it on LEDs.
+// LED: 0101
+function Main.main 1
+push constant 16384
+pop pointer 1
+push constant 5
+pop that 0
+push that 0
+pop local 0
+push constant 0
+return

@@ -1,0 +1,2283 @@
+function Cursor.new 1
+    push constant 20
+    call Memory.alloc 1
+    pop pointer 0
+    push constant 0
+    pop this 2
+    push constant 0
+    pop this 3
+    push constant 0
+    pop this 7
+    push constant 32
+    call Array.new 1
+    pop this 4
+    push constant 32
+    call Array.new 1
+    pop this 5
+    push constant 32
+    call Array.new 1
+    pop this 6
+    push constant 0
+    pop local 0
+    push constant 3
+    pop this 9
+    push constant 0
+    pop this 10
+label Cursor_0
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_1
+    push local 0
+    push this 4
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 5
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 6
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_0
+label Cursor_1
+    push constant 0
+    pop this 8
+    push constant 10
+    pop this 11
+    push constant 7
+    call String.new 1
+    push constant 77
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 12
+    push constant 22
+    call String.new 1
+    push constant 51
+    call String.appendChar 2
+    push constant 49
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 112
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 46
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 83
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 13
+    push constant 6
+    call String.new 1
+    pop this 14
+    push constant 6
+    call String.new 1
+    pop this 15
+    push constant 48
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 83
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 98
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 16
+    push constant 48
+    call String.new 1
+    push constant 73
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 98
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 49
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 102
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    pop this 17
+    push constant 48
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 67
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 112
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 102
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 107
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 118
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 18
+    push constant 48
+    call String.new 1
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 75
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 112
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 44
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 19
+    push pointer 0
+    call Cursor.draw 1
+    pop temp 0
+    push pointer 0
+    return
+function Cursor.draw 3
+    push argument 0
+    pop pointer 0
+    push constant 1
+    push this 2
+    push constant 48
+    call Math.multiply 2
+    add
+    pop this 0
+    push constant 2
+    push this 3
+    push constant 48
+    call Math.multiply 2
+    add
+    pop this 1
+    push this 0
+    push constant 16
+    call Math.divide 2
+    pop local 2
+    push this 1
+    push constant 32
+    call Math.multiply 2
+    push local 2
+    add
+    pop local 0
+    push constant 16384
+    push local 0
+    add
+    pop local 1
+    push local 1
+    push constant 1023
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 32
+    add
+    push constant 1023
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 64
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 96
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 128
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 160
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 192
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 224
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 256
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 288
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 320
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1184
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1216
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1248
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1280
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1312
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1344
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1376
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1408
+    add
+    push constant 3
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1440
+    add
+    push constant 1023
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1472
+    add
+    push constant 1023
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 2
+    add
+    push constant 32752
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 34
+    add
+    push constant 32752
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 66
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 98
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 130
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 162
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 194
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 226
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 258
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 290
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 322
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1186
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1218
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1250
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1282
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1314
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1346
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1378
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1410
+    add
+    push constant 24576
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1442
+    add
+    push constant 32752
+    call Memory.poke 2
+    pop temp 0
+    push local 1
+    push constant 1474
+    add
+    push constant 32752
+    call Memory.poke 2
+    pop temp 0
+    push constant 0
+    return
+function Cursor.getScore 0
+    push argument 0
+    pop pointer 0
+    push this 10
+    return
+function Cursor.getLastKey 0
+    push argument 0
+    pop pointer 0
+    push this 8
+    return
+function Cursor.getObjectInGrid 0
+    push argument 0
+    pop pointer 0
+    push this 4
+    return
+function Cursor.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return
+function Cursor.printBasicInfo 0
+    push argument 0
+    pop pointer 0
+    push constant 18
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 12
+    call Output.printString 1
+    pop temp 0
+    push this 14
+    push this 9
+    call String.setInt 2
+    pop temp 0
+    push this 14
+    call Output.printString 1
+    pop temp 0
+    push constant 32
+    call Output.printChar 1
+    pop temp 0
+    push constant 32
+    call Output.printChar 1
+    pop temp 0
+    push constant 32
+    call Output.printChar 1
+    pop temp 0
+    push constant 18
+    push constant 20
+    call Output.moveCursor 2
+    pop temp 0
+    push this 13
+    call Output.printString 1
+    pop temp 0
+    push this 15
+    push this 10
+    call String.setInt 2
+    pop temp 0
+    push this 15
+    call Output.printString 1
+    pop temp 0
+    push constant 32
+    call Output.printChar 1
+    pop temp 0
+    push constant 32
+    call Output.printChar 1
+    pop temp 0
+    push constant 32
+    call Output.printChar 1
+    pop temp 0
+    push constant 0
+    return
+function Cursor.placeSprite 2
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push constant 32
+    eq
+    not
+    if-goto Cursor_3
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    pop local 1
+    push local 1
+    push this 4
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    eq
+    not
+    if-goto Cursor_5
+    push this 7
+    push constant 49
+    eq
+    not
+    if-goto Cursor_7
+    push this 9
+    push constant 3
+    gt
+    not
+    if-goto Cursor_9
+    push this 9
+    push constant 4
+    sub
+    pop this 9
+    push this 2
+    push this 3
+    call PlayerObjects.new 2
+    pop local 0
+    push local 0
+    push constant 1
+    call PlayerObjects.setName 2
+    pop temp 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 4
+    add
+    push local 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 5
+    add
+    push constant 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_8
+label Cursor_9
+label Cursor_8
+    goto Cursor_6
+label Cursor_7
+label Cursor_6
+    push this 7
+    push constant 50
+    eq
+    not
+    if-goto Cursor_11
+    push this 9
+    push constant 2
+    gt
+    not
+    if-goto Cursor_13
+    push this 9
+    push constant 3
+    sub
+    pop this 9
+    push this 2
+    push this 3
+    call PlayerObjects.new 2
+    pop local 0
+    push local 0
+    push constant 2
+    call PlayerObjects.setName 2
+    pop temp 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 4
+    add
+    push local 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 5
+    add
+    push constant 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_12
+label Cursor_13
+label Cursor_12
+    goto Cursor_10
+label Cursor_11
+label Cursor_10
+    push this 7
+    push constant 51
+    eq
+    not
+    if-goto Cursor_15
+    push this 9
+    push constant 9
+    gt
+    not
+    if-goto Cursor_17
+    push this 9
+    push constant 10
+    sub
+    pop this 9
+    push this 2
+    push this 3
+    call PlayerObjects.new 2
+    pop local 0
+    push local 0
+    push constant 3
+    call PlayerObjects.setName 2
+    pop temp 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 4
+    add
+    push local 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 5
+    add
+    push constant 3
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_16
+label Cursor_17
+label Cursor_16
+    goto Cursor_14
+label Cursor_15
+label Cursor_14
+    push this 7
+    push constant 52
+    eq
+    not
+    if-goto Cursor_19
+    push this 9
+    push constant 6
+    gt
+    not
+    if-goto Cursor_21
+    push this 9
+    push constant 7
+    sub
+    pop this 9
+    push this 2
+    push this 3
+    call PlayerObjects.new 2
+    pop local 0
+    push local 0
+    push constant 4
+    call PlayerObjects.setName 2
+    pop temp 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 4
+    add
+    push local 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    push this 5
+    add
+    push constant 4
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_20
+label Cursor_21
+label Cursor_20
+    goto Cursor_18
+label Cursor_19
+label Cursor_18
+    goto Cursor_4
+label Cursor_5
+label Cursor_4
+    goto Cursor_2
+label Cursor_3
+label Cursor_2
+    push constant 0
+    return
+function Cursor.drawObjects 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Cursor_22
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_23
+    push local 0
+    push this 4
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_25
+    push local 1
+    push local 0
+    push this 5
+    add
+    pop pointer 1
+    push that 0
+    call PlayerObjects.setName 2
+    pop temp 0
+    push local 1
+    call PlayerObjects.draw 1
+    pop temp 0
+    push local 1
+    call PlayerObjects.getNameID 1
+    push constant 2
+    eq
+    not
+    if-goto Cursor_27
+    push this 9
+    push local 1
+    push this 11
+    call PlayerObjects.updateCurrency 2
+    add
+    pop this 9
+    goto Cursor_26
+label Cursor_27
+label Cursor_26
+    push local 1
+    push this 11
+    call PlayerObjects.attack 2
+    pop temp 0
+    goto Cursor_24
+label Cursor_25
+label Cursor_24
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_22
+label Cursor_23
+    push constant 0
+    return
+function Cursor.deleteCurrent 2
+    push argument 0
+    pop pointer 0
+    push this 3
+    push constant 8
+    call Math.multiply 2
+    push this 2
+    add
+    pop local 0
+    push local 0
+    push this 4
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_29
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 2
+    push this 2
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 2
+    push this 3
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 2
+    push this 2
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 47
+    add
+    push constant 2
+    push this 3
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 47
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 1
+    call PlayerObjects.dispose 1
+    pop temp 0
+    push local 0
+    push this 4
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 5
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_28
+label Cursor_29
+label Cursor_28
+    push constant 0
+    return
+function Cursor.checkCollisions 3
+    push argument 0
+    pop pointer 0
+    push argument 1
+    call Enemies.getGridX 1
+    push constant 0
+    lt
+    not
+    if-goto Cursor_31
+    push constant 0
+    return
+    goto Cursor_30
+label Cursor_31
+label Cursor_30
+    push argument 1
+    call Enemies.getGridX 1
+    push constant 3
+    call Math.divide 2
+    pop local 1
+    push constant 0
+    pop local 0
+label Cursor_32
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_33
+    push local 0
+    push this 4
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_35
+    push local 2
+    call PlayerObjects.getRow 1
+    push argument 1
+    call Enemies.getRow 1
+    eq
+    push local 2
+    call PlayerObjects.getGridX 1
+    push local 1
+    eq
+    and
+    not
+    if-goto Cursor_37
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 2
+    push local 2
+    call PlayerObjects.getGridX 1
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 2
+    push local 2
+    call PlayerObjects.getRow 1
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 2
+    push local 2
+    call PlayerObjects.getGridX 1
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 47
+    add
+    push constant 2
+    push local 2
+    call PlayerObjects.getRow 1
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 47
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 0
+    push this 4
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 5
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 2
+    call PlayerObjects.getNameID 1
+    push constant 4
+    eq
+    not
+    if-goto Cursor_39
+    push argument 1
+    push constant 500
+    call Enemies.takeDamage 2
+    pop temp 0
+    push this 10
+    push constant 1
+    add
+    pop this 10
+    goto Cursor_38
+label Cursor_39
+label Cursor_38
+    push local 2
+    call PlayerObjects.dispose 1
+    pop temp 0
+    goto Cursor_36
+label Cursor_37
+label Cursor_36
+    goto Cursor_34
+label Cursor_35
+label Cursor_34
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_32
+label Cursor_33
+    push constant 0
+    return
+function Cursor.attackEnemy 4
+    push argument 0
+    pop pointer 0
+    push argument 1
+    call Enemies.getGridX 1
+    push constant 0
+    lt
+    not
+    if-goto Cursor_41
+    push constant 0
+    return
+    goto Cursor_40
+label Cursor_41
+label Cursor_40
+    push constant 0
+    pop local 0
+label Cursor_42
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_43
+    push local 0
+    push this 4
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_45
+    push local 1
+    call PlayerObjects.getRow 1
+    push argument 1
+    call Enemies.getRow 1
+    eq
+    not
+    if-goto Cursor_47
+    push argument 1
+    call Enemies.getGridX 1
+    push constant 3
+    call Math.divide 2
+    push local 1
+    call PlayerObjects.getGridX 1
+    gt
+    not
+    if-goto Cursor_49
+    push local 1
+    call PlayerObjects.fire 1
+    pop local 2
+    push local 2
+    push constant 0
+    gt
+    not
+    if-goto Cursor_51
+    push constant 0
+    pop local 3
+label Cursor_52
+    push local 3
+    push constant 32
+    lt
+    not
+    if-goto Cursor_53
+    push local 3
+    push this 6
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    eq
+    not
+    if-goto Cursor_55
+    push local 1
+    call PlayerObjects.getNameID 1
+    push constant 1
+    eq
+    not
+    if-goto Cursor_57
+    push local 3
+    push this 6
+    add
+    push local 1
+    call PlayerObjects.getGridX 1
+    push local 1
+    call PlayerObjects.getRow 1
+    push local 2
+    push constant 2
+    call Bullet.new 4
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_56
+label Cursor_57
+label Cursor_56
+    push local 1
+    call PlayerObjects.getNameID 1
+    push constant 3
+    eq
+    not
+    if-goto Cursor_59
+    push local 3
+    push this 6
+    add
+    push local 1
+    call PlayerObjects.getGridX 1
+    push local 1
+    call PlayerObjects.getRow 1
+    push local 2
+    push constant 5
+    call Bullet.new 4
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_58
+label Cursor_59
+label Cursor_58
+    push constant 32
+    pop local 3
+    goto Cursor_54
+label Cursor_55
+label Cursor_54
+    push local 3
+    push constant 1
+    add
+    pop local 3
+    goto Cursor_52
+label Cursor_53
+    goto Cursor_50
+label Cursor_51
+label Cursor_50
+    goto Cursor_48
+label Cursor_49
+label Cursor_48
+    goto Cursor_46
+label Cursor_47
+label Cursor_46
+    goto Cursor_44
+label Cursor_45
+label Cursor_44
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_42
+label Cursor_43
+    push constant 0
+    return
+function Cursor.drawBullets 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Cursor_60
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_61
+    push local 0
+    push this 6
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_63
+    push local 1
+    call Bullet.draw 1
+    pop temp 0
+    goto Cursor_62
+label Cursor_63
+label Cursor_62
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_60
+label Cursor_61
+    push constant 0
+    return
+function Cursor.moveBullets 3
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Cursor_64
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_65
+    push local 0
+    push this 6
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_67
+    push local 1
+    call Bullet.move 1
+    pop local 2
+    push local 2
+    not
+    not
+    if-goto Cursor_69
+    push local 1
+    call Bullet.dispose 1
+    pop temp 0
+    push local 0
+    push this 6
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Cursor_68
+label Cursor_69
+label Cursor_68
+    goto Cursor_66
+label Cursor_67
+label Cursor_66
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_64
+label Cursor_65
+    push constant 0
+    return
+function Cursor.checkBulletsVsEnemy 4
+    push argument 0
+    pop pointer 0
+    push argument 1
+    call Enemies.getHealth 1
+    push constant 1
+    lt
+    not
+    if-goto Cursor_71
+    push constant 0
+    return
+    goto Cursor_70
+label Cursor_71
+label Cursor_70
+    push constant 0
+    pop local 0
+label Cursor_72
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_73
+    push local 0
+    push this 6
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_75
+    push local 1
+    call Bullet.getRow 1
+    push argument 1
+    call Enemies.getRow 1
+    eq
+    not
+    if-goto Cursor_77
+    push constant 2
+    push argument 1
+    call Enemies.getGridX 1
+    push constant 16
+    call Math.multiply 2
+    add
+    pop local 2
+    push local 1
+    call Bullet.getX 1
+    pop local 3
+    push local 3
+    push local 2
+    push constant 5
+    sub
+    gt
+    push local 3
+    push local 2
+    push constant 20
+    add
+    lt
+    and
+    not
+    if-goto Cursor_79
+    push argument 1
+    push local 1
+    call Bullet.getDamage 1
+    call Enemies.takeDamage 2
+    pop temp 0
+    push local 1
+    call Bullet.erase 1
+    pop temp 0
+    push local 1
+    call Bullet.dispose 1
+    pop temp 0
+    push local 0
+    push this 6
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push argument 1
+    call Enemies.getHealth 1
+    push constant 1
+    lt
+    not
+    if-goto Cursor_81
+    push this 10
+    push constant 1
+    add
+    pop this 10
+    goto Cursor_80
+label Cursor_81
+label Cursor_80
+    goto Cursor_78
+label Cursor_79
+label Cursor_78
+    goto Cursor_76
+label Cursor_77
+label Cursor_76
+    goto Cursor_74
+label Cursor_75
+label Cursor_74
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_72
+label Cursor_73
+    push constant 0
+    return
+function Cursor.updateBullets 5
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Cursor_82
+    push local 0
+    push constant 32
+    lt
+    not
+    if-goto Cursor_83
+    push local 0
+    push this 6
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Cursor_85
+    push local 1
+    call Bullet.move 1
+    pop local 2
+    push local 2
+    not
+    if-goto Cursor_87
+    push argument 1
+    call Enemies.getHealth 1
+    push constant 0
+    gt
+    not
+    if-goto Cursor_89
+    push local 1
+    call Bullet.getRow 1
+    push argument 1
+    call Enemies.getRow 1
+    eq
+    not
+    if-goto Cursor_91
+    push constant 2
+    push argument 1
+    call Enemies.getGridX 1
+    push constant 16
+    call Math.multiply 2
+    add
+    pop local 3
+    push local 1
+    call Bullet.getX 1
+    pop local 4
+    push local 4
+    push local 3
+    push constant 5
+    sub
+    gt
+    push local 4
+    push local 3
+    push constant 20
+    add
+    lt
+    and
+    not
+    if-goto Cursor_93
+    push argument 1
+    push local 1
+    call Bullet.getDamage 1
+    call Enemies.takeDamage 2
+    pop temp 0
+    push local 1
+    call Bullet.erase 1
+    pop temp 0
+    push local 1
+    call Bullet.dispose 1
+    pop temp 0
+    push local 0
+    push this 6
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push argument 1
+    call Enemies.getHealth 1
+    push constant 1
+    lt
+    not
+    if-goto Cursor_95
+    push this 10
+    push constant 1
+    add
+    pop this 10
+    goto Cursor_94
+label Cursor_95
+label Cursor_94
+    goto Cursor_92
+label Cursor_93
+label Cursor_92
+    goto Cursor_90
+label Cursor_91
+label Cursor_90
+    goto Cursor_88
+label Cursor_89
+label Cursor_88
+    goto Cursor_86
+label Cursor_87
+    push local 1
+    call Bullet.dispose 1
+    pop temp 0
+    push local 0
+    push this 6
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+label Cursor_86
+    goto Cursor_84
+label Cursor_85
+label Cursor_84
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Cursor_82
+label Cursor_83
+    push constant 0
+    return
+function Cursor.update 3
+    push argument 0
+    pop pointer 0
+    push this 2
+    pop local 1
+    push this 3
+    pop local 2
+    call Keyboard.keyPressed 0
+    pop local 0
+    push local 0
+    push constant 97
+    eq
+    push this 8
+    push constant 97
+    eq
+    not
+    and
+    push local 0
+    push constant 130
+    eq
+    push this 8
+    push constant 130
+    eq
+    not
+    and
+    or
+    not
+    if-goto Cursor_97
+    push this 2
+    push constant 0
+    gt
+    not
+    if-goto Cursor_99
+    push this 2
+    push constant 1
+    sub
+    pop this 2
+    goto Cursor_98
+label Cursor_99
+label Cursor_98
+    goto Cursor_96
+label Cursor_97
+label Cursor_96
+    push local 0
+    push constant 100
+    eq
+    push this 8
+    push constant 100
+    eq
+    not
+    and
+    push local 0
+    push constant 132
+    eq
+    push this 8
+    push constant 132
+    eq
+    not
+    and
+    or
+    not
+    if-goto Cursor_101
+    push this 2
+    push constant 7
+    lt
+    not
+    if-goto Cursor_103
+    push this 2
+    push constant 1
+    add
+    pop this 2
+    goto Cursor_102
+label Cursor_103
+label Cursor_102
+    goto Cursor_100
+label Cursor_101
+label Cursor_100
+    push local 0
+    push constant 119
+    eq
+    push this 8
+    push constant 119
+    eq
+    not
+    and
+    push local 0
+    push constant 131
+    eq
+    push this 8
+    push constant 131
+    eq
+    not
+    and
+    or
+    not
+    if-goto Cursor_105
+    push this 3
+    push constant 0
+    gt
+    not
+    if-goto Cursor_107
+    push this 3
+    push constant 1
+    sub
+    pop this 3
+    goto Cursor_106
+label Cursor_107
+label Cursor_106
+    goto Cursor_104
+label Cursor_105
+label Cursor_104
+    push local 0
+    push constant 115
+    eq
+    push this 8
+    push constant 115
+    eq
+    not
+    and
+    push local 0
+    push constant 133
+    eq
+    push this 8
+    push constant 133
+    eq
+    not
+    and
+    or
+    not
+    if-goto Cursor_109
+    push this 3
+    push constant 3
+    lt
+    not
+    if-goto Cursor_111
+    push this 3
+    push constant 1
+    add
+    pop this 3
+    goto Cursor_110
+label Cursor_111
+label Cursor_110
+    goto Cursor_108
+label Cursor_109
+label Cursor_108
+    push pointer 0
+    call Cursor.printBasicInfo 1
+    pop temp 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 1
+    push local 1
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 2
+    push local 2
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 1
+    push local 1
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 47
+    add
+    push constant 2
+    push local 2
+    push constant 48
+    call Math.multiply 2
+    add
+    push constant 47
+    add
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 0
+    push constant 101
+    eq
+    push this 8
+    push constant 101
+    eq
+    not
+    and
+    not
+    if-goto Cursor_113
+    push pointer 0
+    call Cursor.deleteCurrent 1
+    pop temp 0
+    goto Cursor_112
+label Cursor_113
+label Cursor_112
+    push local 0
+    push constant 49
+    eq
+    not
+    if-goto Cursor_115
+    push constant 49
+    pop this 7
+    push constant 20
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 16
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 70
+    push constant 509
+    push constant 94
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 125
+    push constant 509
+    push constant 149
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 180
+    push constant 509
+    push constant 204
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 15
+    push constant 509
+    push constant 39
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Cursor_114
+label Cursor_115
+label Cursor_114
+    push local 0
+    push constant 50
+    eq
+    not
+    if-goto Cursor_117
+    push constant 50
+    pop this 7
+    push constant 20
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 17
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 15
+    push constant 509
+    push constant 39
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 125
+    push constant 509
+    push constant 149
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 180
+    push constant 509
+    push constant 204
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 70
+    push constant 509
+    push constant 94
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Cursor_116
+label Cursor_117
+label Cursor_116
+    push local 0
+    push constant 51
+    eq
+    not
+    if-goto Cursor_119
+    push constant 51
+    pop this 7
+    push constant 20
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 18
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 15
+    push constant 509
+    push constant 39
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 70
+    push constant 509
+    push constant 94
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 180
+    push constant 509
+    push constant 204
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 125
+    push constant 509
+    push constant 149
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Cursor_118
+label Cursor_119
+label Cursor_118
+    push local 0
+    push constant 52
+    eq
+    not
+    if-goto Cursor_121
+    push constant 52
+    pop this 7
+    push constant 20
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 19
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 15
+    push constant 509
+    push constant 39
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 70
+    push constant 509
+    push constant 94
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 500
+    push constant 125
+    push constant 509
+    push constant 149
+    call Screen.drawRectangle 4
+    pop temp 0
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push constant 500
+    push constant 180
+    push constant 509
+    push constant 204
+    call Screen.drawRectangle 4
+    pop temp 0
+    goto Cursor_120
+label Cursor_121
+label Cursor_120
+    push pointer 0
+    push local 0
+    call Cursor.placeSprite 2
+    pop temp 0
+    push local 0
+    pop this 8
+    push constant 0
+    return

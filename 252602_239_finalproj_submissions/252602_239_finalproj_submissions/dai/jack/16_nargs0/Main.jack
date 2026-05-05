@@ -1,0 +1,12 @@
+// program 16: nArgs=0 regression test
+// LED: 0101
+class Main {
+    function int getFive() {
+        return 5;
+    }
+    function void main() {
+        var int r;
+        let r = Main.getFive();
+        return;
+    }
+}

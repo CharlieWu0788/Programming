@@ -1,0 +1,383 @@
+class Tetromino {
+    field int x, y, width, height, rotation;
+    field Array sprite, spriteRotations;
+
+    constructor Tetromino new(int tetroType, int gridWidth) {
+        let spriteRotations = Array.new(4);
+        if (tetroType = 0) { do constructI(); }
+        if (tetroType = 1) { do constructL(); }
+        if (tetroType = 2) { do constructJ(); }
+        if (tetroType = 3) { do constructO(); }
+        if (tetroType = 4) { do constructS(); }
+        if (tetroType = 5) { do constructZ(); }
+        if (tetroType = 6) { do constructT(); }
+        let x = (gridWidth / 2) - (width / 2);
+        let y = 1;
+        let rotation = 0;
+        return this;
+    }
+
+    method void constructI() {
+        var int spriteSize;
+        var Array newSprite;
+        let width = 4;
+        let height = 4;
+        let spriteSize = width * height;
+
+        // create rotation 0 sprite
+        let newSprite = Array.new(spriteSize);
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let newSprite[6] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[0] = newSprite;
+
+        // create rotation 1 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[2] = 1;
+        let newSprite[6] = 1;
+        let newSprite[10] = 1;
+        let newSprite[14] = 1;
+        let spriteRotations[1] = newSprite;
+
+        // create rotation 2 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[8] = 1;
+        let newSprite[9] = 1;
+        let newSprite[10] = 1;
+        let newSprite[11] = 1;
+        let spriteRotations[2] = newSprite;
+
+        // create rotation 3 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[5] = 1;
+        let newSprite[9] = 1;
+        let newSprite[13] = 1;
+        let spriteRotations[3] = newSprite;
+
+        let sprite = spriteRotations[0];
+        return;
+    }
+
+    method void constructL() {
+        var int spriteSize;
+        var Array newSprite;
+        let width = 3;
+        let height = 3;
+        let spriteSize = width * height;
+
+        // create rotation 0 sprite
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[4] = 1;
+        let newSprite[7] = 1;
+        let newSprite[8] = 1;
+        let spriteRotations[0] = newSprite;
+
+        // create rotation 1 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[2] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let spriteRotations[1] = newSprite;
+
+        // create rotation 2 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[1] = 1;
+        let newSprite[4] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[2] = newSprite;
+
+        // create rotation 3 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let newSprite[6] = 1;
+        let spriteRotations[3] = newSprite;
+
+        let sprite = spriteRotations[0];
+        return;
+    }
+
+    method void constructJ() {
+        var int spriteSize;
+        var Array newSprite;
+        let width = 3;
+        let height = 3;
+        let spriteSize = width * height;
+
+        // create rotation 0 sprite
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[4] = 1;
+        let newSprite[6] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[0] = newSprite;
+
+        // create rotation 1 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let spriteRotations[1] = newSprite;
+
+        // create rotation 2 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[2] = 1;
+        let newSprite[4] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[2] = newSprite;
+
+        // create rotation 3 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let newSprite[8] = 1;
+        let spriteRotations[3] = newSprite;
+
+        let sprite = spriteRotations[0];
+        return;
+    }
+
+    method void constructO() {
+        var int spriteSize;
+        var Array newSprite;
+        let width = 2;
+        let height = 2;
+        let spriteSize = width * height;
+
+        // create rotation 0 sprite
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[1] = 1;
+        let newSprite[2] = 1;
+        let newSprite[3] = 1;
+        let spriteRotations[0] = newSprite;
+
+        // create rotation 1 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[1] = 1;
+        let newSprite[2] = 1;
+        let newSprite[3] = 1;
+        let spriteRotations[1] = newSprite;
+
+        // create rotation 2 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let spriteRotations[2] = newSprite;
+        let newSprite[0] = 1;
+        let newSprite[1] = 1;
+        let newSprite[2] = 1;
+        let newSprite[3] = 1;
+
+        // create rotation 3 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let spriteRotations[3] = newSprite;
+        let newSprite[0] = 1;
+        let newSprite[1] = 1;
+        let newSprite[2] = 1;
+        let newSprite[3] = 1;
+
+        let sprite = spriteRotations[0];
+        return;
+    }
+
+    method void constructS() {
+        var int spriteSize;
+        var Array newSprite;
+        let width = 3;
+        let height = 3;
+        let spriteSize = width * height;
+
+        // create rotation 0 sprite
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[2] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let spriteRotations[0] = newSprite;
+
+        // create rotation 1 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[1] = newSprite;
+
+        // create rotation 2 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[2] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let spriteRotations[2] = newSprite;
+
+        // create rotation 3 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[3] = newSprite;
+
+        let sprite = spriteRotations[0];
+        return;
+    }
+
+    method void constructZ() {
+        var int spriteSize;
+        var Array newSprite;
+        let width = 3;
+        let height = 3;
+        let spriteSize = width * height;
+
+        // create rotation 0 sprite
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[1] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let spriteRotations[0] = newSprite;
+
+        // create rotation 1 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[2] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[1] = newSprite;
+
+        // create rotation 2 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[0] = 1;
+        let newSprite[1] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let spriteRotations[2] = newSprite;
+
+        // create rotation 3 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[2] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[3] = newSprite;
+
+        let sprite = spriteRotations[0];
+        return;
+    }
+
+    method void constructT() {
+        var int spriteSize;
+        var Array newSprite;
+        let width = 3;
+        let height = 3;
+        let spriteSize = width * height;
+
+        // create rotation 0 sprite
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let spriteRotations[0] = newSprite;
+
+        // create rotation 1 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[1] = newSprite;
+
+        // create rotation 2 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[5] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[2] = newSprite;
+
+        // create rotation 3 sprite
+        do newSprite.dispose();
+        let newSprite = Array.new(spriteSize);
+        let newSprite[1] = 1;
+        let newSprite[3] = 1;
+        let newSprite[4] = 1;
+        let newSprite[7] = 1;
+        let spriteRotations[3] = newSprite;
+
+        let sprite = spriteRotations[0];
+        return;
+    }
+
+    method void dispose() {
+        do sprite.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method int getWidth() { return width; }
+    method int getHeight() { return height; }
+    method Array getSprite() { return sprite; }
+
+    method void setX(int newX) {
+        let x = newX;
+        return;
+        }
+
+    method void setY(int newY) {
+        let y = newY;
+        return;
+        }
+
+    method void rotateRight() {
+        if (rotation = 3) {
+            let rotation = 0;
+        } else {
+            let rotation = rotation + 1;
+        }
+        let sprite = spriteRotations[rotation];
+        return;
+    }
+
+    method void rotateLeft() {
+        if (rotation = 0) {
+            let rotation = 3;
+        } else {
+            let rotation = rotation - 1;
+        }
+        let sprite = spriteRotations[rotation];
+        return;
+    }
+}

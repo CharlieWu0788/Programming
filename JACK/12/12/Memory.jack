@@ -1,0 +1,38 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+/**
+ * This library provides two services: direct access to the computer's main
+ * memory (RAM), and allocation and recycling of memory blocks. The Hack RAM
+ * consists of 32,768 words, each holding a 16-bit binary number.
+ */ 
+class Memory
+{
+    static Array heap;
+
+    function void init()
+    {
+        return;
+    }
+
+    function int peek(int address)
+    {
+        return Memory[address];
+    }
+
+    function void poke(int address, int value)
+    {
+        let Memory[address] = value;
+        return;
+    }
+
+    function int alloc(int size)
+    {
+        return 0;
+    }
+
+    function void deAlloc(Array o)
+    {
+        return;
+    }
+}

@@ -1,0 +1,17 @@
+// program 13: recursive sum, first Stage 1 demo
+// exercises real VM call/return (P9 only ran Main.main)
+// sumTo(3) = 3 + 2 + 1 + 0 = 6
+// LED: 0110
+class Main {
+    function int sumTo(int n) {
+        if (n < 1) {
+            return 0;
+        }
+        return n + Main.sumTo(n - 1);
+    }
+    function void main() {
+        var int r;
+        let r = Main.sumTo(3);
+        return;
+    }
+}

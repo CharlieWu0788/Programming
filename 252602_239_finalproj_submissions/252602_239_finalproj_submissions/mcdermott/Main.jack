@@ -1,0 +1,16 @@
+// this is the main entry point, it just starts the game
+// jack needs a Main class with a main function to know where to begin
+
+class Main {
+    function void main() {
+        var LiarsDice game;
+
+        // make a new game object and run it
+        let game = LiarsDice.new();
+        do game.run();
+
+        // clean up memory when done
+        do game.dispose();
+        return;
+    }
+}

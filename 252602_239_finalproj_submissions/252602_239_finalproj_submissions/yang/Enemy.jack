@@ -1,0 +1,549 @@
+class Enemy {
+    field int x; // x position
+    field int y; // y position
+    field int width; // hit width
+    field int height; // hit height
+    field int targetY; // stop height
+    field int shootTimer; // shoot cooldown
+    field int hp; // enemy hp
+    field int moveTimer; // turn timer
+    field int moveDir; // move direction
+    field int moveDelay; // boss speed
+    field int moveSeed; // movement seed
+    field int moveToggle; // smooth toggle
+    field int bossLevel; // boss number
+    field boolean active; // alive flag
+    field boolean boss; // boss flag
+
+    constructor Enemy new(int startX, int startY) {
+        // sets the start position(top left) and the enemy size.
+        let x = startX;
+        let y = startY;
+        let width = 21; // calculated from the new draw image
+        let height = 12; // calculated from the new draw image
+        let targetY = 80; // the height that enemy stop moving downward
+        let shootTimer = 0; // time until the next bullet
+        let hp = 1;
+        let moveTimer = 1;
+        let moveDir = 0;
+        let moveDelay = 0;
+        let moveSeed = 7;
+        let moveToggle = 0;
+        let bossLevel = 0;
+        let active = false; // alive or dead
+        let boss = false;
+
+        return this;
+    }
+
+    method void reset(int startX, int startY) {
+        // reset normal enemy
+        // reuses old enemy object with a new position to save memory.
+        let x = startX;
+        let y = startY;
+        let width = 21;
+        let height = 12;
+        let targetY = 80;
+        let shootTimer = 0;
+        let hp = 1;
+        let moveTimer = 1;
+        let moveDir = 0;
+        let moveDelay = 0;
+        let moveSeed = startX + 7;
+        let moveToggle = 0;
+        let bossLevel = 0;
+        let active = true;
+        let boss = false;
+        return;
+    }
+
+    method void resetBoss(int startX, int startY, int bossHp, int level) {
+        // reset boss enemy
+        // reuses old enemy object as a boss enemy.
+        let x = startX;
+        let y = startY;
+        let width = 96;
+        let height = 58;
+        let targetY = 30;
+        let shootTimer = 15;
+        let hp = bossHp;
+        let moveTimer = 0;
+        let moveDir = 0;
+        let moveDelay = 0;
+        let moveSeed = startX + Math.multiply(level + 1, 19);
+        let moveToggle = 0;
+        let bossLevel = level;
+        let active = true;
+        let boss = true;
+        return;
+    }
+
+    method void update() {
+        // update enemy
+        if (boss) {
+            do updateBoss();
+            return;
+        }
+
+        // let the enemy move down until it reaches the shooting height.
+        if (y < targetY) {
+            let y = y + 1;
+            let moveTimer = moveTimer - 1;
+            if (moveTimer = 0) {
+                if (y < targetY) {
+                    let y = y + 1;
+                }
+                let moveTimer = 2;
+            }
+        }
+
+        // counts down to the next shot after reaching the fixed height.
+        if ((y = targetY) & (shootTimer > 0)) {
+            let shootTimer = shootTimer - 1;
+        }
+        return;
+    }
+
+    method void updateBoss() {
+        // update boss
+        if (y < targetY) {
+            let y = y + 1;
+        }
+        else {
+            if (moveTimer = 0) {
+                do chooseBossDirection();
+                let moveTimer = 12;
+            }
+
+            if (moveDelay > 0) {
+                let moveDelay = moveDelay - 1;
+            }
+            else {
+                if (moveDir = 0) {
+                    if (y > 8) {
+                        let y = y - 1;
+                    }
+                }
+                if (moveDir = 1) {
+                    if (y < 100) {
+                        let y = y + 1;
+                    }
+                }
+                if (moveDir = 2) {
+                    if (x > 16) {
+                        let x = x - 4;
+                    }
+                }
+                if (moveDir = 3) {
+                    if (x < 408) {
+                        let x = x + 4;
+                    }
+                }
+                if ((moveDir = 2) | (moveDir = 3)) {
+                    let moveDelay = getBossHorizontalDelay();
+                }
+                else {
+                    let moveDelay = getBossMoveDelay();
+                }
+            }
+
+            let moveTimer = moveTimer - 1;
+        }
+
+        if ((y > 0) & (shootTimer > 0)) {
+            let shootTimer = shootTimer - 1;
+        }
+        return;
+    }
+
+    method void chooseBossDirection() {
+        // random boss path
+        if (bossLevel = 0) {
+            let moveSeed = moveSeed + x + y + shootTimer + 11;
+        }
+        if (bossLevel = 1) {
+            let moveSeed = moveSeed + Math.multiply(x, 2) + y + shootTimer + 23;
+        }
+        if (bossLevel > 1) {
+            let moveSeed = moveSeed + x + Math.multiply(y, 2) + shootTimer + Math.multiply(bossLevel, 13);
+        }
+        while (moveSeed > 39) {
+            let moveSeed = moveSeed - 40;
+        }
+        let moveDir = Math.divide(moveSeed, 10);
+        return;
+    }
+
+    method int getBossMoveDelay() {
+        // boss speed delay
+        var int delay;
+
+        let delay = 3 - Math.divide(bossLevel, 2);
+        if (bossLevel = 1) {
+            let delay = 2;
+        }
+        if (delay < 1) {
+            return 1;
+        }
+        return delay;
+    }
+
+    method int getBossHorizontalDelay() {
+        // smooth x delay
+        var int delay;
+
+        let delay = getBossMoveDelay();
+        if (delay = 3) {
+            return 1;
+        }
+        if (delay = 2) {
+            if (moveToggle = 0) {
+                let moveToggle = 1;
+                return 1;
+            }
+            let moveToggle = 0;
+            return 0;
+        }
+        return 0;
+    }
+
+    method void deactivate() {
+        // deactivate enemy
+        // enemy is dead after being hit.
+        let active = false;
+        return;
+    }
+
+    method boolean isActive() {
+        return active;
+    }
+
+    method boolean canShoot() {
+        // ready to shoot
+        // whether the enemy is ready to fire.
+        if (~boss) {
+            if (~(y = targetY)) {
+                return false;
+            }
+        }
+        if ((y > 0) & (shootTimer = 0)) {
+            return true;
+        }
+        return false;
+    }
+
+    method void resetShootTimer(int smallInterval) {
+        // reset cooldown
+        let shootTimer = smallInterval;
+        return;
+    }
+
+    method boolean takeHit() {
+        // lose hp
+        let hp = hp - 1;
+        if (hp < 1) {
+            let active = false;
+            return true;
+        }
+        return false;
+    }
+
+    method boolean isBoss() {
+        return boss;
+    }
+
+    method int getHp() {
+        return hp;
+    }
+
+    method void draw() {
+        // draw enemy
+        var int location;
+        var int memAddress;
+
+        // sets the enemy position into a screen memory location.
+        let location = Math.multiply(y, 32) + Math.divide(x, 16);
+
+        if (boss) {
+            do drawBoss(location);
+            return;
+        }
+
+        let memAddress = 16384 + location;
+
+        // draws the enemy bitmap row by row in screen memory.
+        do Memory.poke(memAddress, 3584);
+        do Memory.poke(memAddress + 32, 32704);
+        do Memory.poke(memAddress + 64, -1);
+        do Memory.poke(memAddress + 96, -16);
+        do Memory.poke(memAddress + 128, 25792);
+        do Memory.poke(memAddress + 160, 25792);
+        do Memory.poke(memAddress + 192, 17472);
+        do Memory.poke(memAddress + 224, 17472);
+        do Memory.poke(memAddress + 256, 17472);
+        do Memory.poke(memAddress + 288, 1024);
+        do Memory.poke(memAddress + 320, 1024);
+        do Memory.poke(memAddress + 352, 1024);
+
+        // draws the extra right-side bits in the rows that use the next word.
+        do Memory.poke(memAddress + 65, 31);
+        do Memory.poke(memAddress + 97, 1);
+        return;
+    }
+
+    method void drawBoss(int location) {
+        // draw boss bitmap
+        var int memAddress;
+        let memAddress = 16384 + location;
+
+        do Memory.poke(memAddress + 194, -256);
+        do Memory.poke(memAddress + 195, 63);
+        do Memory.poke(memAddress + 226, -256);
+        do Memory.poke(memAddress + 227, 63);
+        do Memory.poke(memAddress + 258, -4);
+        do Memory.poke(memAddress + 259, 4095);
+        do Memory.poke(memAddress + 290, -4);
+        do Memory.poke(memAddress + 291, 4095);
+        do Memory.poke(memAddress + 321, -256);
+        do Memory.poke(memAddress + 322, -1);
+        do Memory.poke(memAddress + 323, -1);
+        do Memory.poke(memAddress + 324, 63);
+        do Memory.poke(memAddress + 353, -256);
+        do Memory.poke(memAddress + 354, -1);
+        do Memory.poke(memAddress + 355, -1);
+        do Memory.poke(memAddress + 356, 63);
+        do Memory.poke(memAddress + 384, -16384);
+        do Memory.poke(memAddress + 385, -1);
+        do Memory.poke(memAddress + 386, -1);
+        do Memory.poke(memAddress + 387, -1);
+        do Memory.poke(memAddress + 388, -1);
+        do Memory.poke(memAddress + 416, -16384);
+        do Memory.poke(memAddress + 417, -1);
+        do Memory.poke(memAddress + 418, -1);
+        do Memory.poke(memAddress + 419, -1);
+        do Memory.poke(memAddress + 420, -1);
+        do Memory.poke(memAddress + 448, -1024);
+        do Memory.poke(memAddress + 449, -1);
+        do Memory.poke(memAddress + 450, -1);
+        do Memory.poke(memAddress + 451, -1);
+        do Memory.poke(memAddress + 452, -1);
+        do Memory.poke(memAddress + 453, 15);
+        do Memory.poke(memAddress + 480, -1024);
+        do Memory.poke(memAddress + 481, -1);
+        do Memory.poke(memAddress + 482, -1);
+        do Memory.poke(memAddress + 483, -1);
+        do Memory.poke(memAddress + 484, -1);
+        do Memory.poke(memAddress + 485, 15);
+        do Memory.poke(memAddress + 512, -64);
+        do Memory.poke(memAddress + 513, -1);
+        do Memory.poke(memAddress + 514, -1);
+        do Memory.poke(memAddress + 515, -1);
+        do Memory.poke(memAddress + 516, -1);
+        do Memory.poke(memAddress + 517, 255);
+        do Memory.poke(memAddress + 544, -64);
+        do Memory.poke(memAddress + 545, -1);
+        do Memory.poke(memAddress + 546, -1);
+        do Memory.poke(memAddress + 547, -1);
+        do Memory.poke(memAddress + 548, -1);
+        do Memory.poke(memAddress + 549, 255);
+        do Memory.poke(memAddress + 576, -4);
+        do Memory.poke(memAddress + 577, -1);
+        do Memory.poke(memAddress + 578, 255);
+        do Memory.poke(memAddress + 579, -64);
+        do Memory.poke(memAddress + 580, -1);
+        do Memory.poke(memAddress + 581, 4095);
+        do Memory.poke(memAddress + 608, -4);
+        do Memory.poke(memAddress + 609, -1);
+        do Memory.poke(memAddress + 610, 255);
+        do Memory.poke(memAddress + 611, -64);
+        do Memory.poke(memAddress + 612, -1);
+        do Memory.poke(memAddress + 613, 4095);
+        do Memory.poke(memAddress + 640, -256);
+        do Memory.poke(memAddress + 641, -4096);
+        do Memory.poke(memAddress + 642, 3);
+        do Memory.poke(memAddress + 643, -4096);
+        do Memory.poke(memAddress + 644, -16381);
+        do Memory.poke(memAddress + 645, 63);
+        do Memory.poke(memAddress + 672, -256);
+        do Memory.poke(memAddress + 673, -4096);
+        do Memory.poke(memAddress + 674, 3);
+        do Memory.poke(memAddress + 675, -4096);
+        do Memory.poke(memAddress + 676, -16381);
+        do Memory.poke(memAddress + 677, 63);
+        do Memory.poke(memAddress + 704, -1024);
+        do Memory.poke(memAddress + 705, -1021);
+        do Memory.poke(memAddress + 706, 15);
+        do Memory.poke(memAddress + 707, -1024);
+        do Memory.poke(memAddress + 708, -4081);
+        do Memory.poke(memAddress + 709, 15);
+        do Memory.poke(memAddress + 736, -1024);
+        do Memory.poke(memAddress + 737, -1021);
+        do Memory.poke(memAddress + 738, 15);
+        do Memory.poke(memAddress + 739, -1024);
+        do Memory.poke(memAddress + 740, -4081);
+        do Memory.poke(memAddress + 741, 15);
+        do Memory.poke(memAddress + 768, -1024);
+        do Memory.poke(memAddress + 769, -241);
+        do Memory.poke(memAddress + 770, 255);
+        do Memory.poke(memAddress + 771, -64);
+        do Memory.poke(memAddress + 772, -961);
+        do Memory.poke(memAddress + 773, 15);
+        do Memory.poke(memAddress + 800, -1024);
+        do Memory.poke(memAddress + 801, -241);
+        do Memory.poke(memAddress + 802, 255);
+        do Memory.poke(memAddress + 803, -64);
+        do Memory.poke(memAddress + 804, -961);
+        do Memory.poke(memAddress + 805, 15);
+        do Memory.poke(memAddress + 832, -1024);
+        do Memory.poke(memAddress + 833, -1);
+        do Memory.poke(memAddress + 834, 4095);
+        do Memory.poke(memAddress + 835, -4);
+        do Memory.poke(memAddress + 836, -1);
+        do Memory.poke(memAddress + 837, 15);
+        do Memory.poke(memAddress + 864, -1024);
+        do Memory.poke(memAddress + 865, -1);
+        do Memory.poke(memAddress + 866, 4095);
+        do Memory.poke(memAddress + 867, -4);
+        do Memory.poke(memAddress + 868, -1);
+        do Memory.poke(memAddress + 869, 15);
+        do Memory.poke(memAddress + 896, -1024);
+        do Memory.poke(memAddress + 897, -1);
+        do Memory.poke(memAddress + 898, 16383);
+        do Memory.poke(memAddress + 899, -1);
+        do Memory.poke(memAddress + 900, -1);
+        do Memory.poke(memAddress + 901, 15);
+        do Memory.poke(memAddress + 928, -1024);
+        do Memory.poke(memAddress + 929, -1);
+        do Memory.poke(memAddress + 930, 16383);
+        do Memory.poke(memAddress + 931, -1);
+        do Memory.poke(memAddress + 932, -1);
+        do Memory.poke(memAddress + 933, 15);
+        do Memory.poke(memAddress + 960, -1024);
+        do Memory.poke(memAddress + 961, -1);
+        do Memory.poke(memAddress + 962, 16383);
+        do Memory.poke(memAddress + 963, -1);
+        do Memory.poke(memAddress + 964, -1);
+        do Memory.poke(memAddress + 965, 15);
+        do Memory.poke(memAddress + 992, -1024);
+        do Memory.poke(memAddress + 993, -1);
+        do Memory.poke(memAddress + 994, 16383);
+        do Memory.poke(memAddress + 995, -1);
+        do Memory.poke(memAddress + 996, -1);
+        do Memory.poke(memAddress + 997, 15);
+        do Memory.poke(memAddress + 1024, -1024);
+        do Memory.poke(memAddress + 1025, -4);
+        do Memory.poke(memAddress + 1026, -1);
+        do Memory.poke(memAddress + 1027, -1);
+        do Memory.poke(memAddress + 1028, -12289);
+        do Memory.poke(memAddress + 1029, 15);
+        do Memory.poke(memAddress + 1056, -1024);
+        do Memory.poke(memAddress + 1057, -4);
+        do Memory.poke(memAddress + 1058, -1);
+        do Memory.poke(memAddress + 1059, -1);
+        do Memory.poke(memAddress + 1060, -12289);
+        do Memory.poke(memAddress + 1061, 15);
+        do Memory.poke(memAddress + 1088, -1024);
+        do Memory.poke(memAddress + 1089, -1024);
+        do Memory.poke(memAddress + 1090, -1);
+        do Memory.poke(memAddress + 1091, -1);
+        do Memory.poke(memAddress + 1092, -16369);
+        do Memory.poke(memAddress + 1093, 15);
+        do Memory.poke(memAddress + 1120, -1024);
+        do Memory.poke(memAddress + 1121, -1024);
+        do Memory.poke(memAddress + 1122, -1);
+        do Memory.poke(memAddress + 1123, -1);
+        do Memory.poke(memAddress + 1124, -16369);
+        do Memory.poke(memAddress + 1125, 15);
+        do Memory.poke(memAddress + 1152, -1024);
+        do Memory.poke(memAddress + 1154, -16);
+        do Memory.poke(memAddress + 1155, 1023);
+        do Memory.poke(memAddress + 1156, -16384);
+        do Memory.poke(memAddress + 1157, 15);
+        do Memory.poke(memAddress + 1184, -1024);
+        do Memory.poke(memAddress + 1186, -16);
+        do Memory.poke(memAddress + 1187, 1023);
+        do Memory.poke(memAddress + 1188, -16384);
+        do Memory.poke(memAddress + 1189, 15);
+        do Memory.poke(memAddress + 1216, -1024);
+        do Memory.poke(memAddress + 1218, -256);
+        do Memory.poke(memAddress + 1219, 63);
+        do Memory.poke(memAddress + 1220, -16384);
+        do Memory.poke(memAddress + 1221, 15);
+        do Memory.poke(memAddress + 1248, -1024);
+        do Memory.poke(memAddress + 1250, -256);
+        do Memory.poke(memAddress + 1251, 63);
+        do Memory.poke(memAddress + 1252, -16384);
+        do Memory.poke(memAddress + 1253, 15);
+        do Memory.poke(memAddress + 1280, -1024);
+        do Memory.poke(memAddress + 1282, -1024);
+        do Memory.poke(memAddress + 1283, 15);
+        do Memory.poke(memAddress + 1284, -16384);
+        do Memory.poke(memAddress + 1285, 15);
+        do Memory.poke(memAddress + 1312, -1024);
+        do Memory.poke(memAddress + 1314, -1024);
+        do Memory.poke(memAddress + 1315, 15);
+        do Memory.poke(memAddress + 1316, -16384);
+        do Memory.poke(memAddress + 1317, 15);
+        do Memory.poke(memAddress + 1344, 12288);
+        do Memory.poke(memAddress + 1346, -4096);
+        do Memory.poke(memAddress + 1347, 3);
+        do Memory.poke(memAddress + 1349, 3);
+        do Memory.poke(memAddress + 1376, 12288);
+        do Memory.poke(memAddress + 1378, -4096);
+        do Memory.poke(memAddress + 1379, 3);
+        do Memory.poke(memAddress + 1381, 3);
+        do Memory.poke(memAddress + 1408, 12288);
+        do Memory.poke(memAddress + 1410, -4096);
+        do Memory.poke(memAddress + 1411, 3);
+        do Memory.poke(memAddress + 1413, 3);
+        do Memory.poke(memAddress + 1440, 12288);
+        do Memory.poke(memAddress + 1442, -4096);
+        do Memory.poke(memAddress + 1443, 3);
+        do Memory.poke(memAddress + 1445, 3);
+        do Memory.poke(memAddress + 1472, 12288);
+        do Memory.poke(memAddress + 1474, -4096);
+        do Memory.poke(memAddress + 1475, 3);
+        do Memory.poke(memAddress + 1477, 3);
+        do Memory.poke(memAddress + 1504, 12288);
+        do Memory.poke(memAddress + 1506, -4096);
+        do Memory.poke(memAddress + 1507, 3);
+        do Memory.poke(memAddress + 1509, 3);
+        do Memory.poke(memAddress + 1538, -16384);
+        do Memory.poke(memAddress + 1570, -16384);
+        do Memory.poke(memAddress + 1602, -16384);
+        do Memory.poke(memAddress + 1634, -16384);
+        do Memory.poke(memAddress + 1666, -16384);
+        do Memory.poke(memAddress + 1698, -16384);
+        do Memory.poke(memAddress + 1730, -16384);
+        do Memory.poke(memAddress + 1762, -16384);
+        do Memory.poke(memAddress + 1794, -16384);
+        do Memory.poke(memAddress + 1826, -16384);
+        return;
+    }
+    method int getX() {
+        return x;
+    }
+
+    method int getY() {
+        return y;
+    }
+
+    method int getWidth() {
+        return width;
+    }
+
+    method int getHeight() {
+        return height;
+    }
+
+    method int getBulletX() {
+        // gives the bullet start x at the center of the new enemy image
+        return x + 9;
+    }
+
+    method int getBulletY() {
+        // gives the bullet start y just under the new enemy image.
+        return y + height;
+    }
+
+}

@@ -1,0 +1,24 @@
+// hand-compiled from 13_recursive_sum/Main.jack
+// Main.main calls Main.sumTo(3), expected local 0 = 6
+// LED: 0110
+function Main.main 1
+push constant 3
+call Main.sumTo 1
+pop local 0
+push constant 0
+return
+function Main.sumTo 0
+push argument 0
+push constant 1
+lt
+if-goto SUMTO_BASE
+push argument 0
+push argument 0
+push constant 1
+sub
+call Main.sumTo 1
+add
+return
+label SUMTO_BASE
+push constant 0
+return

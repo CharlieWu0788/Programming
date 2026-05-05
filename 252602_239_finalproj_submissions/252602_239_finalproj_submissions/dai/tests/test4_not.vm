@@ -1,0 +1,8 @@
+// test 4: bitwise NOT
+// not 12 = 0xFFF3
+// 12 = 0000000000001100
+// ~12 = 1111111111110011
+// low 4 bits = 0011 = 3
+// LED: 0011
+push constant 12
+not

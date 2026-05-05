@@ -1,0 +1,1024 @@
+function DisplayGrid.new 0
+push constant 8
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push argument 3
+pop this 3
+push argument 4
+pop this 4
+push constant 50
+pop this 5
+push this 2
+push this 3
+call Math.multiply 2
+call Array.new 1
+pop this 6
+push pointer 0
+call DisplayGrid.addWalls 1
+pop temp 0
+push this 3
+call Array.new 1
+pop this 7
+push constant 511
+push this 2
+push this 4
+push constant 1
+add
+call Math.multiply 2
+push constant 20
+add
+sub
+pop this 0
+push pointer 0
+return
+function DisplayGrid.addWalls 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 3
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+push local 0
+push constant 0
+eq
+push local 0
+push this 3
+push constant 1
+sub
+eq
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+label WHILE_EXP1
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END1
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 6
+add
+push constant 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+goto IF_END0
+label IF_FALSE0
+push local 0
+push this 2
+call Math.multiply 2
+push this 6
+add
+push constant 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push this 2
+call Math.multiply 2
+push this 2
+push constant 1
+sub
+add
+push this 6
+add
+push constant 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_END0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function DisplayGrid.dispose 0
+push argument 0
+pop pointer 0
+push this 6
+call Array.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function DisplayGrid.reset 1
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 2
+push this 3
+call Math.multiply 2
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 6
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function DisplayGrid.paintBlock 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 2
+call Math.multiply 2
+push argument 1
+add
+pop local 0
+push local 0
+push this 2
+push this 3
+call Math.multiply 2
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 0
+push this 6
+add
+push argument 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push argument 3
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 4
+push constant 2
+add
+push argument 1
+call Math.multiply 2
+push this 0
+add
+pop argument 1
+push this 4
+push constant 2
+add
+push argument 2
+call Math.multiply 2
+push this 1
+add
+pop argument 2
+push argument 1
+push argument 2
+push argument 1
+push this 4
+add
+push argument 2
+push this 4
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE1
+push argument 3
+push constant 1
+neg
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 4
+push constant 2
+add
+push argument 1
+call Math.multiply 2
+push this 0
+add
+pop argument 1
+push this 4
+push constant 2
+add
+push argument 2
+call Math.multiply 2
+push this 1
+add
+pop argument 2
+push argument 1
+push argument 2
+push argument 1
+push this 4
+add
+push argument 2
+push this 4
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push argument 1
+push constant 1
+add
+push argument 2
+push constant 1
+add
+push argument 1
+push this 4
+push constant 1
+sub
+add
+push argument 2
+push this 4
+push constant 1
+sub
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE2
+push constant 0
+return
+function DisplayGrid.paintArea 2
+push argument 0
+pop pointer 0
+push argument 2
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 4
+lt
+not
+if-goto WHILE_END0
+push argument 1
+pop local 1
+label WHILE_EXP1
+push local 1
+push argument 3
+lt
+not
+if-goto WHILE_END1
+push pointer 0
+push local 1
+push local 0
+push argument 5
+call DisplayGrid.paintBlock 4
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function DisplayGrid.paintTetromino 6
+push argument 0
+pop pointer 0
+push argument 1
+call Tetromino.getSprite 1
+pop local 5
+push pointer 0
+push argument 1
+call DisplayGrid.getDropY 2
+push argument 1
+call Tetromino.getY 1
+sub
+pop local 4
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 1
+call Tetromino.getHeight 1
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push argument 1
+call Tetromino.getWidth 1
+lt
+not
+if-goto WHILE_END1
+push local 0
+push argument 1
+call Tetromino.getWidth 1
+call Math.multiply 2
+push local 1
+add
+pop local 2
+push local 2
+push local 5
+add
+pop pointer 1
+push that 0
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 4
+push constant 0
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push argument 2
+push constant 1
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push local 1
+push argument 1
+call Tetromino.getX 1
+add
+push local 0
+push argument 1
+call Tetromino.getY 1
+add
+push local 4
+add
+push constant 1
+neg
+call DisplayGrid.paintBlock 4
+pop temp 0
+label IF_FALSE2
+push argument 2
+push constant 0
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+push local 1
+push argument 1
+call Tetromino.getX 1
+add
+push local 0
+push argument 1
+call Tetromino.getY 1
+add
+push local 4
+add
+push constant 0
+call DisplayGrid.paintBlock 4
+pop temp 0
+label IF_FALSE3
+label IF_FALSE1
+push pointer 0
+push local 1
+push argument 1
+call Tetromino.getX 1
+add
+push local 0
+push argument 1
+call Tetromino.getY 1
+add
+push argument 2
+call DisplayGrid.paintBlock 4
+pop temp 0
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function DisplayGrid.moveIsLegal 6
+push argument 0
+pop pointer 0
+push argument 1
+call Tetromino.getSprite 1
+pop local 5
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 1
+call Tetromino.getHeight 1
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push argument 1
+call Tetromino.getWidth 1
+lt
+not
+if-goto WHILE_END1
+push local 0
+push argument 1
+call Tetromino.getWidth 1
+call Math.multiply 2
+push local 1
+add
+pop local 2
+push local 2
+push local 5
+add
+pop pointer 1
+push that 0
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push argument 3
+add
+push this 2
+call Math.multiply 2
+push local 1
+push argument 2
+add
+add
+pop local 3
+push local 3
+push this 6
+add
+pop pointer 1
+push that 0
+push constant 1
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+not
+return
+function DisplayGrid.getDropY 1
+push argument 0
+pop pointer 0
+push argument 1
+call Tetromino.getY 1
+pop local 0
+label WHILE_EXP0
+push pointer 0
+push argument 1
+push argument 1
+call Tetromino.getX 1
+push local 0
+push constant 1
+add
+call DisplayGrid.moveIsLegal 4
+not
+if-goto WHILE_END0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return
+function DisplayGrid.clearFilledLines 7
+push argument 0
+pop pointer 0
+push pointer 0
+call DisplayGrid.resetLineOffsetArray 1
+pop temp 0
+push constant 0
+pop local 5
+push this 3
+push constant 2
+sub
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+push constant 0
+not
+pop local 6
+label WHILE_EXP1
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END1
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+pop local 3
+push local 3
+push this 6
+add
+pop pointer 1
+push that 0
+push constant 2
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop local 6
+label IF_FALSE0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 6
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push local 0
+push this 7
+add
+pop pointer 1
+push that 0
+add
+pop local 2
+label WHILE_EXP2
+push local 2
+push constant 0
+gt
+not
+if-goto WHILE_END2
+push local 2
+push this 7
+add
+push local 2
+push this 7
+add
+pop pointer 1
+push that 0
+push constant 1
+add
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 2
+push constant 1
+sub
+pop local 2
+goto WHILE_EXP2
+label WHILE_END2
+push local 5
+push constant 1
+add
+pop local 5
+push pointer 0
+push local 0
+call DisplayGrid.animateLineClearance 2
+pop temp 0
+label IF_FALSE1
+push local 0
+push constant 1
+sub
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push this 3
+push constant 2
+sub
+pop local 0
+label WHILE_EXP3
+push local 0
+push constant 0
+gt
+not
+if-goto WHILE_END3
+push local 0
+push this 7
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 1
+pop local 1
+label WHILE_EXP4
+push local 1
+push this 2
+push constant 1
+sub
+lt
+not
+if-goto WHILE_END4
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+pop local 3
+push local 0
+push local 0
+push this 7
+add
+pop pointer 1
+push that 0
+sub
+push constant 1
+lt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 3
+push this 6
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+goto IF_END3
+label IF_FALSE3
+push local 0
+push local 0
+push this 7
+add
+pop pointer 1
+push that 0
+sub
+push this 2
+call Math.multiply 2
+push local 1
+add
+pop local 4
+push local 3
+push this 6
+add
+push local 4
+push this 6
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 4
+push this 6
+add
+pop pointer 1
+push that 0
+push constant 0
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+push local 1
+push local 0
+push constant 0
+call DisplayGrid.paintBlock 4
+pop temp 0
+label IF_FALSE4
+label IF_END3
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP4
+label WHILE_END4
+label IF_FALSE2
+push local 0
+push constant 1
+sub
+pop local 0
+goto WHILE_EXP3
+label WHILE_END3
+push local 5
+return
+function DisplayGrid.animateLineClearance 0
+push argument 0
+pop pointer 0
+push pointer 0
+push constant 1
+push argument 1
+push this 2
+push constant 1
+sub
+push argument 1
+push constant 1
+add
+push constant 1
+neg
+call DisplayGrid.paintArea 6
+pop temp 0
+push pointer 0
+call DisplayGrid.draw 1
+pop temp 0
+push this 5
+call Sys.wait 1
+pop temp 0
+push pointer 0
+push constant 1
+push argument 1
+push this 2
+push constant 1
+sub
+push argument 1
+push constant 1
+add
+push constant 0
+call DisplayGrid.paintArea 6
+pop temp 0
+push pointer 0
+call DisplayGrid.draw 1
+pop temp 0
+push this 5
+call Sys.wait 1
+pop temp 0
+push pointer 0
+push constant 1
+push argument 1
+push this 2
+push constant 1
+sub
+push argument 1
+push constant 1
+add
+push constant 1
+neg
+call DisplayGrid.paintArea 6
+pop temp 0
+push pointer 0
+call DisplayGrid.draw 1
+pop temp 0
+push this 5
+call Sys.wait 1
+pop temp 0
+push pointer 0
+push constant 1
+push argument 1
+push this 2
+push constant 1
+sub
+push argument 1
+push constant 1
+add
+push constant 0
+call DisplayGrid.paintArea 6
+pop temp 0
+push pointer 0
+call DisplayGrid.draw 1
+pop temp 0
+push this 5
+call Sys.wait 1
+pop temp 0
+push constant 0
+return
+function DisplayGrid.resetLineOffsetArray 1
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 3
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 7
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function DisplayGrid.draw 5
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 3
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 2
+lt
+not
+if-goto WHILE_END1
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+pop local 2
+push local 2
+push this 6
+add
+pop pointer 1
+push that 0
+push constant 0
+gt
+push local 2
+push this 6
+add
+pop pointer 1
+push that 0
+push constant 3
+eq
+not
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 4
+push constant 2
+add
+push local 1
+call Math.multiply 2
+push this 0
+add
+pop local 3
+push this 4
+push constant 2
+add
+push local 0
+call Math.multiply 2
+push this 1
+add
+pop local 4
+push local 3
+push local 4
+push local 3
+push this 4
+add
+push local 4
+push this 4
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE0
+push local 2
+push this 6
+add
+pop pointer 1
+push that 0
+push constant 1
+neg
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 4
+push constant 2
+add
+push local 1
+call Math.multiply 2
+push this 0
+add
+push constant 1
+add
+pop local 3
+push this 4
+push constant 2
+add
+push local 0
+call Math.multiply 2
+push this 1
+add
+push constant 1
+add
+pop local 4
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push local 3
+push local 4
+push local 3
+push this 4
+push constant 2
+sub
+add
+push local 4
+push this 4
+push constant 2
+sub
+add
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE1
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

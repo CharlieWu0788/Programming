@@ -1,0 +1,206 @@
+/*
+ - Snake.jack
+ - Position, direction, and drawing the snake
+ - Head includes eyes, body segments have rounded corners
+ */
+class Snake {
+    field int x, y;
+
+    // 0=up, 1=right, 2=down, 3=left
+    field int dir;
+    field int size;
+    field Array bodyX;
+    field Array bodyY;
+    field int length;
+    field boolean growing; // when true, next move() skips tail erasure so the snake grows by one
+
+    constructor Snake new(int cellSize) {
+        let size = cellSize;
+        let x = 10;
+        let y = 10;
+        let dir = 1;
+        let length = 1;
+        let growing = false; 
+        let bodyX = Array.new(200);
+        let bodyY = Array.new(200);
+        let bodyX[0] = x;
+        let bodyY[0] = y;
+        return this;
+    }
+
+    // draws a snake head at pixel position (px, py) with eyes facing current direction
+    method void drawHead(int px, int py) {
+        // fill full cell black
+        do Screen.setColor(true);
+        do Screen.drawRectangle(px, py, px + size - 1, py + size - 1);
+        // cut 2x2 corners white so the head looks more round 
+        do Screen.setColor(false);
+        do Screen.drawRectangle(px, py, px + 1, py + 1);
+        do Screen.drawRectangle(px + size - 2, py, px + size - 1, py + 1);
+        do Screen.drawRectangle(px, py + size - 2, px + 1, py + size - 1);
+        do Screen.drawRectangle(px + size - 2, py + size - 2, px + size - 1, py + size - 1);
+        // two white 3x3 eye squares near front of the head
+        if (dir = 1) { // right
+            do Screen.drawRectangle(px + 11, py + 3, px + 13, py + 5);
+            do Screen.drawRectangle(px + 11, py + 10, px + 13, py + 12);
+        }
+        if (dir = 3) { // left
+            do Screen.drawRectangle(px + 2, py + 3, px + 4, py + 5);
+            do Screen.drawRectangle(px + 2, py + 10, px + 4, py + 12);
+        }
+        if (dir = 0) { // up
+            do Screen.drawRectangle(px + 3, py + 2, px + 5, py + 4);
+            do Screen.drawRectangle(px + 10, py + 2, px + 12, py + 4);
+        }
+        if (dir = 2) { // down
+            do Screen.drawRectangle(px + 3, py + 11, px + 5, py + 13);
+            do Screen.drawRectangle(px + 10, py + 11, px + 12, py + 13);
+        }
+        return;
+    }
+
+    // draws a body segment at pixel position (px, py) with rounded corners
+    method void drawBodySegment(int px, int py) {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(px, py, px + size - 1, py + size - 1);
+        // same corner cuts as head 
+        do Screen.setColor(false);
+        do Screen.drawRectangle(px, py, px + 1, py + 1);
+        do Screen.drawRectangle(px + size - 2, py, px + size - 1, py + 1);
+        do Screen.drawRectangle(px, py + size - 2, px + 1, py + size - 1);
+        do Screen.drawRectangle(px + size - 2, py + size - 2, px + size - 1, py + size - 1);
+        return;
+    }
+
+    // iterates all segments and calls drawHead/drawBodySegment per index
+    method void draw() {
+        var int i;
+        let i = 0;
+        while (i < length) {
+            if (i = 0) {
+                do drawHead(bodyX[0] * size, bodyY[0] * size);
+            } else {
+                do drawBodySegment(bodyX[i] * size, bodyY[i] * size);
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(
+            x * size,
+            y * size,
+            (x * size) + size - 1,
+            (y * size) + size - 1
+        );
+        return;
+    }
+
+    method void move() {
+        var int i;
+        var int tailX;
+        var int tailY;
+
+        let tailX = bodyX[length - 1];
+        let tailY = bodyY[length - 1];
+
+        // when growing skip tail erasure so the snake gains one segment visually 
+        if (~growing) {
+            do Screen.setColor(false);
+            do Screen.drawRectangle(
+                tailX * size, tailY * size,
+                (tailX * size) + size - 1, (tailY * size) + size - 1
+            );
+        } else {
+            let growing = false; //consume the grow flag after one skipped erasure
+        }
+
+        // shift each segment back so the body follows the head
+        let i = length - 1;
+        while (i > 0) {
+            let bodyX[i] = bodyX[i - 1];
+            let bodyY[i] = bodyY[i - 1];
+            let i = i - 1;
+        }
+
+        // advance head in current direction
+        if (dir = 0) { 
+            let y = y - 1; 
+        }
+        if (dir = 1) { 
+            let x = x + 1; 
+        }
+        if (dir = 2) { 
+            let y = y + 1; 
+        }
+        if (dir = 3) { 
+            let x = x - 1; 
+        }
+
+        let bodyX[0] = x;
+        let bodyY[0] = y;
+
+        // old head position - bodyX[1] - still has eyes painted on it so redraw as plain body
+        if (length > 1) {
+            do drawBodySegment(bodyX[1] * size, bodyY[1] * size);
+        }
+
+        // draws snake head with eyes
+        do drawHead(x * size, y * size);
+        return;
+    }
+
+    // queues a one-segment growth on the next move() call
+    // duplicates current tail so the body-shift in move() produces a valid longer array
+    method void grow() {
+        let bodyX[length] = bodyX[length - 1];
+        let bodyY[length] = bodyY[length - 1];
+        let length = length + 1;
+        let growing = true;
+        return;
+    }
+
+    // resets snake to starting position for a new game without reallocating memory
+    method void reset() {
+        let x = 10;
+        let y = 10;
+        let dir = 1;
+        let length = 1;
+        let growing = false; //clear any pending grow from the previous game
+        let bodyX[0] = x;
+        let bodyY[0] = y;
+        return;
+    }
+
+    // returns true if the head position matches any body segment, checked after every move so running into the body ends the game
+    method boolean hitsItself() {
+        var int i;
+        let i = 1; // start at 1 — index 0 is the head itself
+        while (i < length) {
+            if ((bodyX[i] = x) & (bodyY[i] = y)) {
+                return true;
+            }
+            let i = i + 1;
+        }
+        return false;
+    }
+
+    method void setDirection(int newDir) {
+        if ((dir = 0) & (newDir = 2)) { return; }
+        if ((dir = 2) & (newDir = 0)) { return; }
+        if ((dir = 1) & (newDir = 3)) { return; }
+        if ((dir = 3) & (newDir = 1)) { return; }
+        let dir = newDir;
+        return;
+    }
+
+    method int getX() { return x; }
+    method int getY() { return y; }
+
+    method Array getBodyX() { return bodyX; }
+    method Array getBodyY() { return bodyY; }
+    method int getLength()  { return length; }
+
+}

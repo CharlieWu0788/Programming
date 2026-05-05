@@ -1,0 +1,93 @@
+class Arrow {
+
+    field int row, col;
+    field int direction;
+    field int pixelX, pixelY;
+    field int cellSize;
+
+    
+    constructor Arrow new(int arow, int acol, int adir,
+                          int acellSize, int originX, int originY) {
+        let row = arow;
+        let col = acol;
+        let direction = adir;
+        let cellSize = acellSize;
+        let pixelX = originX + (acol * acellSize);
+        let pixelY = originY + (arow * acellSize);
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method int getRow() { return row; }
+    method int getCol() { return col; }
+    method int getDirection() { return direction; }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(
+            pixelX + 1, pixelY + 1,
+            pixelX + cellSize - 2, pixelY + cellSize - 2);
+        return;
+    }
+
+    method void draw() {
+        var int cx, cy, half;
+        let half = cellSize / 2;
+        let cx = pixelX + half;
+        let cy = pixelY + half;
+
+        // Draw black tile body
+        do Screen.setColor(true);
+        do Screen.drawRectangle(
+            pixelX + 3, pixelY + 3,
+            pixelX + cellSize - 3, pixelY + cellSize - 3);
+
+        // Draw white direction indicator
+        do Screen.setColor(false);
+        if (direction = 1) {
+            do Screen.drawRectangle(cx, cy - 3, pixelX + cellSize - 5, cy + 3);
+        }
+        if (direction = 2) {
+            do Screen.drawRectangle(pixelX + 5, cy - 3, cx, cy + 3);
+        }
+        if (direction = 3) {
+            do Screen.drawRectangle(cx - 3, pixelY + 5, cx + 3, cy);
+        }
+        if (direction = 4) {
+            do Screen.drawRectangle(cx - 3, cy, cx + 3, pixelY + cellSize - 5);
+        }
+        return;
+    }
+
+    //Draw a cursor highlight around this tile.
+    method void drawCursor() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(pixelX, pixelY,
+            pixelX + cellSize, pixelY + 2);
+        do Screen.drawRectangle(pixelX, pixelY + cellSize - 2,
+            pixelX + cellSize, pixelY + cellSize);
+        do Screen.drawRectangle(pixelX, pixelY,
+            pixelX + 2, pixelY + cellSize);
+        do Screen.drawRectangle(pixelX + cellSize - 2, pixelY,
+            pixelX + cellSize, pixelY + cellSize);
+        return;
+    }
+
+
+    method void eraseCursor() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(pixelX, pixelY,
+            pixelX + cellSize, pixelY + 2);
+        do Screen.drawRectangle(pixelX, pixelY + cellSize - 2,
+            pixelX + cellSize, pixelY + cellSize);
+        do Screen.drawRectangle(pixelX, pixelY,
+            pixelX + 2, pixelY + cellSize);
+        do Screen.drawRectangle(pixelX + cellSize - 2, pixelY,
+            pixelX + cellSize, pixelY + cellSize);
+        return;
+    }
+}

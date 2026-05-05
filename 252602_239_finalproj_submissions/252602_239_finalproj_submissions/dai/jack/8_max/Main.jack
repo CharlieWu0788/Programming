@@ -1,0 +1,20 @@
+// program 8: max of three numbers
+// max(3, 11, 7) = 11
+// simple approach: assume first is biggest, compare with each other
+// LED: 1011
+class Main {
+    function void main() {
+        var int result, b, c;
+        let result = 3;
+        let b = 11;
+        let c = 7;
+        if (b > result) {
+            let result = b;
+        }
+        if (c > result) {
+            let result = c;
+        }
+        // result = 11
+        return;
+    }
+}

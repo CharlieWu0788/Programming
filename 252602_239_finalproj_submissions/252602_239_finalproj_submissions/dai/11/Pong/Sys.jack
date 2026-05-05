@@ -1,0 +1,51 @@
+// Project 12
+// Ariel
+// sys library for the jack OS
+// handles booting up the OS and provides halt wait and error
+
+class Sys {
+
+    // called when the computer starts
+    // initializes all the OS classes then runs the user program
+    // Memory has to go first since everything else needs it for allocation
+    function void init() {
+        do Memory.init();
+        do Math.init();
+        do Screen.init();
+        do Output.init();
+        do Keyboard.init();
+        do Main.main();
+        do Sys.halt();
+        return;
+    }
+
+    // stops the program by looping forever
+    function void halt() {
+        while (true) { }
+        return;
+    }
+
+    // waits roughly duration milliseconds
+    // just a busy loop, the count is tuned for the hack platform
+    function void wait(int duration) {
+        var int i, j;
+        let i = 0;
+        while (i < duration) {
+            let j = 0;
+    // changed according to nand2tretis online ide, <200 is way too short
+            while (j < 1500) {
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    // prints error followed by the code and stops
+    function void error(int errorCode) {
+        do Output.printString("ERR");
+        do Output.printInt(errorCode);
+        do Sys.halt();
+        return;
+    }
+}

@@ -1,0 +1,25 @@
+// program 7: factorial
+// 3! = 6
+// cant use Math.multiply because P9 doesnt have OS libraries
+// so multiplication is done by repeated addition in a nested loop
+// LED: 0110
+class Main {
+    function void main() {
+        var int result, i, j, sum;
+        let result = 1;
+        let i = 1;
+        while (i < 4) {
+            // result = result * i via repeated addition
+            let sum = 0;
+            let j = 0;
+            while (j < i) {
+                let sum = sum + result;
+                let j = j + 1;
+            }
+            let result = sum;
+            let i = i + 1;
+        }
+        // result = 6
+        return;
+    }
+}

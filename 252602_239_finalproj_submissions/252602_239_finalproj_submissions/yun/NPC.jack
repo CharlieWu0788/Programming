@@ -1,0 +1,103 @@
+class NPC {
+    //same sprite dimensions as player character
+
+    field int pos_x, pos_y;
+    field int width_x, height_y;
+    field int head_height, indent, torso_height, leg_height, eye_height; 
+    field boolean recievedGift;
+
+
+    constructor NPC new(int x, int y) {
+        let pos_x = x;
+        let pos_y = y;
+        let height_y = 37; //38 pixels in practice
+        let width_x = 17; //18 pixels in practice
+
+        let indent = 2;
+        let head_height = 9; //10 pixels
+        let torso_height = 11; //12 pixels
+        let leg_height = 7; //8 pixels
+        let eye_height = 5; //6 pixels
+
+        let recievedGift = false;
+        return this;
+    }
+
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    //----------------------------------------------------------------------------------------------NPC logic methods
+    
+    method void updateRecievedGift() {
+        let recievedGift = true;
+        do updateSprite();
+        return;
+    }
+
+
+    method boolean getRecievedGift() {
+        return recievedGift;
+    }
+
+
+    //if player delivers or has already a gift to them, draw a smile :>
+    method void updateSprite() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(pos_x + (indent * 2), pos_y + (indent * 4), pos_x + (indent * 6) + 1, pos_y + (indent * 4) + 1);
+        do Screen.drawRectangle(pos_x + (indent * 2) + 1, pos_y + (indent * 5), pos_x + (indent * 6), pos_y + (indent * 5));
+        do Screen.drawRectangle(pos_x + (indent * 3), pos_y + (indent * 5) + 1, pos_x + (indent * 5) + 1, pos_y + (indent * 5) + 1);
+        return;
+    }
+
+    //----------------------------------------------------------------------------------------------draw NPC sprite
+
+    method void draw() {
+        var int h;
+        let h = pos_y;
+        do Screen.setColor(true);
+
+        //Draw the top of head
+        do Screen.drawRectangle(pos_x + (indent * 2), h, pos_x + width_x - (indent * 2), h + 1);
+        let h = h + 2;
+
+        //Draw the head
+        do Screen.drawRectangle(pos_x + indent, h, pos_x + width_x - indent, h + head_height);
+        let h = h + head_height + 1;
+
+        //Draw the neck
+        do Screen.drawRectangle(pos_x + (indent * 2), h, pos_x + width_x - (indent * 2), h + 1);
+        let h = h + 2;
+
+        //Draw the shoulders
+        do Screen.drawRectangle(pos_x + indent, h, pos_x + width_x - indent, h + 1);
+        let h = h + 2;
+
+        //Draw the torso
+        do Screen.drawRectangle(pos_x, h, pos_x + width_x, h + torso_height);
+        let h = h + torso_height + 1;
+
+        //Draw the hip
+        do Screen.drawRectangle(pos_x + indent, h, pos_x + width_x - indent, h + 1);
+        let h = h + 2;
+
+        //Draw the legs
+        do Screen.drawRectangle(pos_x + (indent * 2), h, pos_x + (indent * 3) + 1, h + leg_height);
+        do Screen.drawRectangle(pos_x + (indent * 5), h, pos_x + (indent * 6) + 1, h + leg_height);
+
+        //Draw the eyes
+        do Screen.setColor(false);
+        do Screen.drawRectangle(pos_x + (indent * 2) + 1, pos_y + (indent * 2), pos_x + (indent * 3), pos_y + (indent * 2) + 1);
+        do Screen.drawRectangle(pos_x + (indent * 5) + 1, pos_y + (indent * 2), pos_x + (indent * 6), pos_y + (indent * 2) + 1);
+
+        //if player delivers or has already a gift to them, draw a smile :>
+        if (recievedGift) {
+            //Draw smile if recievedGift
+            do updateSprite();
+        }
+        return;
+    }
+    
+}

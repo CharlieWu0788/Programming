@@ -1,0 +1,2664 @@
+function Game.new 0
+    push constant 35
+    call Memory.alloc 1
+    pop pointer 0
+    push pointer 0
+    return
+function Game.init 3
+    push argument 0
+    pop pointer 0
+    push constant 4
+    pop static 0
+    push constant 30
+    pop static 1
+    push constant 240
+    push constant 220
+    call Player.new 2
+    pop this 0
+    push static 0
+    call Array.new 1
+    pop this 1
+    push static 1
+    call Array.new 1
+    pop this 2
+    push constant 0
+    pop this 3
+    push constant 30
+    pop this 4
+    push constant 0
+    pop this 5
+    push constant 0
+    pop this 6
+    push constant 0
+    pop this 7
+    push constant 0
+    pop this 8
+    push constant 0
+    pop this 9
+    push constant 0
+    pop this 10
+    push constant 0
+    pop this 11
+    push constant 0
+    pop this 12
+    push constant 0
+    pop this 13
+    push constant 0
+    pop this 14
+    push constant 17
+    pop this 15
+    push constant 4
+    pop this 16
+    push constant 0
+    pop this 17
+    push constant 0
+    pop this 18
+    push constant 0
+    pop this 19
+    push constant 0
+    pop this 20
+    push constant 7
+    call String.new 1
+    push constant 83
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 21
+    push constant 4
+    call String.new 1
+    push constant 72
+    call String.appendChar 2
+    push constant 80
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 22
+    push constant 9
+    call String.new 1
+    push constant 66
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 72
+    call String.appendChar 2
+    push constant 80
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 23
+    push constant 6
+    call String.new 1
+    push constant 80
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    pop this 24
+    push constant 6
+    call String.new 1
+    push constant 87
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 118
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 25
+    push constant 6
+    call String.new 1
+    push constant 72
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 26
+    push constant 10
+    call String.new 1
+    push constant 78
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 82
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    pop this 27
+    push constant 9
+    call String.new 1
+    push constant 71
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 79
+    call String.appendChar 2
+    push constant 118
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    pop this 28
+    push constant 15
+    call String.new 1
+    push constant 72
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 83
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 58
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    pop this 29
+    push constant 20
+    call String.new 1
+    push constant 80
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 91
+    call String.appendChar 2
+    push constant 82
+    call String.appendChar 2
+    push constant 93
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    pop this 30
+    push constant 15
+    call String.new 1
+    push constant 84
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 110
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 70
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    pop this 31
+    push constant 40
+    call String.new 1
+    push constant 83
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 108
+    call String.appendChar 2
+    push constant 121
+    call String.appendChar 2
+    push constant 44
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 65
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 119
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    pop this 32
+    push constant 18
+    call String.new 1
+    push constant 80
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 91
+    call String.appendChar 2
+    push constant 83
+    call String.appendChar 2
+    push constant 93
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    pop this 33
+    push constant 22
+    call String.new 1
+    push constant 80
+    call String.appendChar 2
+    push constant 114
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 91
+    call String.appendChar 2
+    push constant 83
+    call String.appendChar 2
+    push constant 112
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 99
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 93
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 112
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 115
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    pop this 34
+    push constant 0
+    pop local 0
+label Game_0
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_1
+    push constant 0
+    push constant 0
+    call Enemy.new 2
+    pop local 1
+    push local 0
+    push this 1
+    add
+    push local 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_0
+label Game_1
+    push constant 0
+    pop local 0
+label Game_2
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_3
+    push constant 0
+    push constant 0
+    call Bullet.new 2
+    pop local 2
+    push local 0
+    push this 2
+    add
+    push local 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_2
+label Game_3
+    push constant 0
+    return
+function Game.run 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Game.showStartScreen 1
+    pop temp 0
+    push pointer 0
+    call Game.waitForStart 1
+    pop temp 0
+    push pointer 0
+    call Game.resetGameState 1
+    pop temp 0
+label Game_4
+    push constant 1
+    neg
+    not
+    if-goto Game_5
+label Game_6
+    push this 13
+    not
+    not
+    if-goto Game_7
+    push pointer 0
+    call Game.update 1
+    pop temp 0
+    push pointer 0
+    call Game.render 1
+    pop temp 0
+    push constant 10
+    call Sys.wait 1
+    pop temp 0
+    goto Game_6
+label Game_7
+    push pointer 0
+    call Game.updateHighScore 1
+    pop temp 0
+    push pointer 0
+    call Game.showGameOverScreen 1
+    pop temp 0
+    push pointer 0
+    call Game.waitForRestart 1
+    pop temp 0
+    push pointer 0
+    call Game.resetGameState 1
+    pop temp 0
+    goto Game_4
+label Game_5
+    push constant 0
+    return
+function Game.update 0
+    push argument 0
+    pop pointer 0
+    call Keyboard.keyPressed 0
+    pop this 11
+    push pointer 0
+    call Game.handleControlKeys 1
+    not
+    if-goto Game_9
+    push constant 0
+    return
+    goto Game_8
+label Game_9
+label Game_8
+    push pointer 0
+    call Game.readPlayerInput 1
+    pop temp 0
+    push pointer 0
+    call Game.updatePlayerByTimer 1
+    pop temp 0
+    push this 5
+    push constant 0
+    gt
+    not
+    if-goto Game_11
+    push this 5
+    push constant 1
+    sub
+    pop this 5
+    goto Game_10
+label Game_11
+label Game_10
+    push this 5
+    push constant 0
+    eq
+    not
+    if-goto Game_13
+    push pointer 0
+    call Game.firePlayerBullet 1
+    pop temp 0
+    push constant 5
+    pop this 5
+    goto Game_12
+label Game_13
+label Game_12
+    push this 4
+    push constant 0
+    gt
+    not
+    if-goto Game_15
+    push this 4
+    push constant 1
+    sub
+    pop this 4
+    goto Game_14
+label Game_15
+label Game_14
+    push this 4
+    push constant 0
+    eq
+    not
+    if-goto Game_17
+    push pointer 0
+    call Game.spawnEnemy 1
+    pop temp 0
+    push constant 36
+    pop this 4
+    goto Game_16
+label Game_17
+label Game_16
+    push pointer 0
+    call Game.updateBulletsByTimer 1
+    pop temp 0
+    push pointer 0
+    call Game.updateEnemiesByTimer 1
+    pop temp 0
+    push pointer 0
+    call Game.checkCollisions 1
+    pop temp 0
+    push pointer 0
+    call Game.removeInactiveObjects 1
+    pop temp 0
+    push this 0
+    call Player.isDead 1
+    not
+    if-goto Game_19
+    push constant 1
+    neg
+    pop this 13
+    goto Game_18
+label Game_19
+label Game_18
+    push constant 0
+    return
+function Game.render 3
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push this 0
+    call Player.draw 1
+    pop temp 0
+    push constant 0
+    pop local 0
+label Game_20
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_21
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Bullet.isActive 1
+    not
+    if-goto Game_23
+    push local 1
+    call Bullet.draw 1
+    pop temp 0
+    goto Game_22
+label Game_23
+label Game_22
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_20
+label Game_21
+    push constant 0
+    pop local 0
+label Game_24
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_25
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    call Enemy.isActive 1
+    not
+    if-goto Game_27
+    push local 2
+    call Enemy.draw 1
+    pop temp 0
+    goto Game_26
+label Game_27
+label Game_26
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_24
+label Game_25
+    push constant 0
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 21
+    call Output.printString 1
+    pop temp 0
+    push this 3
+    call Output.printInt 1
+    pop temp 0
+    push constant 1
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 22
+    call Output.printString 1
+    pop temp 0
+    push this 0
+    call Player.getHp 1
+    call Output.printInt 1
+    pop temp 0
+    push pointer 0
+    call Game.bossActive 1
+    not
+    if-goto Game_29
+    push constant 2
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 23
+    call Output.printString 1
+    pop temp 0
+    push pointer 0
+    call Game.getBossHp 1
+    call Output.printInt 1
+    pop temp 0
+    goto Game_28
+label Game_29
+label Game_28
+    push this 14
+    not
+    if-goto Game_31
+    push constant 6
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 24
+    call Output.printString 1
+    pop temp 0
+    goto Game_30
+label Game_31
+label Game_30
+    push constant 3
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 25
+    call Output.printString 1
+    pop temp 0
+    push this 17
+    call Output.printInt 1
+    pop temp 0
+    push constant 4
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 26
+    call Output.printString 1
+    pop temp 0
+    push this 19
+    call Output.printInt 1
+    pop temp 0
+    push this 20
+    push this 3
+    push this 19
+    gt
+    or
+    not
+    if-goto Game_33
+    push constant 5
+    push constant 0
+    call Output.moveCursor 2
+    pop temp 0
+    push this 27
+    call Output.printString 1
+    pop temp 0
+    goto Game_32
+label Game_33
+label Game_32
+    push constant 0
+    return
+function Game.readPlayerInput 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop this 9
+    push constant 0
+    pop this 10
+    push this 11
+    push constant 131
+    eq
+    not
+    if-goto Game_35
+    push constant 1
+    neg
+    pop this 10
+    goto Game_34
+label Game_35
+label Game_34
+    push this 11
+    push constant 133
+    eq
+    not
+    if-goto Game_37
+    push constant 1
+    pop this 10
+    goto Game_36
+label Game_37
+label Game_36
+    push this 11
+    push constant 130
+    eq
+    not
+    if-goto Game_39
+    push constant 1
+    neg
+    pop this 9
+    goto Game_38
+label Game_39
+label Game_38
+    push this 11
+    push constant 132
+    eq
+    not
+    if-goto Game_41
+    push constant 1
+    pop this 9
+    goto Game_40
+label Game_41
+label Game_40
+    push constant 0
+    return
+function Game.updatePlayer 0
+    push argument 0
+    pop pointer 0
+    push this 10
+    push constant 1
+    neg
+    eq
+    not
+    if-goto Game_43
+    push this 0
+    call Player.moveUp 1
+    pop temp 0
+    goto Game_42
+label Game_43
+label Game_42
+    push this 10
+    push constant 1
+    eq
+    not
+    if-goto Game_45
+    push this 0
+    call Player.moveDown 1
+    pop temp 0
+    goto Game_44
+label Game_45
+label Game_44
+    push this 9
+    push constant 1
+    neg
+    eq
+    not
+    if-goto Game_47
+    push this 0
+    call Player.moveLeft 1
+    pop temp 0
+    goto Game_46
+label Game_47
+label Game_46
+    push this 9
+    push constant 1
+    eq
+    not
+    if-goto Game_49
+    push this 0
+    call Player.moveRight 1
+    pop temp 0
+    goto Game_48
+label Game_49
+label Game_48
+    push constant 0
+    return
+function Game.updatePlayerByTimer 0
+    push argument 0
+    pop pointer 0
+    push this 6
+    push constant 0
+    gt
+    not
+    if-goto Game_51
+    push this 6
+    push constant 1
+    sub
+    pop this 6
+    goto Game_50
+label Game_51
+label Game_50
+    push this 6
+    push constant 0
+    eq
+    not
+    if-goto Game_53
+    push pointer 0
+    call Game.updatePlayer 1
+    pop temp 0
+    push constant 1
+    pop this 6
+    goto Game_52
+label Game_53
+label Game_52
+    push constant 0
+    return
+function Game.updateBullets 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_54
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_55
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Bullet.isActive 1
+    not
+    if-goto Game_57
+    push local 1
+    call Bullet.update 1
+    pop temp 0
+    goto Game_56
+label Game_57
+label Game_56
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_54
+label Game_55
+    push constant 0
+    return
+function Game.updateBulletsByTimer 0
+    push argument 0
+    pop pointer 0
+    push this 7
+    push constant 0
+    gt
+    not
+    if-goto Game_59
+    push this 7
+    push constant 1
+    sub
+    pop this 7
+    goto Game_58
+label Game_59
+label Game_58
+    push this 7
+    push constant 0
+    eq
+    not
+    if-goto Game_61
+    push pointer 0
+    call Game.updateBullets 1
+    pop temp 0
+    push constant 1
+    pop this 7
+    goto Game_60
+label Game_61
+label Game_60
+    push constant 0
+    return
+function Game.updateEnemies 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_62
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_63
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.isActive 1
+    not
+    if-goto Game_65
+    push local 1
+    call Enemy.update 1
+    pop temp 0
+    push local 1
+    call Enemy.canShoot 1
+    not
+    if-goto Game_67
+    push local 1
+    call Enemy.isBoss 1
+    not
+    if-goto Game_69
+    push pointer 0
+    push local 1
+    call Game.fireBossBullets 2
+    pop temp 0
+    goto Game_68
+label Game_69
+    push pointer 0
+    push local 1
+    call Game.fireEnemyBullet 2
+    pop temp 0
+label Game_68
+    push local 1
+    push pointer 0
+    call Game.getEnemyShootInterval 1
+    call Enemy.resetShootTimer 2
+    pop temp 0
+    goto Game_66
+label Game_67
+label Game_66
+    goto Game_64
+label Game_65
+label Game_64
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_62
+label Game_63
+    push constant 0
+    return
+function Game.updateEnemiesByTimer 0
+    push argument 0
+    pop pointer 0
+    push this 8
+    push constant 0
+    gt
+    not
+    if-goto Game_71
+    push this 8
+    push constant 1
+    sub
+    pop this 8
+    goto Game_70
+label Game_71
+label Game_70
+    push this 8
+    push constant 0
+    eq
+    not
+    if-goto Game_73
+    push pointer 0
+    call Game.updateEnemies 1
+    pop temp 0
+    push constant 1
+    pop this 8
+    goto Game_72
+label Game_73
+label Game_72
+    push constant 0
+    return
+function Game.spawnEnemy 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Game.anyEnemyActive 1
+    not
+    if-goto Game_75
+    push constant 0
+    return
+    goto Game_74
+label Game_75
+label Game_74
+    push this 16
+    push constant 0
+    eq
+    not
+    if-goto Game_77
+    push pointer 0
+    call Game.spawnBoss 1
+    pop temp 0
+    goto Game_76
+label Game_77
+    push pointer 0
+    call Game.spawnWave 1
+    pop temp 0
+label Game_76
+    push constant 0
+    return
+function Game.spawnWave 5
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_78
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_79
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 4
+    push constant 0
+    pop local 1
+label Game_80
+    push local 1
+    push pointer 0
+    call Game.getLaneCount 1
+    lt
+    not
+    if-goto Game_81
+    push pointer 0
+    call Game.nextRandomLane 1
+    pop local 2
+    push pointer 0
+    push local 2
+    call Game.getLaneX 2
+    pop local 3
+    push pointer 0
+    push local 3
+    call Game.doLaneOccupied 2
+    not
+    not
+    if-goto Game_83
+    push local 4
+    push local 3
+    push constant 0
+    call Enemy.reset 3
+    pop temp 0
+    push pointer 0
+    call Game.getLaneCount 1
+    pop local 1
+    goto Game_82
+label Game_83
+label Game_82
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Game_80
+label Game_81
+    push local 4
+    call Enemy.isActive 1
+    not
+    not
+    if-goto Game_85
+    push constant 0
+    pop local 1
+label Game_86
+    push local 1
+    push pointer 0
+    call Game.getLaneCount 1
+    lt
+    not
+    if-goto Game_87
+    push pointer 0
+    push local 1
+    call Game.getLaneX 2
+    pop local 3
+    push pointer 0
+    push local 3
+    call Game.doLaneOccupied 2
+    not
+    not
+    if-goto Game_89
+    push local 4
+    push local 3
+    push constant 0
+    call Enemy.reset 3
+    pop temp 0
+    push pointer 0
+    call Game.getLaneCount 1
+    pop local 1
+    goto Game_88
+label Game_89
+label Game_88
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Game_86
+label Game_87
+    goto Game_84
+label Game_85
+label Game_84
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_78
+label Game_79
+    push this 16
+    push constant 1
+    sub
+    pop this 16
+    push this 17
+    push constant 1
+    add
+    pop this 17
+    push constant 0
+    return
+function Game.spawnBoss 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_90
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_91
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.isActive 1
+    not
+    not
+    if-goto Game_93
+    push local 1
+    push constant 208
+    push constant 0
+    push pointer 0
+    call Game.getNextBossHp 1
+    push this 18
+    call Enemy.resetBoss 5
+    pop temp 0
+    push constant 4
+    pop this 16
+    push this 17
+    push constant 1
+    add
+    pop this 17
+    push constant 0
+    return
+    goto Game_92
+label Game_93
+label Game_92
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_90
+label Game_91
+    push constant 0
+    return
+function Game.firePlayerBullet 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_94
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_95
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Bullet.isActive 1
+    not
+    not
+    if-goto Game_97
+    push local 1
+    push this 0
+    call Player.getX 1
+    push constant 7
+    add
+    push this 0
+    call Player.getY 1
+    push constant 4
+    sub
+    push constant 6
+    neg
+    push constant 0
+    call Bullet.reset 5
+    pop temp 0
+    push constant 0
+    return
+    goto Game_96
+label Game_97
+label Game_96
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_94
+label Game_95
+    push constant 0
+    return
+function Game.fireEnemyBullet 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Game.isWideAngleWave 1
+    not
+    if-goto Game_99
+    push pointer 0
+    push argument 1
+    call Enemy.getBulletX 1
+    push argument 1
+    call Enemy.getBulletY 1
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    neg
+    call Game.fireEnemyBulletAtWideAngle 6
+    pop temp 0
+    push pointer 0
+    push argument 1
+    call Enemy.getBulletX 1
+    push argument 1
+    call Enemy.getBulletY 1
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    call Game.fireEnemyBulletAtWideAngle 6
+    pop temp 0
+    goto Game_98
+label Game_99
+    push pointer 0
+    call Game.isEvenWave 1
+    not
+    if-goto Game_101
+    push pointer 0
+    push argument 1
+    call Enemy.getBulletX 1
+    push argument 1
+    call Enemy.getBulletY 1
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    neg
+    call Game.fireEnemyBulletAtAngle 6
+    pop temp 0
+    push pointer 0
+    push argument 1
+    call Enemy.getBulletX 1
+    push argument 1
+    call Enemy.getBulletY 1
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    call Game.fireEnemyBulletAtAngle 6
+    pop temp 0
+    goto Game_100
+label Game_101
+    push pointer 0
+    push argument 1
+    call Enemy.getBulletX 1
+    push argument 1
+    call Enemy.getBulletY 1
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    call Game.fireEnemyBulletAt 5
+    pop temp 0
+label Game_100
+label Game_98
+    push constant 0
+    return
+function Game.fireBossBullets 1
+    push argument 0
+    pop pointer 0
+    push argument 1
+    call Enemy.getBulletY 1
+    pop local 0
+    push pointer 0
+    call Game.isWideAngleWave 1
+    not
+    if-goto Game_103
+    push pointer 0
+    push argument 1
+    call Enemy.getX 1
+    push constant 8
+    add
+    push local 0
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    neg
+    call Game.fireEnemyBulletAtWideAngle 6
+    pop temp 0
+    goto Game_102
+label Game_103
+    push pointer 0
+    call Game.isEvenWave 1
+    not
+    if-goto Game_105
+    push pointer 0
+    push argument 1
+    call Enemy.getX 1
+    push constant 8
+    add
+    push local 0
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    neg
+    call Game.fireEnemyBulletAtAngle 6
+    pop temp 0
+    goto Game_104
+label Game_105
+    push pointer 0
+    push argument 1
+    call Enemy.getX 1
+    push constant 8
+    add
+    push local 0
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    call Game.fireEnemyBulletAt 5
+    pop temp 0
+label Game_104
+label Game_102
+    push pointer 0
+    push argument 1
+    call Enemy.getX 1
+    push constant 47
+    add
+    push local 0
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    call Game.fireEnemyBulletAt 5
+    pop temp 0
+    push pointer 0
+    call Game.isWideAngleWave 1
+    not
+    if-goto Game_107
+    push pointer 0
+    push argument 1
+    call Enemy.getX 1
+    push constant 86
+    add
+    push local 0
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    call Game.fireEnemyBulletAtWideAngle 6
+    pop temp 0
+    goto Game_106
+label Game_107
+    push pointer 0
+    call Game.isEvenWave 1
+    not
+    if-goto Game_109
+    push pointer 0
+    push argument 1
+    call Enemy.getX 1
+    push constant 86
+    add
+    push local 0
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    push constant 1
+    call Game.fireEnemyBulletAtAngle 6
+    pop temp 0
+    goto Game_108
+label Game_109
+    push pointer 0
+    push argument 1
+    call Enemy.getX 1
+    push constant 86
+    add
+    push local 0
+    push constant 1
+    push pointer 0
+    call Game.getEnemyBulletBonusGap 1
+    call Game.fireEnemyBulletAt 5
+    pop temp 0
+label Game_108
+label Game_106
+    push constant 0
+    return
+function Game.fireEnemyBulletAt 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_110
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_111
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Bullet.isActive 1
+    not
+    not
+    if-goto Game_113
+    push argument 4
+    push constant 0
+    gt
+    not
+    if-goto Game_115
+    push local 1
+    push argument 1
+    push argument 2
+    push argument 3
+    push constant 1
+    push argument 4
+    call Bullet.resetWithBonus 6
+    pop temp 0
+    goto Game_114
+label Game_115
+    push local 1
+    push argument 1
+    push argument 2
+    push argument 3
+    push constant 1
+    call Bullet.reset 5
+    pop temp 0
+label Game_114
+    push constant 0
+    return
+    goto Game_112
+label Game_113
+label Game_112
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_110
+label Game_111
+    push constant 0
+    return
+function Game.fireEnemyBulletAtAngle 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_116
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_117
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Bullet.isActive 1
+    not
+    not
+    if-goto Game_119
+    push local 1
+    push argument 1
+    push argument 2
+    push argument 3
+    push constant 1
+    push argument 4
+    push argument 5
+    call Bullet.resetAngled 7
+    pop temp 0
+    push constant 0
+    return
+    goto Game_118
+label Game_119
+label Game_118
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_116
+label Game_117
+    push constant 0
+    return
+function Game.fireEnemyBulletAtWideAngle 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_120
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_121
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Bullet.isActive 1
+    not
+    not
+    if-goto Game_123
+    push local 1
+    push argument 1
+    push argument 2
+    push argument 3
+    push constant 1
+    push argument 4
+    push argument 5
+    push constant 2
+    call Bullet.resetAngledWithGap 8
+    pop temp 0
+    push constant 0
+    return
+    goto Game_122
+label Game_123
+label Game_122
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_120
+label Game_121
+    push constant 0
+    return
+function Game.checkCollisions 4
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_124
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_125
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    call Bullet.isActive 1
+    push local 2
+    call Bullet.getOwner 1
+    push constant 0
+    eq
+    and
+    not
+    if-goto Game_127
+    push constant 0
+    pop local 1
+label Game_128
+    push local 1
+    push static 0
+    lt
+    not
+    if-goto Game_129
+    push local 1
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 3
+    push local 3
+    call Enemy.isActive 1
+    not
+    if-goto Game_131
+    push local 2
+    call Bullet.getX 1
+    push local 2
+    call Bullet.getY 1
+    push local 2
+    call Bullet.getWidth 1
+    push local 2
+    call Bullet.getHeight 1
+    push local 3
+    call Enemy.getX 1
+    push local 3
+    call Enemy.getY 1
+    push local 3
+    call Enemy.getWidth 1
+    push local 3
+    call Enemy.getHeight 1
+    call Collision.intersects 8
+    not
+    if-goto Game_133
+    push local 2
+    call Bullet.deactivate 1
+    pop temp 0
+    push local 3
+    call Enemy.takeHit 1
+    not
+    if-goto Game_135
+    push pointer 0
+    push local 3
+    call Game.countEnemyKill 2
+    pop temp 0
+    goto Game_134
+label Game_135
+label Game_134
+    push static 0
+    pop local 1
+    goto Game_132
+label Game_133
+label Game_132
+    goto Game_130
+label Game_131
+label Game_130
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Game_128
+label Game_129
+    goto Game_126
+label Game_127
+label Game_126
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_124
+label Game_125
+    push constant 0
+    pop local 0
+label Game_136
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_137
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    call Bullet.isActive 1
+    push local 2
+    call Bullet.getOwner 1
+    push constant 1
+    eq
+    and
+    not
+    if-goto Game_139
+    push local 2
+    call Bullet.getX 1
+    push local 2
+    call Bullet.getY 1
+    push local 2
+    call Bullet.getWidth 1
+    push local 2
+    call Bullet.getHeight 1
+    push this 0
+    call Player.getX 1
+    push this 0
+    call Player.getY 1
+    push this 0
+    call Player.getWidth 1
+    push this 0
+    call Player.getHeight 1
+    call Collision.intersects 8
+    not
+    if-goto Game_141
+    push local 2
+    call Bullet.deactivate 1
+    pop temp 0
+    push this 0
+    call Player.takeDamage 1
+    pop temp 0
+    goto Game_140
+label Game_141
+label Game_140
+    goto Game_138
+label Game_139
+label Game_138
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_136
+label Game_137
+    push constant 0
+    pop local 0
+label Game_142
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_143
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 3
+    push local 3
+    call Enemy.isActive 1
+    not
+    if-goto Game_145
+    push local 3
+    call Enemy.getX 1
+    push local 3
+    call Enemy.getY 1
+    push local 3
+    call Enemy.getWidth 1
+    push local 3
+    call Enemy.getHeight 1
+    push this 0
+    call Player.getX 1
+    push this 0
+    call Player.getY 1
+    push this 0
+    call Player.getWidth 1
+    push this 0
+    call Player.getHeight 1
+    call Collision.intersects 8
+    not
+    if-goto Game_147
+    push local 3
+    call Enemy.isBoss 1
+    not
+    not
+    if-goto Game_149
+    push local 3
+    call Enemy.deactivate 1
+    pop temp 0
+    goto Game_148
+label Game_149
+label Game_148
+    push this 0
+    call Player.takeDamage 1
+    pop temp 0
+    goto Game_146
+label Game_147
+label Game_146
+    goto Game_144
+label Game_145
+label Game_144
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_142
+label Game_143
+    push constant 0
+    return
+function Game.removeInactiveObjects 0
+    push argument 0
+    pop pointer 0
+    push constant 0
+    return
+function Game.resetGameState 3
+    push argument 0
+    pop pointer 0
+    push this 0
+    push constant 240
+    push constant 220
+    call Player.reset 3
+    pop temp 0
+    push constant 0
+    pop this 3
+    push constant 30
+    pop this 4
+    push constant 0
+    pop this 5
+    push constant 0
+    pop this 6
+    push constant 0
+    pop this 7
+    push constant 0
+    pop this 8
+    push constant 0
+    pop this 9
+    push constant 0
+    pop this 10
+    push constant 0
+    pop this 11
+    push constant 0
+    pop this 12
+    push constant 0
+    pop this 13
+    push constant 0
+    pop this 14
+    push constant 17
+    pop this 15
+    push constant 4
+    pop this 16
+    push constant 0
+    pop this 17
+    push constant 0
+    pop this 18
+    push constant 0
+    pop this 20
+    push constant 0
+    pop local 0
+label Game_150
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_151
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.deactivate 1
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_150
+label Game_151
+    push constant 0
+    pop local 0
+label Game_152
+    push local 0
+    push static 1
+    lt
+    not
+    if-goto Game_153
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    pop local 2
+    push local 2
+    call Bullet.deactivate 1
+    pop temp 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_152
+label Game_153
+    push constant 0
+    return
+function Game.showGameOverScreen 0
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 7
+    push constant 27
+    call Output.moveCursor 2
+    pop temp 0
+    push this 28
+    call Output.printString 1
+    pop temp 0
+    push constant 9
+    push constant 27
+    call Output.moveCursor 2
+    pop temp 0
+    push this 21
+    call Output.printString 1
+    pop temp 0
+    push this 3
+    call Output.printInt 1
+    pop temp 0
+    push constant 11
+    push constant 24
+    call Output.moveCursor 2
+    pop temp 0
+    push this 29
+    call Output.printString 1
+    pop temp 0
+    push this 19
+    call Output.printInt 1
+    pop temp 0
+    push this 20
+    not
+    if-goto Game_155
+    push constant 13
+    push constant 27
+    call Output.moveCursor 2
+    pop temp 0
+    push this 27
+    call Output.printString 1
+    pop temp 0
+    goto Game_154
+label Game_155
+label Game_154
+    push constant 15
+    push constant 22
+    call Output.moveCursor 2
+    pop temp 0
+    push this 30
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    return
+function Game.waitForRestart 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_156
+    push local 0
+    push constant 82
+    eq
+    push local 0
+    push constant 114
+    eq
+    or
+    not
+    not
+    if-goto Game_157
+    call Keyboard.keyPressed 0
+    pop local 0
+    push constant 10
+    call Sys.wait 1
+    pop temp 0
+    goto Game_156
+label Game_157
+    push constant 0
+    return
+function Game.showStartScreen 0
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 8
+    push constant 24
+    call Output.moveCursor 2
+    pop temp 0
+    push this 31
+    call Output.printString 1
+    pop temp 0
+    push constant 10
+    push constant 11
+    call Output.moveCursor 2
+    pop temp 0
+    push this 32
+    call Output.printString 1
+    pop temp 0
+    push constant 12
+    push constant 24
+    call Output.moveCursor 2
+    pop temp 0
+    push this 33
+    call Output.printString 1
+    pop temp 0
+    push constant 14
+    push constant 21
+    call Output.moveCursor 2
+    pop temp 0
+    push this 34
+    call Output.printString 1
+    pop temp 0
+    push constant 0
+    return
+function Game.waitForStart 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_158
+    push local 0
+    push constant 83
+    eq
+    push local 0
+    push constant 115
+    eq
+    or
+    not
+    not
+    if-goto Game_159
+    call Keyboard.keyPressed 0
+    pop local 0
+    push constant 10
+    call Sys.wait 1
+    pop temp 0
+    goto Game_158
+label Game_159
+    push pointer 0
+    call Game.waitForKeyRelease 1
+    pop temp 0
+    push constant 0
+    return
+function Game.handleControlKeys 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+    push this 11
+    push constant 82
+    eq
+    push this 11
+    push constant 114
+    eq
+    or
+    not
+    if-goto Game_161
+    push constant 1
+    neg
+    pop local 0
+    goto Game_160
+label Game_161
+label Game_160
+    push this 11
+    push constant 32
+    eq
+    not
+    if-goto Game_163
+    push constant 1
+    neg
+    pop local 0
+    goto Game_162
+label Game_163
+label Game_162
+    push local 0
+    not
+    if-goto Game_165
+    push this 12
+    not
+    not
+    if-goto Game_167
+    push constant 1
+    neg
+    pop this 12
+    push this 11
+    push constant 82
+    eq
+    push this 11
+    push constant 114
+    eq
+    or
+    not
+    if-goto Game_169
+    push pointer 0
+    call Game.updateHighScore 1
+    pop temp 0
+    push pointer 0
+    call Game.resetGameState 1
+    pop temp 0
+    push constant 1
+    neg
+    pop this 12
+    push constant 1
+    neg
+    return
+    goto Game_168
+label Game_169
+label Game_168
+    push this 11
+    push constant 32
+    eq
+    not
+    if-goto Game_171
+    push this 14
+    not
+    if-goto Game_173
+    push constant 0
+    pop this 14
+    goto Game_172
+label Game_173
+    push constant 1
+    neg
+    pop this 14
+label Game_172
+    push constant 1
+    neg
+    return
+    goto Game_170
+label Game_171
+label Game_170
+    goto Game_166
+label Game_167
+label Game_166
+    goto Game_164
+label Game_165
+    push constant 0
+    pop this 12
+label Game_164
+    push this 14
+    not
+    if-goto Game_175
+    push constant 1
+    neg
+    return
+    goto Game_174
+label Game_175
+label Game_174
+    push constant 0
+    return
+function Game.waitForKeyRelease 0
+    push argument 0
+    pop pointer 0
+label Game_176
+    call Keyboard.keyPressed 0
+    push constant 0
+    eq
+    not
+    not
+    if-goto Game_177
+    push constant 10
+    call Sys.wait 1
+    pop temp 0
+    goto Game_176
+label Game_177
+    push constant 0
+    return
+function Game.doLaneOccupied 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_178
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_179
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.isActive 1
+    not
+    if-goto Game_181
+    push local 1
+    call Enemy.getX 1
+    push argument 1
+    eq
+    not
+    if-goto Game_183
+    push constant 1
+    neg
+    return
+    goto Game_182
+label Game_183
+label Game_182
+    goto Game_180
+label Game_181
+label Game_180
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_178
+label Game_179
+    push constant 0
+    return
+function Game.countEnemyKill 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    call Enemy.isBoss 1
+    not
+    if-goto Game_185
+    push this 3
+    push pointer 0
+    call Game.getNextBossHp 1
+    add
+    pop this 3
+    push this 18
+    push constant 1
+    add
+    pop this 18
+    push this 0
+    call Player.heal 1
+    pop temp 0
+    goto Game_184
+label Game_185
+    push this 3
+    push constant 10
+    add
+    pop this 3
+label Game_184
+    push constant 0
+    return
+function Game.updateHighScore 0
+    push argument 0
+    pop pointer 0
+    push this 3
+    push this 19
+    gt
+    not
+    if-goto Game_187
+    push this 3
+    pop this 19
+    push constant 1
+    neg
+    pop this 20
+    goto Game_186
+label Game_187
+label Game_186
+    push constant 0
+    return
+function Game.anyEnemyActive 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_188
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_189
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.isActive 1
+    not
+    if-goto Game_191
+    push constant 1
+    neg
+    return
+    goto Game_190
+label Game_191
+label Game_190
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_188
+label Game_189
+    push constant 0
+    return
+function Game.bossActive 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_192
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_193
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.isActive 1
+    not
+    if-goto Game_195
+    push local 1
+    call Enemy.isBoss 1
+    not
+    if-goto Game_197
+    push constant 1
+    neg
+    return
+    goto Game_196
+label Game_197
+label Game_196
+    goto Game_194
+label Game_195
+label Game_194
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_192
+label Game_193
+    push constant 0
+    return
+function Game.getBossHp 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Game_198
+    push local 0
+    push static 0
+    lt
+    not
+    if-goto Game_199
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    call Enemy.isActive 1
+    not
+    if-goto Game_201
+    push local 1
+    call Enemy.isBoss 1
+    not
+    if-goto Game_203
+    push local 1
+    call Enemy.getHp 1
+    return
+    goto Game_202
+label Game_203
+label Game_202
+    goto Game_200
+label Game_201
+label Game_200
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Game_198
+label Game_199
+    push constant 0
+    return
+function Game.getNextBossHp 0
+    push argument 0
+    pop pointer 0
+    push constant 50
+    push this 18
+    push constant 20
+    call Math.multiply 2
+    add
+    return
+function Game.getEnemyShootInterval 1
+    push argument 0
+    pop pointer 0
+    push constant 60
+    push constant 60
+    push this 18
+    push constant 8
+    call Math.multiply 2
+    call Math.multiply 2
+    push constant 100
+    call Math.divide 2
+    sub
+    pop local 0
+    push local 0
+    push constant 15
+    lt
+    not
+    if-goto Game_205
+    push constant 15
+    return
+    goto Game_204
+label Game_205
+label Game_204
+    push local 0
+    return
+function Game.getEnemyBulletBonusGap 1
+    push argument 0
+    pop pointer 0
+    push constant 20
+    push this 18
+    push constant 8
+    call Math.multiply 2
+    add
+    pop local 0
+    push local 0
+    push constant 1
+    lt
+    not
+    if-goto Game_207
+    push constant 0
+    return
+    goto Game_206
+label Game_207
+label Game_206
+    push constant 100
+    push local 0
+    call Math.divide 2
+    return
+function Game.getLaneCount 1
+    push argument 0
+    pop pointer 0
+    push constant 10
+    push this 18
+    push constant 2
+    call Math.multiply 2
+    add
+    pop local 0
+    push local 0
+    push constant 16
+    gt
+    not
+    if-goto Game_209
+    push constant 16
+    return
+    goto Game_208
+label Game_209
+label Game_208
+    push local 0
+    return
+function Game.nextRandomLane 0
+    push argument 0
+    pop pointer 0
+    push this 15
+    push this 0
+    call Player.getX 1
+    add
+    push this 0
+    call Player.getY 1
+    add
+    push constant 17
+    add
+    pop this 15
+label Game_210
+    push this 15
+    push constant 159
+    gt
+    not
+    if-goto Game_211
+    push this 15
+    push constant 160
+    sub
+    pop this 15
+    goto Game_210
+label Game_211
+    push this 15
+    push pointer 0
+    call Game.getLaneCount 1
+    call Math.multiply 2
+    push constant 160
+    call Math.divide 2
+    return
+function Game.getLaneX 2
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Game.getLaneCount 1
+    pop local 0
+    push local 0
+    push constant 2
+    lt
+    not
+    if-goto Game_213
+    push constant 16
+    return
+    goto Game_212
+label Game_213
+label Game_212
+    push argument 1
+    push constant 29
+    call Math.multiply 2
+    push local 0
+    push constant 1
+    sub
+    call Math.divide 2
+    pop local 1
+    push constant 16
+    push local 1
+    push constant 16
+    call Math.multiply 2
+    add
+    return
+function Game.isEvenWave 0
+    push argument 0
+    pop pointer 0
+    push this 17
+    push constant 2
+    call Math.divide 2
+    push constant 2
+    call Math.multiply 2
+    push this 17
+    eq
+    return
+function Game.isWideAngleWave 0
+    push argument 0
+    pop pointer 0
+    push this 17
+    push constant 3
+    call Math.divide 2
+    push constant 3
+    call Math.multiply 2
+    push this 17
+    eq
+    return
+function Game.isGameOver 0
+    push argument 0
+    pop pointer 0
+    push this 13
+    return

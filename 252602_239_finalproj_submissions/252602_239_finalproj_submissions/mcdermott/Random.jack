@@ -1,0 +1,64 @@
+// this class handles random numbers for rolling dice
+// i looked up how to make random numbers and found you need a "seed"
+// basically the seed changes each time and we use it to get a number 1-6
+
+class Random {
+
+    // seed is a number that we keep changing to get different results
+    static int seed;
+
+    // set the starting seed - called once at the beginning
+    function void init(int s) {
+        let seed = s;
+        return;
+    }
+
+    // this gets called while waiting for a keypress at the start screen
+    // the longer the player waits, the more the seed changes, so rolls are different each game
+    function void tick() {
+        let seed = seed + 1;
+        return;
+    }
+
+    // gives back a random number between 0 and max-1. uses the same math
+    // to update the number as rollDie so positions also vary between games.
+    // i copy pasted the same step+wrap math from rollDie down here.
+    // probably should have made a helper for "advance the seed" but i
+    // didnt want to break the dice rolling once it was working
+    function int range(int max) {
+        let seed = seed + 4327 + (seed / 100);
+        if (seed > 20000) {
+            let seed = seed - 20000;
+        }
+        if (seed < 0) {
+            let seed = seed + 20000;
+        }
+        return seed - ((seed / max) * max);
+    }
+
+    // gives back a number between 1 and 6 (like rolling a real die)
+    function int rollDie() {
+        var int r;
+
+        // adding a fixed number each time had a bug where the dice
+        // would never repeat (always got 1,2,3,4,5 or similar sequences)
+        // because 4327 mod 6 = 1, so each roll just went up by 1
+        // fix: add seed/100 to the step so the amount we add varies each roll
+        let seed = seed + 4327 + (seed / 100);
+
+        // keep seed from getting too big or going negative
+        if (seed > 20000) {
+            let seed = seed - 20000;
+        }
+        if (seed < 0) {
+            let seed = seed + 20000;
+        }
+
+        // jack doesnt have a mod operator so i have to do it manually
+        // this gives us seed mod 6, which is 0, 1, 2, 3, 4, or 5
+        let r = seed - ((seed / 6) * 6);
+
+        // add 1 so we get 1-6 instead of 0-5
+        return r + 1;
+    }
+}

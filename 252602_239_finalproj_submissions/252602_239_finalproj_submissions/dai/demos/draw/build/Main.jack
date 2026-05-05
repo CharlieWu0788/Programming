@@ -1,0 +1,67 @@
+// Etch-a-Sketch. 1=up 2=down 3=left 4=right.
+// yellow (y=0..15) shows cursor x as a vertical line. blue (y=18..31)
+// is the canvas. cursor wraps at edges. each press = one pixel step.
+
+class Main {
+    function void main() {
+        var int x, y, key;
+        let x = 64;
+        let y = 24;
+        do Screen.clearScreen();
+        // initial cursor pixel
+        do Screen.drawPixel(x, y);
+        do Main.drawHud(x);
+        while (true) {
+            let key = Main.readKey();
+            if (key = 1) {
+                let y = y - 1;
+                if (y < 18) { let y = 31; }
+            }
+            if (key = 2) {
+                let y = y + 1;
+                if (y > 31) { let y = 18; }
+            }
+            if (key = 3) {
+                let x = x - 1;
+                if (x < 0) { let x = 127; }
+                do Main.drawHud(x);
+            }
+            if (key = 4) {
+                let x = x + 1;
+                if (x > 127) { let x = 0; }
+                do Main.drawHud(x);
+            }
+            // drop a pixel at the new position
+            do Screen.setColor(true);
+            do Screen.drawPixel(x, y);
+            // small delay so a slow release doesnt double-fire
+            do Sys.wait(8);
+        }
+        return;
+    }
+
+    // HUD: redraw the yellow strip with one vertical line at column x.
+    // clearing+redrawing the whole strip every x-move keeps it simple --
+    // the strip is only 14 rows tall, drawRectangle is fast enough.
+    function void drawHud(int x) {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(0, 0, 127, 14);
+        do Screen.setColor(true);
+        do Screen.drawVLine(x, 0, 14);
+        return;
+    }
+
+    // read one key, normalize Hack ASCII to raw 1..4.
+    function int readKey() {
+        var int c;
+        while (Keyboard.keyPressed() = 0) { }
+        let c = Keyboard.keyPressed();
+        while (~(Keyboard.keyPressed() = 0)) { }
+        if (c > 47) {
+            if (c < 58) {
+                return c - 48;
+            }
+        }
+        return c;
+    }
+}

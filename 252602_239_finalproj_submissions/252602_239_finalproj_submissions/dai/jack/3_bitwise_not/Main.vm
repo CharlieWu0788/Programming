@@ -1,0 +1,11 @@
+// compiled from 3_bitwise_not/Main.jack
+// (~12) & 15 = 3, LED: 0011
+// locals: x(0)
+function Main.main 1
+push constant 12
+not
+push constant 15
+and
+pop local 0
+push constant 0
+return

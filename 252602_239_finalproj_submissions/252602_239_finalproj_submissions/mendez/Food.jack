@@ -1,0 +1,79 @@
+/*
+ - Food.jack
+ - Manages the collectible food item
+ - uses linear congruential generator: next = (a × current + c) mod m
+ - lcg to place food at varied grid positions each time it is eaten
+ - Seed persists across placements so each collection produces a different position
+ */
+class Food {
+    field int x, y; 
+    field int size;
+    field int seed; 
+
+    constructor Food new(int cellSize) {
+        let size = cellSize;
+        let seed = 1337; // arbitrary starting seed
+        do place(); // set an initial position before the first draw
+        return this;
+    }
+
+    // advances the lcg seed and places food at a new pseudo random grid position
+    method void place() {
+        // advance seed for x, seed * 31 + 7 overflows 16-bit
+        let seed = (seed * 31) + 7;
+        if (seed < 0) { let seed = -seed; }
+        if (seed < 0) { let seed = 32767; } 
+        // range [2,29] — keeps food away from the border cells
+        let x = 2 + (seed - ((seed / 28) * 28)); // maps to grid col 2-29
+        if (x < 2)  { let x = 2;  }
+        if (x > 29) { let x = 29; }
+
+        // advance seed again for an independent y value
+        let seed = (seed * 31) + 7;
+        if (seed < 0) { let seed = -seed; }
+        if (seed < 0) { let seed = 32767; }
+        // range [2,13] — keeps food away from the border cells
+        let y = 2 + (seed - ((seed / 12) * 12)); // maps to grid row 2-13
+        if (y < 2)  { let y = 2;  }
+        if (y > 13) { let y = 13; }
+
+        return;
+    }
+
+    // draws an apple sprite 
+    method void draw() {
+        var int px, py;
+        let px = x * size;
+        let py = y * size;
+        do Screen.setColor(true);
+        do Screen.drawCircle(px + 8, py + 9, 5); // body
+        do Screen.drawRectangle(px + 7, py + 3, px + 9, py + 5); // stem
+        do Screen.drawRectangle(px + 9, py + 2, px + 12, py + 4); // leaf
+        return;
+    }
+
+    // erases the food by clearing its full cell to white
+    method void erase() {
+        var int px, py;
+        let px = x * size;
+        let py = y * size;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(px, py, px + size - 1, py + size - 1);
+        return;
+    }
+
+    // returns true if the snake head at (hx, hy) is on this food cell
+    method boolean isEaten(int hx, int hy) {
+        return ((hx = x) & (hy = y));
+    }
+
+    // moves food to a new random position and draws it 
+    method void respawn() {
+        do place();
+        do draw();
+        return;
+    }
+
+    method int getX() { return x; }
+    method int getY() { return y; }
+}

@@ -1,0 +1,10 @@
+//Creates a new game instance + runs it
+
+class Main {
+    function void main() {
+        var SnakeGame game;
+        let game = SnakeGame.new();
+        do game.run();
+        return;
+    }
+}

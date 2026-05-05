@@ -1,0 +1,129 @@
+function Basket.new 0
+push constant 4
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push constant 40
+pop this 2
+push constant 10
+pop this 3
+push pointer 0
+call Basket.draw 1
+pop temp 0
+push pointer 0
+return
+function Basket.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Basket.draw 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push this 1
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Basket.erase 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push this 1
+push this 3
+add
+call Screen.drawRectangle 4
+pop temp 0
+push constant 0
+return
+function Basket.moveLeft 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Basket.erase 1
+pop temp 0
+push this 0
+push constant 8
+sub
+pop this 0
+push this 0
+push constant 0
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop this 0
+label IF_FALSE0
+push pointer 0
+call Basket.draw 1
+pop temp 0
+push constant 0
+return
+function Basket.moveRight 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Basket.erase 1
+pop temp 0
+push this 0
+push constant 8
+add
+pop this 0
+push this 0
+push this 2
+add
+push constant 511
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 511
+push this 2
+sub
+pop this 0
+label IF_FALSE0
+push pointer 0
+call Basket.draw 1
+pop temp 0
+push constant 0
+return
+function Basket.getX 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Basket.getY 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Basket.getWidth 0
+push argument 0
+pop pointer 0
+push this 2
+return

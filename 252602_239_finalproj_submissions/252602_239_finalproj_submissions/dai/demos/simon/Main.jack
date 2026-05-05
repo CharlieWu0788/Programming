@@ -1,0 +1,115 @@
+// Simon. memory game, repeat the flashing sequence.
+// AVR: low 4 bits of 0x0400 mirror to 4 LEDs.
+// Hack: same poke also draws a stripe per step at distinct rows.
+// readButton normalizes ASCII '1'..'4' (Hack) to raw 1..4 (AVR).
+
+class Main {
+    // 16-step hardcoded sequence.
+    function int stepAt(int i) {
+        if (i = 0)  { return 1; }
+        if (i = 1)  { return 2; }
+        if (i = 2)  { return 4; }
+        if (i = 3)  { return 3; }
+        if (i = 4)  { return 1; }
+        if (i = 5)  { return 4; }
+        if (i = 6)  { return 2; }
+        if (i = 7)  { return 3; }
+        if (i = 8)  { return 4; }
+        if (i = 9)  { return 1; }
+        if (i = 10) { return 3; }
+        if (i = 11) { return 2; }
+        if (i = 12) { return 4; }
+        if (i = 13) { return 2; }
+        if (i = 14) { return 1; }
+        return 3;
+    }
+
+    // flash step for a moment, then clear.
+    // poke two Hack addresses per flash. 16384 drives the AVR LED mirror,
+    // 16384+128*s draws a visible Hack strip without hitting 0x0400.
+    function void flash(int s) {
+        var int pattern, hackAddr;
+        let pattern = 0;
+        let hackAddr = 0;
+        if (s = 1) { let pattern = 1; let hackAddr = 16512; }
+        if (s = 2) { let pattern = 2; let hackAddr = 16640; }
+        if (s = 3) { let pattern = 4; let hackAddr = 16768; }
+        if (s = 4) { let pattern = 8; let hackAddr = 16896; }
+        do Memory.poke(16384, pattern);
+        do Memory.poke(hackAddr, -1);
+        do Sys.wait(120);
+        do Memory.poke(16384, 0);
+        do Memory.poke(hackAddr, 0);
+        do Sys.wait(40);
+        return;
+    }
+
+    // read one button press and normalize.
+    // both look the same to the rest of the game.
+    function int readButton() {
+        var int c;
+        while (Keyboard.keyPressed() = 0) { }
+        let c = Keyboard.keyPressed();
+        while (~(Keyboard.keyPressed() = 0)) { }
+        if (c > 47) {
+            if (c < 58) {
+                return c - 48;
+            }
+        }
+        return c;
+    }
+
+    // play one round at given level (1..15).
+    // returns true if the player matched the full pattern.
+    function boolean playRound(int level) {
+        var int i, expected, got;
+        // show the pattern
+        let i = 0;
+        while (i < level) {
+            let expected = Main.stepAt(i);
+            do Main.flash(expected);
+            let i = i + 1;
+        }
+        // now read back
+        let i = 0;
+        while (i < level) {
+            let expected = Main.stepAt(i);
+            let got = Main.readButton();
+            do Main.flash(got);
+            if (~(got = expected)) { return false; }
+            let i = i + 1;
+        }
+        return true;
+    }
+
+    function void gameOver() {
+        var int i;
+        let i = 0;
+        while (i < 6) {
+            do Memory.poke(16384, 15);
+            do Sys.wait(60);
+            do Memory.poke(16384, 0);
+            do Sys.wait(60);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    function void main() {
+        var int level;
+        var boolean ok;
+        let level = 1;
+        while (true) {
+            do Sys.wait(150);
+            let ok = Main.playRound(level);
+            if (ok) {
+                let level = level + 1;
+                if (level > 15) { let level = 15; }
+            } else {
+                do Main.gameOver();
+                let level = 1;
+            }
+        }
+        return;
+    }
+}

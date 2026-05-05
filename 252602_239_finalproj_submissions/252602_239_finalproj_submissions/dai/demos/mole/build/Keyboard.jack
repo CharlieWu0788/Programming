@@ -1,0 +1,18 @@
+// Keyboard: reads addr 24576.
+// Hack: ASCII of pressed key. AVR: 1..4 from button-poll ISR.
+
+class Keyboard {
+    function int keyPressed() {
+        return Memory.peek(24576);
+    }
+
+    // readChar blocks until a key is pressed then released.
+    // used by Simon to read one button at a time.
+    function char readChar() {
+        var int c;
+        while (Keyboard.keyPressed() = 0) { }
+        let c = Keyboard.keyPressed();
+        while (~(Keyboard.keyPressed() = 0)) { }
+        return c;
+    }
+}
